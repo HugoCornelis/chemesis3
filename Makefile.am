@@ -109,7 +109,7 @@ html-upload: html-upload-prepare
 
 test: check
 
-#TESTS = $(srcdir)/tests/neurospaces_harness
+TESTS = /usr/local/bin/neurospaces_harness
 
 docs-level1:
 
