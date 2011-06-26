@@ -12,20 +12,31 @@ int piReactions[] =
     0,
 };
 
-int somaCaProducts[] =
+int piSomaCaFlags[] =
 {
     0,
 };
 
-int somaCabufProducts[] =
+int piSomaCabufFlags[] =
 {
     1,
 };
 
-int somabufProducts[] =
+int piSomabufFlags[] =
 {
     -1,
 };
+
+int piSomabufPools[] =
+{
+    0
+};
+
+int piSomabufPoolsFlags[] =
+{
+    0
+};
+
 
 struct ch3_pool somaCa[3] =
 {
@@ -74,7 +85,15 @@ struct ch3_pool somaCa[3] =
 
 	//m and how they are used, flags for each attached reaction
 
-	somaCaProducts,
+	piSomaCaFlags,
+
+	//m indexes of attached pools
+
+	0,
+
+	NULL,
+
+	NULL,
 
 	//m initial concentration
 
@@ -150,7 +169,15 @@ struct ch3_pool somaCa[3] =
 
 	//m and how they are used, flags for each attached reaction
 
-	somaCabufProducts,
+	piSomaCabufFlags,
+
+	//m indexes of attached pools
+
+	0,
+
+	NULL,
+
+	NULL,
 
 	//m initial concentration
 
@@ -226,7 +253,15 @@ struct ch3_pool somaCa[3] =
 
 	//m and how they are used, flags for each attached reaction
 
-	somabufProducts,
+	piSomabufFlags,
+
+	//m indexes of attached pools
+
+	1,
+
+	piSomabufPools,
+
+	piSomabufPoolsFlags,
 
 	//m initial concentration
 

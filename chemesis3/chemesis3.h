@@ -47,6 +47,14 @@ struct ch3_pool
 
     int *piReactionFlags;
 
+    //m indexes of attached pools
+
+    int iPools;
+
+    int *piPools;
+
+    int *piPoolsFlags;
+
     //m initial concentration
 
     double dConcentrationInit;
