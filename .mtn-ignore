@@ -5,9 +5,12 @@ Makefile$
 Makefile\.in$
 \.deb$
 \.log$
+^depcomp$
 ^aclocal\.m4$
+^config.guess$
 ^config.log$
 ^config.status$
+^config.sub$
 ^configure$
 ^chemesis3-.*tar.gz$
 ^installed

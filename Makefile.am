@@ -14,11 +14,31 @@
 ##############################################################################
 
 
-#SUBDIRS = perl python
+SUBDIRS = \
+	. \
+	tests
 
 # fill in the scripts that should go with the distribution:
-dist_bin_SCRIPTS =
-#	bin/neurospaces_versions
+
+dist_bin_SCRIPTS = \
+	bin/chemesis3
+
+#t note the use of builddir without '/' suffixed.
+
+#t the neurospaces prefix should be used for this
+
+AM_CFLAGS=-g3 -fPIC -include chemesis3/config.h -Wmissing-prototypes -Wmissing-declarations -ffloat-store -I/usr/local/neurospaces/instrumentor -I$(srcdir)/.. -I$(builddir).. -include chemesis3/config.h -DPRE_PROTO_TRAVERSAL -D__NO_MATH_INLINES
+
+lib_LIBRARIES = libchemesis3.a
+
+libchemesis3_a_SOURCES = \
+	solver.c
+
+nobase_include_HEADERS = \
+	chemesis3/struct.h
+
+CLEANFILES = \
+	$(top_srcdir)/docs/doxygen.tag
 
 @PACKAGE@testdir=$(prefix)/neurospaces/$(PACKAGE)
 nobase_dist_@PACKAGE@test_DATA=@TEST_SPECIFICATION_FILES@
@@ -46,7 +66,11 @@ am__tar = ${AMTAR} chf - --format=posix "$$tardir"
 
 
 clean-local:
-	rm -rf $(TMP_DIR)
+	$(RM) -rf $(top_srcdir)/docs/html
+	$(RM) -rf $(top_srcdir)/docs/latex
+	$(RM) -rf $(top_srcdir)/docs/rtf
+	$(RM) -rf $(top_srcdir)/docs/chemesis3
+	$(RM)  -rf $(TMP_DIR)
 	$(RM) -rf $(top_srcdir)/*.deb
 	$(RM) -f $(top_srcdir)/*.changes
 	$(RM) -f $(top_srcdir)/*.dsc
@@ -55,16 +79,20 @@ clean-local:
 	$(RM) $(top_srcdir)/$(PACKAGE)-*.tar.gz
 
 dist-hook: 
+	if test -n "$$NEUROSPACES_RELEASE" ; then cd $(srcdir) && if test -n "`mtn ls changed `" ; then false ; else true ; fi ; else true ; fi
+	cp $(srcdir)/license.txt $(distdir)
+	cp -R $(srcdir)/docs $(distdir)
+	rm -rf $(distdir)/docs/html
+	rm -rf $(distdir)/docs/latex
+	rm -rf $(distdir)/docs/man
+	rm -rf $(distdir)/docs/html
+	rm -rf $(distdir)/docs/rtf
+	cp -pR $(srcdir)/tests/tests_2_html $(distdir)/tests
+	cp -pR $(srcdir)/tests/tests_2_html.ptkdb $(distdir)/tests
+	cp -pR $(srcdir)/tests.config $(distdir)
 	$(srcdir)/install-sh -d $(distdir)/tests
 	$(srcdir)/install-sh -d $(distdir)/tests/html
 	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
-
-#install-data-local: neurospaces_cpan_modules
-
-#neurospaces_cpan_modules:
-#	@echo "======================== Installing CPAN modules"
-#	( cd cpan ; ./cpan_install *.gz )
-#	touch $(top_srcdir)/neurospaces_cpan_modules
 
 html-upload-prepare:
 	rm -fr html/htdocs/neurospaces_project/$(PACKAGE)
