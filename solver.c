@@ -507,7 +507,7 @@ int Chemesis3SingleStepReactions(struct simobj_Chemesis3 *pch3)
 	{
 	    //- incorporate the substrate concentration
 
-	    preaction->dForwardSolved *= pch3->ppool[iSubstrate].dConcentration;
+	    preaction->dForwardSolved *= pch3->ppool[preaction->piSubstrates[iSubstrate]].dConcentration;
 	}
 
 	//- loop over all products
@@ -518,7 +518,7 @@ int Chemesis3SingleStepReactions(struct simobj_Chemesis3 *pch3)
 	{
 	    //- incorporate the product concentration
 
-	    preaction->dBackwardSolved *= pch3->ppool[iProduct].dConcentration;
+	    preaction->dBackwardSolved *= pch3->ppool[preaction->piProducts[iProduct]].dConcentration;
 	}
     }
 

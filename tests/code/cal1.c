@@ -59,7 +59,7 @@ struct ch3_pool somaCa[3] =
 
 	//m initial concentration
 
-	0.0,
+	0.001, // 0.1e-3,
 
 	//m current concentration
 
@@ -67,11 +67,11 @@ struct ch3_pool somaCa[3] =
 
 	//m compartment volume as calculated by the model container
 
-	0.0,
+	1.085733504e-08,
 
-	//m to be removed, should be transparent
+	//m to be removed, should be transparent: units
 
-	1.0,
+	1e-3,
 
 	//m number of entities
 
@@ -131,7 +131,7 @@ struct ch3_pool somaCa[3] =
 
 	//m initial concentration
 
-	0.0,
+	0.003,
 
 	//m current concentration
 
@@ -139,11 +139,11 @@ struct ch3_pool somaCa[3] =
 
 	//m compartment volume as calculated by the model container
 
-	0.0,
+	1.085733504e-08,
 
-	//m to be removed, should be transparent
+	//m to be removed, should be transparent: units
 
-	1.0,
+	1e-3,
 
 	//m number of entities
 
@@ -203,7 +203,7 @@ struct ch3_pool somaCa[3] =
 
 	//m initial concentration
 
-	0.0,
+	0.153,
 
 	//m current concentration
 
@@ -211,11 +211,11 @@ struct ch3_pool somaCa[3] =
 
 	//m compartment volume as calculated by the model container
 
+	1.085733504e-08,
+
+	//m to be removed, should be transparent: units
+
 	0.0,
-
-	//m to be removed, should be transparent
-
-	1.0,
 
 	//m number of entities
 
@@ -223,7 +223,7 @@ struct ch3_pool somaCa[3] =
 
 	//m for conserve pool
 
-	0,
+	1,
 
 	0.0,
 
@@ -236,12 +236,12 @@ struct ch3_pool somaCa[3] =
 int piSubstrates[] =
 {
     0,
-    1,
+    2,
 };
 
 int piProducts[] =
 {
-    2,
+    1,
 };
 
 struct ch3_reaction somacabufrxn =
@@ -300,13 +300,13 @@ struct ch3_reaction somacabufrxn =
 
     //m backward rate
 
-    0.0,
+    0.5,
 
     0.0,
 
     //m forward rate
 
-    0.0,
+    1e2,
 
     0.0,
 

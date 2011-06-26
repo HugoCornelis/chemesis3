@@ -55,7 +55,7 @@ struct ch3_pool
 
     double dVolume;
 
-    //m to be removed, should be transparent
+    //m to be removed, should be transparent: units
 
     double dUnits;
 
