@@ -15,8 +15,7 @@
 
 
 SUBDIRS = \
-	. \
-	tests
+	.
 
 # fill in the scripts that should go with the distribution:
 
@@ -35,7 +34,7 @@ libchemesis3_a_SOURCES = \
 	solver.c
 
 nobase_include_HEADERS = \
-	chemesis3/struct.h
+	chemesis3/chemesis3.h
 
 CLEANFILES = \
 	$(top_srcdir)/docs/doxygen.tag

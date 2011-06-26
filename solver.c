@@ -6,97 +6,17 @@
 #endif
 
 
+#include "chemesis3/chemesis3.h"
+
+#include <math.h>
+#include <stdlib.h>
 
 
-struct ch3_pool
-{
-    //m initial concentration
+static
+double IntegrateMethod
+(int method, void *pv, double state, double A, double B, double dt, char *name);
 
-    double dConcentrationInit;
-
-    //m current concentration
-
-    double dConcentration;
-
-    //m compartment volume as calculated by the model container
-
-    double dVolume;
-
-    //m to be removed, should be transparent
-
-    double dUnits;
-
-    //m number of entities
-
-    double dQuantity;
-
-    //m for conserve pool
-
-    int iConserve;
-
-    double dQTotal;
-
-    double dCTotal;
-
-};
-
-
-struct ch3_reaction
-{
-    //m number of substrates
-
-    int iSubstrates;
-
-    //m indexes of substrates
-
-    int *piSubstrates;
-
-    //m number of end products
-
-    int iProducts;
-
-    //m indexes of end product
-
-    int *piProducts;
-
-    //m backward rate
-
-    double dBackwardRate;
-
-    double dBackwardSolved;
-
-    //m forward rate
-
-    double dForwardRate;
-
-    double dForwardSolved;
-
-};
-
-
-struct simobj_Chemesis3
-{
-    //- current simulation time
-
-    double dTime;
-
-    //- time step
-
-    double dStep;
-
-    //- all pools
-
-    int iPools;
-
-    struct ch3_pool *ppool;
-
-    //- all reactions
-
-    int iReactions;
-
-    struct ch3_reaction *preaction;
-
-};
+static double Runge_Kutta(double y, double A, double B, double dt);
 
 
 int Chemesis3Initiate(struct simobj_Chemesis3 *pch3)
@@ -195,7 +115,7 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	int iReaction;
 
-	for (int iReaction = 0 ; iReaction < ppool->iReactions ; iReaction++)
+	for (iReaction = 0 ; iReaction < ppool->iReactions ; iReaction++)
 	{
 	    //- retrieve the index of this reaction
 
@@ -203,7 +123,7 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	    //- get forward and backward rates of this reaction
 
-	    struct ch3_reaction *preaction = pch3->preaction[iIndex];
+	    struct ch3_reaction *preaction = &pch3->preaction[iIndex];
 
 	    double dForwardSolved = preaction->dForwardSolved;
 
@@ -237,9 +157,9 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	    //- check for parameterized minimum concentration boundary
 
-	    if (ppool->dConcentration < ppool->dMinimum)
+	    if (ppool->dConcentration < pch3->dConcentrationMinimum)
 	    {
-		ppool->dConcentration = ppool->dMinimum;
+		ppool->dConcentration = pch3->dConcentrationMinimum;
 	    }
 
 	    //- calculate the total number of ions in the pool
@@ -320,31 +240,31 @@ double IntegrateMethod
 	D = exp(-B*dt);
 	result = state*D + (A/B)*(1-D);
 	break;
-    case GEAR_INT:
-	/*
-	** Gear 2nd order
-	*/
-	/* Attach buffer below segment, instead of to parent (BPG 15-5-91)
-	   result = Gear(segment->parent,&(segment->child),*/
-	result = Gear(segment,
-		      state,A,B,dt,name);
-	break;
-    case AB2_INT:
-	/*
-	** Adams-Bashforth 2 step
-	*/
-	/* Attach buffer below segment, instead of to parent (BPG 15-5-91)
-	   result = AB2(segment->parent,&(segment->child),*/
-	result = AB2(segment, state,A - state*B,dt, name);
-	break;
-    case AB3_INT:
-	/*
-	** Adams-Bashforth 3 step
-	*/
-	/* Attach buffer below segment, instead of to parent (BPG 15-5-91)
-	   result = AB3(segment->parent,&(segment->child),*/
-	result = AB3(segment, state,A - state*B,dt, name);
-	break;
+/*     case GEAR_INT: */
+/* 	/* */
+/* 	** Gear 2nd order */
+/* 	* */
+/* 	/* Attach buffer below segment, instead of to parent (BPG 15-5-91) */
+/* 	   result = Gear(segment->parent,&(segment->child),* */
+/* 	result = Gear(segment, */
+/* 		      state,A,B,dt,name); */
+/* 	break; */
+/*     case AB2_INT: */
+/* 	/* */
+/* 	** Adams-Bashforth 2 step */
+/* 	* */
+/* 	/* Attach buffer below segment, instead of to parent (BPG 15-5-91) */
+/* 	   result = AB2(segment->parent,&(segment->child),* */
+/* 	result = AB2(segment, state,A - state*B,dt, name); */
+/* 	break; */
+/*     case AB3_INT: */
+/* 	/* */
+/* 	** Adams-Bashforth 3 step */
+/* 	* */
+/* 	/* Attach buffer below segment, instead of to parent (BPG 15-5-91) */
+/* 	   result = AB3(segment->parent,&(segment->child),* */
+/* 	result = AB3(segment, state,A - state*B,dt, name); */
+/* 	break; */
     case TRAPEZOIDAL_INT:
 	/*
 	** Trapezoidal
@@ -354,23 +274,23 @@ double IntegrateMethod
 
 	result = Trapezoid(state,A,B,dt);
 	break;
-	/* Why not include the 4 and 5 step methods ? (BPG 22-5-91) */
-    case AB4_INT:
-	/*
-	** Adams-Bashforth 4 step
-	*/
-	/* Attach buffer below segment, instead of to parent (BPG 15-5-91)
-	   result = AB4(segment->parent,&(segment->child),*/
-	result = AB4(segment, state,A - state*B,dt, name);
-	break;
-    case AB5_INT:
-	/*
-	** Adams-Bashforth 5 step
-	*/
-	/* Attach buffer below segment, instead of to parent (BPG 15-5-91)
-	   result = AB5(segment->parent,&(segment->child),*/
-	result = AB5(segment, state,A - state*B,dt, name);
-	break;
+/* 	/* Why not include the 4 and 5 step methods ? (BPG 22-5-91) * */
+/*     case AB4_INT: */
+/* 	/* */
+/* 	** Adams-Bashforth 4 step */
+/* 	* */
+/* 	/* Attach buffer below segment, instead of to parent (BPG 15-5-91) */
+/* 	   result = AB4(segment->parent,&(segment->child),* */
+/* 	result = AB4(segment, state,A - state*B,dt, name); */
+/* 	break; */
+/*     case AB5_INT: */
+/* 	/* */
+/* 	** Adams-Bashforth 5 step */
+/* 	* */
+/* 	/* Attach buffer below segment, instead of to parent (BPG 15-5-91) */
+/* 	   result = AB5(segment->parent,&(segment->child),* */
+/* 	result = AB5(segment, state,A - state*B,dt, name); */
+/* 	break; */
 	/* The oldest and greatest ! (BPG 24-5-91) */
     case RK_INT:
 	/*
@@ -385,21 +305,21 @@ double IntegrateMethod
 #define Euler(y,dy,dt) 		((y) + (dy)*(dt))
 	result = Euler(state,A - state*B,dt);
 	break;
-	/* A predictor-corrector method (BPG 22-5-91) */
-    case EPC_INT:
-	/*
-	** Euler predictor - modified Euler corrector
-	(from Parnas and Segev, J.Physiol. (1979) 295:323-343)
-	*/
-	result = Euler_Predictor_Corrector(state,A,B,dt);
-	break;
-    default :
-	/* 
-	** default to good old Exp Euler
-	*/
-	D = exp(-B*dt);
-	result = state*D + (A/B)*(1-D);
-	break;
+/* 	/* A predictor-corrector method (BPG 22-5-91) * */
+/*     case EPC_INT: */
+/* 	/* */
+/* 	** Euler predictor - modified Euler corrector */
+/* 	(from Parnas and Segev, J.Physiol. (1979) 295:323-343) */
+/* 	* */
+/* 	result = Euler_Predictor_Corrector(state,A,B,dt); */
+/* 	break; */
+/*     default : */
+/* 	/*  */
+/* 	** default to good old Exp Euler */
+/* 	* */
+/* 	D = exp(-B*dt); */
+/* 	result = state*D + (A/B)*(1-D); */
+/* 	break; */
     }
     return(result);
 }
