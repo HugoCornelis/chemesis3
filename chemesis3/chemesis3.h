@@ -43,6 +43,10 @@ struct ch3_pool
 
     int *piReactions;
 
+    //m and how they are used, flags for each attached reaction
+
+    int *piReactionFlags;
+
     //m initial concentration
 
     double dConcentrationInit;

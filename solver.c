@@ -434,42 +434,58 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	    //- connect the pool equation with the reaction equation
 
-	    dAConc += dForwardSolved;
-
-	    if (ppool->dConcentration != 0)
+	    if (ppool->piReactionFlags[iReaction] == 1)
 	    {
-		dB += dBackwardSolved / ppool->dConcentration;
+		//- for products in this chain
+
+		dAConc += dForwardSolved;
+
+		if (ppool->dConcentration != 0)
+		{
+		    dB += dBackwardSolved / ppool->dConcentration;
+		}
 	    }
-
-	    //- integrate to the next time step
-
-	    dA = dAMoles / ppool->dVolume / (AVOGADRO * ppool->dUnits) + dAConc;
-
-	    ppool->dConcentration
-		= IntegrateMethod
-		  (
-		      (dB < 1.0e-10
-		       ? FEULER_INT
-		       : EEULER_INT),
-		      /* ppool */ NULL,
-		      ppool->dConcentration,
-		      dA,
-		      dB,
-		      pch3->dStep,
-		      "concentration");
-
-	    //- check for parameterized minimum concentration boundary
-
-	    if (ppool->dConcentration < pch3->dConcentrationMinimum)
+	    else
 	    {
-		ppool->dConcentration = pch3->dConcentrationMinimum;
+		//- and for substrates in the chain
+
+		dAConc += dBackwardSolved;
+
+		if (ppool->dConcentration != 0)
+		{
+		    dB += dForwardSolved / ppool->dConcentration;
+		}
 	    }
-
-	    //- calculate the total number of ions in the pool
-
-	    ppool->dQuantity = ppool->dConcentration * ppool->dVolume * AVOGADRO * ppool->dUnits;
-
 	}
+
+	//- integrate to the next time step
+
+	dA = dAMoles / ppool->dVolume / (AVOGADRO * ppool->dUnits) + dAConc;
+
+	ppool->dConcentration
+	    = IntegrateMethod
+	    (
+		(dB < 1.0e-10
+		 ? FEULER_INT
+		 : EEULER_INT),
+		/* ppool */ NULL,
+		ppool->dConcentration,
+		dA,
+		dB,
+		pch3->dStep,
+		"concentration");
+
+	//- check for parameterized minimum concentration boundary
+
+	if (ppool->dConcentration < pch3->dConcentrationMinimum)
+	{
+	    ppool->dConcentration = pch3->dConcentrationMinimum;
+	}
+
+	//- calculate the total number of ions in the pool
+
+	ppool->dQuantity = ppool->dConcentration * ppool->dVolume * AVOGADRO * ppool->dUnits;
+
     }
 
     //- return result

@@ -94,7 +94,7 @@ struct simobj_Chemesis3 *pch3 = NULL;
 //! default chemesis3 time step, must be bigger than the CHEMESIS3_TEST_TIME_GRANULARITY
 
 #ifndef CHEMESIS3_TEST_TIME_STEP
-#define CHEMESIS3_TEST_TIME_STEP (2e-5)
+#define CHEMESIS3_TEST_TIME_STEP (0.002)
 #endif
 
 
