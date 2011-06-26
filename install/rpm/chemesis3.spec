@@ -4,7 +4,7 @@
 %define _mandir		/usr/local/share/man/man1
 
 # $Format: "%define name	${package}"$
-%define name	chemesis
+%define name	chemesis3
 
 
 # $Format: "%define release	        ${label}"$

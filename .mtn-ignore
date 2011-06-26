@@ -9,7 +9,7 @@ Makefile\.in$
 ^config.log$
 ^config.status$
 ^configure$
-^chemesis-.*tar.gz$
+^chemesis3-.*tar.gz$
 ^installed
 ^installer-.*.tar.gz$
 ^missing$

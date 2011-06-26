@@ -29,7 +29,7 @@ def GetRevisionInfo():
 
 def GetPackageName():
 # $Format: "    return \"${package}\""$
-    return "chemesis"
+    return "chemesis3"
 
 def GetVersion():
 # $Format: "    return \"${major}.${minor}.${micro}-${label}\""$
