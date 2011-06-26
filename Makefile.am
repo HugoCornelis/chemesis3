@@ -15,7 +15,10 @@
 
 
 SUBDIRS = \
-	.
+	. \
+	@CHEMESIS3_INTEGRATORS@ \
+	glue \
+	tests
 
 # fill in the scripts that should go with the distribution:
 

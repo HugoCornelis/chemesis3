@@ -316,6 +316,28 @@ else
 fi
 
 
+# integrators: integrate with model-container of neurospaces ?
+
+AC_ARG_ENABLE(neurospaces, AS_HELP_STRING([--without-neurospaces   don't use neurospaces as modeling component]) )
+
+CHEMESIS3_INTEGRATORS=
+
+if test x"$with_neurospaces" == "xno" ; then
+
+    echo "NOT using Neurospaces as modeling component"
+
+else
+
+    echo "Using Neurospaces as modeling component"
+
+    AC_DEFINE(CHEMESIS3_SOURCE_NEUROSPACES, 1, [use neurospaces as modeling component])
+
+dnl     CHEMESIS3_INTEGRATORS="integrators"
+fi
+
+AC_SUBST(CHEMESIS3_INTEGRATORS)
+
+
 # Checks for libraries.
 
 # Checks for header files.
@@ -409,10 +431,10 @@ case "$host_os" in
     PERLLIB_EXTENSION='dylib'
     AC_SUBST(PERLLIB_EXTENSION)
 
-    SWIGCOMPILELINKSFORPERL='-I/usr/local/neurospaces/instrumentor -I$(top_builddir) -include heccer/config.h -ffloat-store -g -O0 -dynamic -fPIC $(PERL_CCOPTS)'
+    SWIGCOMPILELINKSFORPERL='-I/usr/local/neurospaces/instrumentor -I$(top_builddir) -include chemesis3/config.h -ffloat-store -g -O0 -dynamic -fPIC $(PERL_CCOPTS)'
     AC_SUBST(SWIGCOMPILELINKSFORPERL)
 
-    SWIGCOMPILECOMMAND_PERL='gcc $(SWIGCOMPILELINKSFORPERL) -c swiggable_heccer_wrap.c'
+    SWIGCOMPILECOMMAND_PERL='gcc $(SWIGCOMPILELINKSFORPERL) -c swiggable_chemesis3_wrap.c'
     AC_SUBST(SWIGCOMPILECOMMAND_PERL)
 
 
@@ -421,11 +443,11 @@ case "$host_os" in
       # Mando: libtool requires all symbols linked against to be defined at link time otherwise
       # running when it inspects the symbol table at runtime it will fail to load. Have to link against
       # event_algorithms (which is not system installed) in the model container so this looks messy.  
-      SWIGLDLINKSFORPERL='-dynamic -undefined suppress -flat_namespace -L$(top_builddir) -lheccer -L$(top_builddir)/integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -lsymbol_algorithms -L$(top_builddir)/../../../../model-container/source/snapshots/0/algorithms/event -levent_algorithms -lncurses -lreadline $(PERL_LDFLAGS)'
+      SWIGLDLINKSFORPERL='-dynamic -undefined suppress -flat_namespace -L$(top_builddir) -lchemesis3 -L$(top_builddir)/integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -lsymbol_algorithms -L$(top_builddir)/../../../../model-container/source/snapshots/0/algorithms/event -levent_algorithms -lncurses -lreadline $(PERL_LDFLAGS)'
 
     else
 
-      SWIGLDLINKSFORPERL='-L../../.. -lheccer -L$(top_builddir)/integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -lsymbol_algorithms -lncurses -lreadline -bundle -undefined suppress -flat_namespace $(PERL_LDFLAGS)'
+      SWIGLDLINKSFORPERL='-L../../.. -lchemesis3 -L$(top_builddir)/integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -lsymbol_algorithms -lncurses -lreadline -bundle -undefined suppress -flat_namespace $(PERL_LDFLAGS)'
 
     fi 
 
@@ -437,11 +459,11 @@ case "$host_os" in
 
             if test "$OSX_UNIVERSAL" == "yes"; then
 
-              SWIGLINKCOMMAND_PERL='$(AR) $(SWIGLDLINKSFORPERL) -o SwiggableHeccer.$(PERLLIB_EXTENSION) swiggable_heccer_wrap.o'
+              SWIGLINKCOMMAND_PERL='$(AR) $(SWIGLDLINKSFORPERL) -o SwiggableChemesis3.$(PERLLIB_EXTENSION) swiggable_chemesis3_wrap.o'
 
             else
 
-              SWIGLINKCOMMAND_PERL='ld 	$(SWIGLDLINKSFORPERL) 	-o SwiggableHeccer.$(PERLLIB_EXTENSION) /usr/lib/bundle1.o  swiggable_heccer_wrap.o'
+              SWIGLINKCOMMAND_PERL='ld 	$(SWIGLDLINKSFORPERL) 	-o SwiggableChemesis3.$(PERLLIB_EXTENSION) /usr/lib/bundle1.o  swiggable_chemesis3_wrap.o'
 
             fi
 
@@ -450,7 +472,7 @@ case "$host_os" in
 
 	;;    
 	*)
-            SWIGLINKCOMMAND_PERL='ld 	$(SWIGLDLINKSFORPERL) 	-o SwiggableHeccer.$(PERLLIB_EXTENSION) 	swiggable_heccer_wrap.o'
+            SWIGLINKCOMMAND_PERL='ld 	$(SWIGLDLINKSFORPERL) 	-o SwiggableChemesis3.$(PERLLIB_EXTENSION) 	swiggable_chemesis3_wrap.o'
             AC_SUBST(SWIGLINKCOMMAND_PERL)
 	;;
     esac 
@@ -465,10 +487,10 @@ case "$host_os" in
     SWIGCOMPILELINKSFORPYTHON='$(PYTHON_INCLUDE) -I/usr/local/neurospaces/instrumentor -I./../../.. 	-I.../../../hierarchy/output/symbols 	-I./../../../hierarchy/output/symbols/'
     AC_SUBST(SWIGCOMPILELINKSFORPYTHON)
 
-    SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_heccer_wrap.c'
+    SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_chemesis3_wrap.c'
     AC_SUBST(SWIGCOMPILECOMMAND_PYTHON)
 
-    SWIGLDLINKSFORPYTHON='$(PYTHON_LDFLAGS) -L../../../ -lheccer -L../../../integrators -lhneurospaces  -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/model-container -lsymbol_algorithms -lncurses -lreadline -framework Python -flat_namespace -undefined suppress -bundle 	-bundle_loader $(PYTHON_EXE)'
+    SWIGLDLINKSFORPYTHON='$(PYTHON_LDFLAGS) -L../../../ -lchemesis3 -L../../../integrators -lhneurospaces  -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/model-container -lsymbol_algorithms -lncurses -lreadline -framework Python -flat_namespace -undefined suppress -bundle 	-bundle_loader $(PYTHON_EXE)'
     AC_SUBST(SWIGLDLINKSFORPYTHON)
 
 
@@ -477,20 +499,20 @@ case "$host_os" in
 
 	    dnl This is snow leopard
 
-            SWIGLINKCOMMAND_PYTHON='ld 	$(SWIGLDLINKSFORPYTHON) -o _SwiggableHeccer.$(PYTHONLIB_EXTENSION) /usr/lib/bundle1.o swiggable_heccer_wrap.o'
+            SWIGLINKCOMMAND_PYTHON='ld 	$(SWIGLDLINKSFORPYTHON) -o _SwiggableChemesis3.$(PYTHONLIB_EXTENSION) /usr/lib/bundle1.o swiggable_chemesis3_wrap.o'
             AC_SUBST(SWIGLINKCOMMAND_PYTHON)
 
-	    HECCER_SWIGLINKCOMMAND_PYTHON='ld $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/heccer/_heccer_base.so /usr/lib/bundle1.o heccer_wrap.o'
-	    AC_SUBST(HECCER_SWIGLINKCOMMAND_PYTHON)
+	    CHEMESIS3_SWIGLINKCOMMAND_PYTHON='ld $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/chemesis3/_chemesis3_base.so /usr/lib/bundle1.o chemesis3_wrap.o'
+	    AC_SUBST(CHEMESIS3_SWIGLINKCOMMAND_PYTHON)
 
 	;;
 
 	*)
-            SWIGLINKCOMMAND_PYTHON='ld 	$(SWIGLDLINKSFORPYTHON) -o _SwiggableHeccer.$(PYTHONLIB_EXTENSION)  swiggable_heccer_wrap.o'
+            SWIGLINKCOMMAND_PYTHON='ld 	$(SWIGLDLINKSFORPYTHON) -o _SwiggableChemesis3.$(PYTHONLIB_EXTENSION)  swiggable_chemesis3_wrap.o'
             AC_SUBST(SWIGLINKCOMMAND_PYTHON)	
 
-	    HECCER_SWIGLINKCOMMAND_PYTHON='ld $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/heccer/_heccer_base.so heccer_wrap.o'
-            AC_SUBST(HECCER_SWIGLINKCOMMAND_PYTHON)
+	    CHEMESIS3_SWIGLINKCOMMAND_PYTHON='ld $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/chemesis3/_chemesis3_base.so chemesis3_wrap.o'
+            AC_SUBST(CHEMESIS3_SWIGLINKCOMMAND_PYTHON)
         ;;
     esac 
 
@@ -534,17 +556,17 @@ case "$host_os" in
     AC_SUBST(PERLLIB_EXTENSION)
 
 
-    SWIGCOMPILELINKSFORPERL='-I/usr/local/neurospaces/instrumentor -I$(srcdir)/../../.. -I$(top_builddir) -ffloat-store -I../../.. -include heccer/config.h -g -O0 -fPIC $(PERL_CCOPTS)'
+    SWIGCOMPILELINKSFORPERL='-I/usr/local/neurospaces/instrumentor -I$(srcdir)/../../.. -I$(top_builddir) -ffloat-store -I../../.. -include chemesis3/config.h -g -O0 -fPIC $(PERL_CCOPTS)'
     AC_SUBST(SWIGCOMPILELINKSFORPERL)
 
-    SWIGCOMPILECOMMAND_PERL='gcc $(SWIGCOMPILELINKSFORPERL) -c swiggable_heccer_wrap.c'
+    SWIGCOMPILECOMMAND_PERL='gcc $(SWIGCOMPILELINKSFORPERL) -c swiggable_chemesis3_wrap.c'
     AC_SUBST(SWIGCOMPILECOMMAND_PERL)
 
 
-    SWIGLDLINKSFORPERL='-g -shared swiggable_heccer_wrap.o -L../../.. -lheccer -L../../../integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/neurospaces/algorithms/symbol -lsymbol_algorithms -lncurses -lreadline -lhistory -fPIC'
+    SWIGLDLINKSFORPERL='-g -shared swiggable_chemesis3_wrap.o -L../../.. -lchemesis3 -L../../../integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/neurospaces/algorithms/symbol -lsymbol_algorithms -lncurses -lreadline -lhistory -fPIC'
     AC_SUBST(SWIGLDLINKSFORPERL)
 
-    SWIGLINKCOMMAND_PERL='gcc $(SWIGLDLINKSFORPERL) -o SwiggableHeccer.$(PERLLIB_EXTENSION)'
+    SWIGLINKCOMMAND_PERL='gcc $(SWIGLDLINKSFORPERL) -o SwiggableChemesis3.$(PERLLIB_EXTENSION)'
     AC_SUBST(SWIGLINKCOMMAND_PERL)
 
 
@@ -554,17 +576,17 @@ case "$host_os" in
     SWIGCOMPILELINKSFORPYTHON='-g -DPRE_PROTO_TRAVERSAL $(PYTHON_INCLUDE) -I/usr/local/neurospaces/instrumentor -I$(builddir)../../.. -I$(srcdir)/../../.. -I$(builddir)../../../hierarchy/output/symbols -I$(srcdir)/../../../hierarchy/output/symbols/ -fPIC -Xlinker -export-dynamic'
     AC_SUBST(SWIGCOMPILELINKSFORPYTHON)
 
-   SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_heccer_wrap.c'
+   SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_chemesis3_wrap.c'
    AC_SUBST(SWIGCOMPILECOMMAND_PYTHON)
 
-    SWIGLDLINKSFORPYTHON='-L../../.. -lheccer -L../../../integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/neurospaces/algorithms/symbol -lsymbol_algorithms -lncurses -lreadline -lhistory -fPIC -Xlinker -export-dynamic $(PYTHON_LDFLAGS)'
+    SWIGLDLINKSFORPYTHON='-L../../.. -lchemesis3 -L../../../integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/neurospaces/algorithms/symbol -lsymbol_algorithms -lncurses -lreadline -lhistory -fPIC -Xlinker -export-dynamic $(PYTHON_LDFLAGS)'
     AC_SUBST(SWIGLDLINKSFORPYTHON)
 
-    SWIGLINKCOMMAND_PYTHON='gcc -shared swiggable_heccer_wrap.o $(SWIGLDLINKSFORPYTHON) -o _SwiggableHeccer.$(PYTHONLIB_EXTENSION)'
+    SWIGLINKCOMMAND_PYTHON='gcc -shared swiggable_chemesis3_wrap.o $(SWIGLDLINKSFORPYTHON) -o _SwiggableChemesis3.$(PYTHONLIB_EXTENSION)'
     AC_SUBST(SWIGLINKCOMMAND_PYTHON)
 
-    HECCER_SWIGLINKCOMMAND_PYTHON='gcc -shared heccer_wrap.o $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/heccer/_heccer_base.so'
-    AC_SUBST(HECCER_SWIGLINKCOMMAND_PYTHON)
+    CHEMESIS3_SWIGLINKCOMMAND_PYTHON='gcc -shared chemesis3_wrap.o $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/chemesis3/_chemesis3_base.so'
+    AC_SUBST(CHEMESIS3_SWIGLINKCOMMAND_PYTHON)
     dnl }}} End of General Settings
 
   ;;
@@ -580,9 +602,9 @@ TEST_SPECIFICATION_FILES=`/bin/echo -n "tests/introduction.html " && find tests/
 AC_SUBST(TEST_SPECIFICATION_FILES)
 
 
-AC_CONFIG_FILES([Makefile])
-dnl 		 perl/Makefile
-dnl 		 python/Makefile])
+AC_CONFIG_FILES([Makefile
+                 glue/Makefile
+		 tests/Makefile])
 
 AC_OUTPUT
 
