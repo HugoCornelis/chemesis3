@@ -21,6 +21,7 @@ Makefile\.in$
 ^missing$
 ^pkg$
 ^tests/code/cal1$
+^tests/code/cal2$
 ^tests/code/version$
 ^tmp$
 _BUILD$

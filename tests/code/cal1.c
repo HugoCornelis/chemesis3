@@ -433,11 +433,18 @@ struct simobj_Chemesis3 ch3 =
 
     &somacabufrxn,
 
-    //m all aggregators
+    //m all diffusion elements
 
     0,
 
     NULL,
+
+    //m all aggregators: derived variables not directly available from a model's viewpoint
+
+    0,
+
+    NULL,
+
 };
 
 

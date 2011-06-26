@@ -123,6 +123,47 @@ struct ch3_reaction
 };
 
 
+struct ch3_diffusion
+{
+    /// administrative overhead
+
+    struct ch3_MathComponent mc;
+
+    //m diffusion constant
+
+    double dDiffusionConstant;
+
+    //m two attached pools
+
+    struct ch3_pool *ppool1;
+
+    struct ch3_pool *ppool2;
+
+    //m geometrical definitions: first length and area
+
+    double dLength1;
+
+    double dArea1;
+
+    //m geometrical definitions: second length and area
+
+    double dLength2;
+
+    double dArea2;
+
+    //m two fluxes in opposite direction
+
+    double dFlux1;
+
+    double dFlux2;
+
+    //m to be removed, should be transparent: units
+
+    double dUnits;   /* 1 for moles, 1e-3 for mmoles, 1e-6 for umoles */
+
+};
+
+
 /// \struct global options
 
 struct Chemesis3Options
@@ -183,7 +224,13 @@ struct simobj_Chemesis3
 
     struct ch3_reaction *preaction;
 
-    //m all aggregators
+    //m all diffusion elements
+
+    int iDiffusions;
+
+    struct ch3_diffusion *pdiffusions;
+
+    //m all aggregators: derived variables not directly available from a model's viewpoint
 
     int iAggregators;
 
@@ -233,6 +280,8 @@ int Chemesis3Initiate(struct simobj_Chemesis3 *pch3);
 struct simobj_Chemesis3 * Chemesis3NewP2(char *pcName, struct simobj_Chemesis3 *pch3);
 
 int Chemesis3SingleStep(struct simobj_Chemesis3 *pch3);
+
+int Chemesis3SingleStepDiffusions(struct simobj_Chemesis3 *pch3);
 
 int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3);
 

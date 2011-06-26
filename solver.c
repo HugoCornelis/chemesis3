@@ -405,6 +405,57 @@ int Chemesis3SingleStep(struct simobj_Chemesis3 *pch3)
 
     iResult = iResult && Chemesis3SingleStepPools(pch3);
 
+    //- simulate the diffusion between pools
+
+    iResult = iResult && Chemesis3SingleStepDiffusions(pch3);
+
+    //- return result
+
+    return(iResult);
+}
+
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Do a single step of computations for all pools.
+/// 
+
+int Chemesis3SingleStepDiffusions(struct simobj_Chemesis3 *pch3)
+{
+    //- set default result: ok
+
+    int iResult = TRUE;
+
+    //- loop over all diffusion elements
+
+    int iDiffusion;
+
+    for (iDiffusion = 0 ; iDiffusion < pch3->iDiffusions ; iDiffusion++)
+    {
+	struct ch3_diffusion *pdiffusion = &pch3->pdiffusions[iDiffusion];
+
+	//- compute geometrical average of length and area
+
+	double dLengthAverage = (pdiffusion->dLength1 + pdiffusion->dLength2) / 2;
+
+	double dAreaAverage = sqrt(pdiffusion->dArea1 + pdiffusion->dArea2);
+
+	/* divide dAreaDifference by 1000 to convert from cm^3 to Liters */
+
+	double dAreaDifference = pdiffusion->dDiffusionConstant  * dAreaAverage / dLengthAverage / 1000;
+
+	//- compute fluxes between pools
+
+	pdiffusion->dFlux2 = dAreaDifference * (pdiffusion->ppool1->dConcentration - pdiffusion->ppool2->dConcentration) * AVOGADRO * pdiffusion->dUnits;
+
+	pdiffusion->dFlux1 = - pdiffusion->dFlux2;
+    }
+
     //- return result
 
     return(iResult);
