@@ -9,7 +9,9 @@
 #include "chemesis3/chemesis3.h"
 
 #include <math.h>
+#include <stdarg.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 
 static
@@ -18,6 +20,295 @@ double IntegrateMethod
 
 static double Runge_Kutta(double y, double A, double B, double dt);
 
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// \arg dTime current time.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Call Chemesis3SingleStep() until dTime.
+/// 
+
+int Chemesis3Advance(struct simobj_Chemesis3 *pch3, double dTime)
+{
+    //- check for errors
+
+    if (pch3->iErrorCount)
+    {
+	return(FALSE);
+    }
+
+    //- set default result : ok
+
+    int iResult = TRUE;
+
+    //- while not reached simulation time
+
+    while (pch3->dTime < dTime)
+    {
+	//- do a single step
+
+	iResult = iResult && Chemesis3SingleStep(pch3);
+
+	/// \note perhaps should move the advance of the local time to this
+	/// \note point ?  Would allow to remove this test ...
+	/// \note I don't care for the moment.
+
+	if (iResult == FALSE)
+	{
+	    return(iResult);
+	}
+    }
+
+    //- return result
+
+    return(iResult);
+}
+
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	Model can be compiled.
+/// 
+/// \brief Can the model be compiled, given the current options ?
+/// 
+
+int Chemesis3CanCompile(struct simobj_Chemesis3 *pch3)
+{
+    //- check for errors
+
+    if (pch3->iErrorCount)
+    {
+	return(FALSE);
+    }
+
+    //- set default result : ok
+
+    int iResult = TRUE;
+
+#define MINIMAL_TIME_STEP 1e-30
+
+    if (pch3->dStep < MINIMAL_TIME_STEP)
+    {
+	Chemesis3Error
+	    (pch3,
+	     NULL,
+	     "illegal time step (smallest is %g), cannot compile\n", MINIMAL_TIME_STEP);
+
+	return(FALSE);
+    }
+
+    // \todo it is maybe better to diagnose this as a warning
+
+    if (pch3->iPools == 0
+	|| pch3->iReactions == 0)
+    {
+	Chemesis3Error
+	    (pch3,
+	     NULL,
+	     "no pools or reactions found, cannot compile this model\n");
+
+	return(FALSE);
+    }
+
+    //- return result
+
+    return(iResult);
+}
+
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Analyze the model, build indices for optimization.
+///
+/// \details
+/// 
+///	Internally, Chemesis3 addresses mechanisms using their
+///	compartment's schedule number.  So the minimum degree
+///	algorithm must run first before the mechanisms can be
+///	compiled.
+/// 
+/// \note 
+/// 
+///	This function can be used for testing internals of a chemesis3
+///	solver, just be sure to provide a consistent intermediary
+///	image.
+/// 
+
+int Chemesis3CompileP2(struct simobj_Chemesis3 *pch3)
+{
+    //- check for errors
+
+    if (pch3->iErrorCount)
+    {
+	return(FALSE);
+    }
+
+    //- set default result : ok
+
+    int iResult = TRUE;
+
+    //- first sanity
+
+    if (!Chemesis3CanCompile(pch3))
+    {
+	iResult = FALSE;
+    }
+
+/*     //- apply options to the model */
+
+/*     iResult = iResult && Chemesis3ApplyOptions(pch3); */
+
+    //- return result
+
+    return(iResult);
+}
+
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Third phase of compilation.
+///
+/// \note 
+/// 
+///	This function can be used for testing internals of a chemesis3
+///	solver, just be sure to provide a consistent intermediary
+///	image.
+/// 
+
+int Chemesis3CompileP3(struct simobj_Chemesis3 *pch3)
+{
+    //- check for errors
+
+    if (pch3->iErrorCount)
+    {
+	return(FALSE);
+    }
+
+    //- set default result : ok
+
+    int iResult = TRUE;
+
+/*     //- rearrange table values for cache line loading */
+
+/*     iResult = iResult && Chemesis3TablesRearrange(pch3); */
+
+/*     //- allocate memory for aggregate results */
+
+/*     iResult = iResult && Chemesis3AggregatorsCompile(pch3); */
+
+    //- return result
+
+    return(iResult);
+}
+
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// \arg pcContext context of error.
+/// \arg pcError error string.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Register an error, print to stderr.
+/// 
+
+int Chemesis3Error(struct simobj_Chemesis3 *pch3, char *pcContext, char *pcError, ...)
+{
+    //- set default result: ok
+
+    int iResult = 1;
+
+    //- give diagnostics
+
+    //- print to stderr
+
+    fprintf(stderr, "The Genesis of this Chemesis: ");
+
+/*     if (pcContext) */
+/*     { */
+/* 	fprintf */
+/* 	    (stderr, */
+/* 	     "%s: *** Error: ", */
+/* 	     pcContext); */
+/*     } */
+
+    //v stdargs list
+
+    va_list vaList;
+
+    //- get start of stdargs
+
+    va_start(vaList, pcError);
+
+    //- give diagnostics
+
+    vfprintf(stderr, pcError, vaList);
+
+    fprintf(stderr, "\n");
+
+    //- end stdargs
+
+    va_end(vaList);
+
+    //- negate status: this chemesis3 solver is in error
+
+    pch3->iStatus = - pch3->iStatus;
+
+    //- increment total error count
+
+    pch3->iErrorCount++;
+
+    //- return result
+
+    return(iResult);
+}
+
+
+/// 
+/// \return char *
+/// 
+///	Version identifier.
+/// 
+/// \brief Obtain version identifier.
+/// 
+
+char * Chemesis3GetVersion(void)
+{
+    // $Format: "    static char *pcVersion=\"${package}-${label}\";"$
+    static char *pcVersion="chemesis3-alpha";
+
+    return(pcVersion);
+}
+
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Fill the data arrays with initial values.
+/// 
 
 int Chemesis3Initiate(struct simobj_Chemesis3 *pch3)
 {

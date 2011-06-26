@@ -20,5 +20,7 @@ Makefile\.in$
 ^installer-.*.tar.gz$
 ^missing$
 ^pkg$
+^tests/code/cal1$
+^tests/code/version$
 ^tmp$
 _BUILD$

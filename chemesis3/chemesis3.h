@@ -193,6 +193,18 @@ struct simobj_Chemesis3
 #define CHEMESIS3_STATUS_PHASE_5		50
 
 
+int Chemesis3Advance(struct simobj_Chemesis3 *pch3, double dTime);
+
+int Chemesis3CanCompile(struct simobj_Chemesis3 *pch3);
+
+int Chemesis3CompileP2(struct simobj_Chemesis3 *pch3);
+
+int Chemesis3CompileP3(struct simobj_Chemesis3 *pch3);
+
+int Chemesis3Error(struct simobj_Chemesis3 *pch3, char *pcContext, char *pcError, ...);
+
+char * Chemesis3GetVersion(void);
+
 int Chemesis3Initiate(struct simobj_Chemesis3 *pch3);
 
 struct simobj_Chemesis3 * Chemesis3NewP2(char *pcName, struct simobj_Chemesis3 *pch3);
