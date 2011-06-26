@@ -18,11 +18,12 @@ my $test
 						   wait => 1,
 						  },
 						 ],
-				description => "check version information",
+				comment => 'based on the G-2 cal1.g script',
+				description => "the cal1 model",
 			       },
 			      ],
-       description => "run-time versioning",
-       name => 'version.t',
+       description => "simple chemesis3 models",
+       name => 'simple.t',
       };
 
 
