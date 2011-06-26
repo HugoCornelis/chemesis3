@@ -9,6 +9,7 @@ Makefile\.in$
 ^chemesis3-.*tar.gz$
 ^chemesis3/config.h$
 ^chemesis3/config.h.in$
+^chemesis3/stamp-h1$
 ^config.guess$
 ^config.log$
 ^config.status$

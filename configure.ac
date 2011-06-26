@@ -604,7 +604,8 @@ AC_SUBST(TEST_SPECIFICATION_FILES)
 
 AC_CONFIG_FILES([Makefile
                  glue/Makefile
-		 tests/Makefile])
+		 tests/Makefile
+		 tests/code/Makefile])
 
 AC_OUTPUT
 

@@ -63,6 +63,18 @@ int Chemesis3Initiate(struct simobj_Chemesis3 *pch3)
 }
 
 
+struct simobj_Chemesis3 * Chemesis3NewP2(char *pcName, struct simobj_Chemesis3 *pch3)
+{
+    //- set default result: from the given object
+
+    struct simobj_Chemesis3 *pch3Result = pch3;
+
+    //- return result
+
+    return(pch3Result);
+}
+
+
 int Chemesis3SingleStep(struct simobj_Chemesis3 *pch3)
 {
     //- set default result: ok
