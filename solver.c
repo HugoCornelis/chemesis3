@@ -354,6 +354,17 @@ int Chemesis3Initiate(struct simobj_Chemesis3 *pch3)
 }
 
 
+/// 
+/// \arg pcName name of this solver.
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Currently a no op.
+/// 
+
 struct simobj_Chemesis3 * Chemesis3NewP2(char *pcName, struct simobj_Chemesis3 *pch3)
 {
     //- set default result: from the given object
@@ -365,6 +376,16 @@ struct simobj_Chemesis3 * Chemesis3NewP2(char *pcName, struct simobj_Chemesis3 *
     return(pch3Result);
 }
 
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Do a single step of computations.
+/// 
 
 int Chemesis3SingleStep(struct simobj_Chemesis3 *pch3)
 {
@@ -390,6 +411,16 @@ int Chemesis3SingleStep(struct simobj_Chemesis3 *pch3)
 }
 
 
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Do a single step of computations for all pools.
+/// 
+
 int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 {
     //- set default result: ok
@@ -414,6 +445,8 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	double dAMoles = 0;
 
+	double dConcentrationTotal = 0;
+
 	//- loop over all reactions attached to this pool
 
 	int iReaction;
@@ -426,11 +459,11 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	    //- get forward and backward rates of this reaction
 
-	    struct ch3_reaction *preaction = &pch3->preaction[iIndex];
+	    struct ch3_reaction *preactionAttached = &pch3->preaction[iIndex];
 
-	    double dForwardSolved = preaction->dForwardSolved;
+	    double dForwardSolved = preactionAttached->dForwardSolved;
 
-	    double dBackwardSolved = preaction->dBackwardSolved;
+	    double dBackwardSolved = preactionAttached->dBackwardSolved;
 
 	    //- connect the pool equation with the reaction equation
 
@@ -458,22 +491,65 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 	    }
 	}
 
-	//- integrate to the next time step
+	//- loop over all pools attached to this pool
 
-	dA = dAMoles / ppool->dVolume / (AVOGADRO * ppool->dUnits) + dAConc;
+	int iPool;
 
-	ppool->dConcentration
-	    = IntegrateMethod
-	    (
-		(dB < 1.0e-10
-		 ? FEULER_INT
-		 : EEULER_INT),
-		/* ppool */ NULL,
-		ppool->dConcentration,
-		dA,
-		dB,
-		pch3->dStep,
-		"concentration");
+	for (iPool = 0 ; iPool < ppool->iPools ; iPool++)
+	{
+	    //- retrieve the index of this pool
+
+	    int iIndex = ppool->piPools[iPool];
+
+	    //- get forward and backward rates of this reaction
+
+	    struct ch3_pool *ppoolAttached = &pch3->ppool[iIndex];
+
+	    //- connect the pool equation with the reaction equation
+
+	    if (ppool->piPoolsFlags[iPool] == 0)
+	    {
+		dConcentrationTotal += ppoolAttached->dConcentration;
+	    }
+	    else
+	    {
+	    }
+	}
+
+	//- if there were reactions attached to this pool
+
+	int iIntegrate = ppool->iReactions > 0;
+
+	if (iIntegrate)
+	{
+	    //- we have to integrate to the next time step
+
+	    dA = dAMoles / ppool->dVolume / (AVOGADRO * ppool->dUnits) + dAConc;
+
+	    ppool->dConcentration
+		= IntegrateMethod
+		(
+		    (dB < 1.0e-10
+		     ? FEULER_INT
+		     : EEULER_INT),
+		    /* ppool */ NULL,
+		    ppool->dConcentration,
+		    dA,
+		    dB,
+		    pch3->dStep,
+		    "concentration");
+	}
+
+	//- if there were other pools attached to this pools
+
+	int iAccumulation = ppool->iPools > 0;
+
+	if (iAccumulation)
+	{
+	    // \todo I don't understand why this is not done via regular integration ...
+
+	    ppool->dConcentration = ppool->dCTotal - dConcentrationTotal;
+	}
 
 	//- check for parameterized minimum concentration boundary
 
@@ -485,7 +561,6 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 	//- calculate the total number of ions in the pool
 
 	ppool->dQuantity = ppool->dConcentration * ppool->dVolume * AVOGADRO * ppool->dUnits;
-
     }
 
     //- return result
@@ -493,6 +568,16 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
     return(iResult);
 }
 
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Do a single step of computations for all reactions.
+/// 
 
 int Chemesis3SingleStepReactions(struct simobj_Chemesis3 *pch3)
 {
