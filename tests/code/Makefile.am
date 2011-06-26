@@ -13,7 +13,7 @@ noinst_HEADERS = \
 	main.h
 
 cal1_DEPENDENCIES = ../../libchemesis3.a main.c
-cal1_LDADD = -L../.. -lchemesis3 -lm
+cal1_LDADD = -L../.. -lchemesis3 -lexperiment -lm
 version_DEPENDENCIES = ../../libchemesis3.a
 version_LDADD = -L../.. -lchemesis3 -lm
 

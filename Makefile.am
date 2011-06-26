@@ -35,9 +35,11 @@ AM_CFLAGS=-g3 -fPIC -include chemesis3/config.h -Wmissing-prototypes -Wmissing-d
 lib_LIBRARIES = libchemesis3.a
 
 libchemesis3_a_SOURCES = \
+	addressing.c \
 	solver.c
 
 nobase_include_HEADERS = \
+	chemesis3/addressing.h \
 	chemesis3/chemesis3.h
 
 CLEANFILES = \

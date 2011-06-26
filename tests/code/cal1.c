@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include "../../chemesis3/addressing.h"
 #include "../../chemesis3/chemesis3.h"
 
 #include <experiment/output.h>
@@ -55,7 +56,7 @@ struct ch3_pool somaCa[3] =
 
 	    /// identification
 
-	    ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
+	    ADDRESSING_NEUROSPACES_2_CHEMESIS3(2),
 
 #endif
 
@@ -223,7 +224,7 @@ struct ch3_pool somaCa[3] =
 
 	    /// identification
 
-	    ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
+	    ADDRESSING_NEUROSPACES_2_CHEMESIS3(4),
 
 #endif
 
@@ -322,7 +323,7 @@ struct ch3_reaction somacabufrxn =
 
 	/// identification
 
-	ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
+	ADDRESSING_NEUROSPACES_2_CHEMESIS3(5),
 
 #endif
 
@@ -394,6 +395,12 @@ struct simobj_Chemesis3 ch3 =
 
     0,
 
+    /// serial range covered by this solver
+
+    1,
+
+    1000,
+
     /// options
 
     {
@@ -426,8 +433,71 @@ struct simobj_Chemesis3 ch3 =
 
     &somacabufrxn,
 
+    //m all aggregators
+
+    0,
+
+    NULL,
 };
 
+
+struct OutputGenerator *pog = NULL;
+
+char pcStep[100] = "";
+
+#include "main.h"
+
+
+int main(int argc, char *argv[])
+{
+    //- set default result : ok
+
+    int iResult = EXIT_SUCCESS;
+
+    //- link spiking element to output generator
+
+    pog = OutputGeneratorNew("/tmp/output_cal1");
+
+    OutputGeneratorInitiate(pog);
+
+//d prepare output of concentration
+
+#define CHEMESIS3_TEST_INITIATE \
+    double *pdConcentration1 = Chemesis3AddressVariable(pch3, 2, "concentration"); \
+    OutputGeneratorAddVariable(pog, "concentration", pdConcentration1);	\
+    double *pdConcentration2 = Chemesis3AddressVariable(pch3, 3, "concentration"); \
+    OutputGeneratorAddVariable(pog, "concentration", pdConcentration2);	\
+    double *pdConcentration3 = Chemesis3AddressVariable(pch3, 4, "concentration"); \
+    OutputGeneratorAddVariable(pog, "concentration", pdConcentration3);
+
+//d generate output of concentration
+
+#define CHEMESIS3_TEST_OUTPUT \
+    OutputGeneratorAnnotatedStep(pog, sprintf(pcStep, "%g", dSimulationTime) ? pcStep : "sprintf() failed")
+
+    //- do the simulation
+
+    simulate(argc,argv);
+
+    //- finish the simulation output
+
+    OutputGeneratorFinish(pog);
+
+    //- add the simulation output to the program output
+
+    WriteOutput("/tmp/output_cal1");
+
+    //- return result
+
+    return(iResult);
+}
+
+
+#define main(argc,argv) simulate(argc,argv)
+
+//t this prototype can give warning and perhaps errors.
+
+int main(int argc, char *argv[]);
 
 
 #include "main.c"

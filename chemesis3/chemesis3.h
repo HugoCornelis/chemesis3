@@ -149,6 +149,12 @@ struct simobj_Chemesis3
 
     int iErrorCount;
 
+    /// serial range covered by this solver
+
+    int iSerialStart;
+
+    int iSerialEnd;
+
     /// options
 
     struct Chemesis3Options c3o;
@@ -177,6 +183,11 @@ struct simobj_Chemesis3
 
     struct ch3_reaction *preaction;
 
+    //m all aggregators
+
+    int iAggregators;
+
+    double *pdAggregators;
 };
 
 
@@ -226,54 +237,6 @@ int Chemesis3SingleStep(struct simobj_Chemesis3 *pch3);
 int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3);
 
 int Chemesis3SingleStepReactions(struct simobj_Chemesis3 *pch3);
-
-
-#ifdef CHEMESIS3_SOURCE_NEUROSPACES
-
-/// \def number of function allowed per symbol as a shift operand
-
-#define NEUROSPACES_2_CHEMESIS3_MAX_FUNCTIONS 2
-
-#define ADDRESSING_NEUROSPACES_2_CHEMESIS3(iNeuro) ((iNeuro) << NEUROSPACES_2_CHEMESIS3_MAX_FUNCTIONS)
-
-#define ADDRESSING_CHEMESIS3_2_NEUROSPACES(iChemesis3) ((iChemesis3) >> NEUROSPACES_2_CHEMESIS3_MAX_FUNCTIONS)
-
-/// \todo should add defines for assigning function IDs.
-/// \todo note that this would be solved automatically if the
-/// \todo neurospaces model_container would do full traversals.
-
-
-double *
-Chemesis3AddressAggregator
-(struct simobj_Chemesis3 *pch3, int iSerial, char *pcType);
-
-char *
-Chemesis3AddressableSet
-(struct simobj_Chemesis3 *pch3, int iSerial, char *pcType, double dValue);
-
-double *
-Chemesis3AddressCompartmentVariable
-(struct simobj_Chemesis3 *pch3, int iIntermediary, char *pcField);
-
-double *
-Chemesis3AddressMechanismVariable
-(struct simobj_Chemesis3 *pch3, int iIndex, char *pcField);
-
-int
-Chemesis3AddressTableIndex
-(struct simobj_Chemesis3 *pch3, int iSerial, char *pcField);
-
-double *
-Chemesis3AddressVariable
-(struct simobj_Chemesis3 *pch3, int iSerial, char *pcType);
-
-#else
-
-double *
-Chemesis3AddressVariable
-(struct simobj_Chemesis3 *pch3, int iSerial, char *pcType);
-
-#endif
 
 
 #endif
