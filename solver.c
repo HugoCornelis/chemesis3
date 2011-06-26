@@ -241,7 +241,7 @@ int Chemesis3Error(struct simobj_Chemesis3 *pch3, char *pcContext, char *pcError
 
     //- print to stderr
 
-    fprintf(stderr, "The Genesis of this Chemesis: ");
+    fprintf(stderr, "The genesis of this chemesis: ");
 
 /*     if (pcContext) */
 /*     { */

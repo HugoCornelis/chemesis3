@@ -7,230 +7,242 @@
 #include <experiment/output.h>
 
 
-struct ch3_pool somaCa =
+int piReactions[] =
 {
-    //m administrative overhead
+    0,
+};
 
+struct ch3_pool somaCa[3] =
+{
     {
-	//m type of structure
+	//m administrative overhead
 
-	MATH_TYPE_Pool,
+	{
+	    //m type of structure
+
+	    MATH_TYPE_Pool,
 
 #ifdef CHEMESIS3_SOURCE_NEUROSPACES
 
-	/// identification
+	    /// identification
 
-	ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
+	    ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
 
 #endif
 
 #ifdef CHEMESIS3_SOURCE_TYPING
 
-	/// model source type number
+	    /// model source type number
 
-	/// \note source typing is used to compute aggregate currents ao
-	/// \note things.
+	    /// \note source typing is used to compute aggregate currents ao
+	    /// \note things.
 
-	-1,
+	    -1,
 
 #endif
 
 #ifdef CHEMESIS3_SIZED_MATH_STRUCTURES
 
-	/// size of this structure
+	    /// size of this structure
 
-	sizeof(struct ch3_pool),
+	    sizeof(struct ch3_pool),
 
 #endif
 
+	},
+
+	//m indexes of attached reactions
+
+	sizeof(piReactions) / sizeof(int),
+
+	piReactions,
+
+	//m initial concentration
+
+	0.0,
+
+	//m current concentration
+
+	0.0,
+
+	//m compartment volume as calculated by the model container
+
+	0.0,
+
+	//m to be removed, should be transparent
+
+	1.0,
+
+	//m number of entities
+
+	0.0,
+
+	//m for conserve pool
+
+	0,
+
+	0.0,
+
+	0.0,
+
     },
-
-    //m indexes of attached reactions
-
-    0,
-
-    NULL,
-
-    //m initial concentration
-
-    0.0,
-
-    //m current concentration
-
-    0.0,
-
-    //m compartment volume as calculated by the model container
-
-    0.0,
-
-    //m to be removed, should be transparent
-
-    1.0,
-
-    //m number of entities
-
-    0.0,
-
-    //m for conserve pool
-
-    0,
-
-    0.0,
-
-    0.0,
-
-};
-
-
-struct ch3_pool somaCabuf =
-{
-    //m administrative overhead
-
     {
-	//m type of structure
+	//m administrative overhead
 
-	MATH_TYPE_Pool,
+	{
+	    //m type of structure
+
+	    MATH_TYPE_Pool,
 
 #ifdef CHEMESIS3_SOURCE_NEUROSPACES
 
-	/// identification
+	    /// identification
 
-	ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
+	    ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
 
 #endif
 
 #ifdef CHEMESIS3_SOURCE_TYPING
 
-	/// model source type number
+	    /// model source type number
 
-	/// \note source typing is used to compute aggregate currents ao
-	/// \note things.
+	    /// \note source typing is used to compute aggregate currents ao
+	    /// \note things.
 
-	-1,
+	    -1,
 
 #endif
 
 #ifdef CHEMESIS3_SIZED_MATH_STRUCTURES
 
-	/// size of this structure
+	    /// size of this structure
 
-	sizeof(struct ch3_pool),
+	    sizeof(struct ch3_pool),
 
 #endif
 
+	},
+
+	//m indexes of attached reactions
+
+	sizeof(piReactions) / sizeof(int),
+
+	piReactions,
+
+	//m initial concentration
+
+	0.0,
+
+	//m current concentration
+
+	0.0,
+
+	//m compartment volume as calculated by the model container
+
+	0.0,
+
+	//m to be removed, should be transparent
+
+	1.0,
+
+	//m number of entities
+
+	0.0,
+
+	//m for conserve pool
+
+	0,
+
+	0.0,
+
+	0.0,
+
     },
-
-    //m indexes of attached reactions
-
-    0,
-
-    NULL,
-
-    //m initial concentration
-
-    0.0,
-
-    //m current concentration
-
-    0.0,
-
-    //m compartment volume as calculated by the model container
-
-    0.0,
-
-    //m to be removed, should be transparent
-
-    1.0,
-
-    //m number of entities
-
-    0.0,
-
-    //m for conserve pool
-
-    0,
-
-    0.0,
-
-    0.0,
-
-};
-
-
-struct ch3_pool somabuf =
-{
-    //m administrative overhead
-
     {
-	//m type of structure
+	//m administrative overhead
 
-	MATH_TYPE_Pool,
+	{
+	    //m type of structure
+
+	    MATH_TYPE_Pool,
 
 #ifdef CHEMESIS3_SOURCE_NEUROSPACES
 
-	/// identification
+	    /// identification
 
-	ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
+	    ADDRESSING_NEUROSPACES_2_CHEMESIS3(3),
 
 #endif
 
 #ifdef CHEMESIS3_SOURCE_TYPING
 
-	/// model source type number
+	    /// model source type number
 
-	/// \note source typing is used to compute aggregate currents ao
-	/// \note things.
+	    /// \note source typing is used to compute aggregate currents ao
+	    /// \note things.
 
-	-1,
+	    -1,
 
 #endif
 
 #ifdef CHEMESIS3_SIZED_MATH_STRUCTURES
 
-	/// size of this structure
+	    /// size of this structure
 
-	sizeof(struct ch3_pool),
+	    sizeof(struct ch3_pool),
 
 #endif
 
+	},
+
+	//m indexes of attached reactions
+
+	sizeof(piReactions) / sizeof(int),
+
+	piReactions,
+
+	//m initial concentration
+
+	0.0,
+
+	//m current concentration
+
+	0.0,
+
+	//m compartment volume as calculated by the model container
+
+	0.0,
+
+	//m to be removed, should be transparent
+
+	1.0,
+
+	//m number of entities
+
+	0.0,
+
+	//m for conserve pool
+
+	0,
+
+	0.0,
+
+	0.0,
+
     },
-
-    //m indexes of attached reactions
-
-    0,
-
-    NULL,
-
-    //m initial concentration
-
-    0.0,
-
-    //m current concentration
-
-    0.0,
-
-    //m compartment volume as calculated by the model container
-
-    0.0,
-
-    //m to be removed, should be transparent
-
-    1.0,
-
-    //m number of entities
-
-    0.0,
-
-    //m for conserve pool
-
-    0,
-
-    0.0,
-
-    0.0,
-
 };
 
+
+int piSubstrates[] =
+{
+    0,
+    1,
+};
+
+int piProducts[] =
+{
+    2,
+};
 
 struct ch3_reaction somacabufrxn =
 {
@@ -272,19 +284,19 @@ struct ch3_reaction somacabufrxn =
 
     //m number of substrates
 
-    0,
+    sizeof(piSubstrates) / sizeof(int),
 
     //m indexes of substrates
 
-    NULL,
+    piSubstrates,
 
     //m number of end products
 
-    0,
+    sizeof(piProducts) / sizeof(int),
 
     //m indexes of end product
 
-    NULL,
+    piProducts,
 
     //m backward rate
 
@@ -339,15 +351,15 @@ struct simobj_Chemesis3 ch3 =
 
     //m all pools
 
-    0,
+    3,
 
-    NULL,
+    somaCa,
 
     //m all reactions
 
-    0,
+    1,
 
-    NULL,
+    &somacabufrxn,
 
 };
 

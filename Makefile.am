@@ -13,6 +13,7 @@
 ##'
 ##############################################################################
 
+# note: order makes sure that the library is build before the tests are.
 
 SUBDIRS = \
 	. \
@@ -109,7 +110,7 @@ html-upload: html-upload-prepare
 
 test: check
 
-TESTS = /usr/local/bin/neurospaces_harness
+#TESTS = /usr/local/bin/neurospaces_harness
 
 docs-level1:
 
