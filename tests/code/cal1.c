@@ -7,6 +7,9 @@
 #include <experiment/output.h>
 
 
+#define CHEMESIS3_TEST_STEPS 1000
+
+
 int piReactions[] =
 {
     0,
@@ -29,12 +32,12 @@ int piSomabufFlags[] =
 
 int piSomabufPools[] =
 {
-    0
+    1,
 };
 
 int piSomabufPoolsFlags[] =
 {
-    0
+    0,
 };
 
 
@@ -289,7 +292,7 @@ struct ch3_pool somaCa[3] =
 
 	0.0,
 
-	0.0,
+	0.153,
 
     },
 };
