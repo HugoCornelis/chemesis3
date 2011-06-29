@@ -401,13 +401,15 @@ int Chemesis3SingleStep(struct simobj_Chemesis3 *pch3)
 
     iResult = iResult && Chemesis3SingleStepReactions(pch3);
 
+    //- simulate the diffusion between pools
+
+    // \todo I would say this is odd: first diffusion then pools?
+
+    iResult = iResult && Chemesis3SingleStepDiffusions(pch3);
+
     //- simulate the pools
 
     iResult = iResult && Chemesis3SingleStepPools(pch3);
-
-    //- simulate the diffusion between pools
-
-    iResult = iResult && Chemesis3SingleStepDiffusions(pch3);
 
     //- return result
 
@@ -443,7 +445,7 @@ int Chemesis3SingleStepDiffusions(struct simobj_Chemesis3 *pch3)
 
 	double dLengthAverage = (pdiffusion->dLength1 + pdiffusion->dLength2) / 2;
 
-	double dAreaAverage = sqrt(pdiffusion->dArea1 + pdiffusion->dArea2);
+	double dAreaAverage = sqrt(pdiffusion->dArea1 * pdiffusion->dArea2);
 
 	/* divide dAreaDifference by 1000 to convert from cm^3 to Liters */
 

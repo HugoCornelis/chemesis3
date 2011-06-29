@@ -134,7 +134,7 @@ struct ch3_pool ca[6] =
 
 	//m initial concentration
 
-	0.001, // 0.1e-3,
+	4e-3, // 0.001, // 0.1e-3,
 
 	//m current concentration
 
@@ -302,7 +302,7 @@ struct ch3_pool ca[6] =
 
 	//m initial concentration
 
-	0.153,
+	0.0,
 
 	//m current concentration
 
@@ -389,7 +389,7 @@ struct ch3_pool ca[6] =
 
 	//m initial concentration
 
-	0.001, // 0.1e-3,
+	0.0001, // 0.001, // 0.1e-3,
 
 	//m current concentration
 
@@ -557,7 +557,7 @@ struct ch3_pool ca[6] =
 
 	//m initial concentration
 
-	0.153,
+	0.0,
 
 	//m current concentration
 
@@ -795,7 +795,7 @@ struct ch3_diffusion diff[] =
 
 	//m diffusion constant
 
-	6e-9,
+	6e-7,
 
 	//m two attached pools
 
