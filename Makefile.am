@@ -114,6 +114,9 @@ test: check
 
 #TESTS = /usr/local/bin/neurospaces_harness
 
+doxygen: doxygen.cfg
+	$(DOXYGEN) doxygen.cfg
+
 docs-level1:
 
 docs-level2:
@@ -125,7 +128,8 @@ docs-level4:
 
 docs-level5:
 
-docs-level6:
+docs-level6: doxygen
+	echo "Doxygenized source code"
 
 docs-level7:
 
