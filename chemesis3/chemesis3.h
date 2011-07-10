@@ -55,6 +55,14 @@ struct ch3_pool
 
     int *piPoolsFlags;
 
+    //m indexes of attached diffusion elements
+
+    int iDiffusions;
+
+    int *piDiffusions;
+
+    int *piDiffusionsFlags;
+
     //m initial concentration
 
     double dConcentrationInit;

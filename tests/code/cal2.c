@@ -21,6 +21,16 @@ int piCaFlagsSoma[] =
     0,
 };
 
+int piDiffusionsSoma[] =
+{
+    0,
+};
+
+int piDiffusionsSomaFlags[] =
+{
+    1,
+};
+
 int piCaBufFlagsSoma[] =
 {
     1,
@@ -50,6 +60,16 @@ int piReactionsDendrite[] =
 int piCaFlagsDendrite[] =
 {
     0,
+};
+
+int piDiffusionsDendrite[] =
+{
+    0,
+};
+
+int piDiffusionsDendriteFlags[] =
+{
+    -1,
 };
 
 int piCaBufFlagsDendrite[] =
@@ -132,6 +152,14 @@ struct ch3_pool ca[6] =
 
 	NULL,
 
+	//m indexes of attached diffusion elements
+
+	1,
+
+	piDiffusionsSoma,
+
+	piDiffusionsSomaFlags,
+
 	//m initial concentration
 
 	4e-3, // 0.001, // 0.1e-3,
@@ -142,7 +170,7 @@ struct ch3_pool ca[6] =
 
 	//m compartment volume as calculated by the model container
 
-	1.085733504e-08,
+	1.0053088e-10,
 
 	//m to be removed, should be transparent: units
 
@@ -216,6 +244,14 @@ struct ch3_pool ca[6] =
 
 	NULL,
 
+	//m indexes of attached diffusion elements
+
+	0,
+
+	NULL,
+
+	NULL,
+
 	//m initial concentration
 
 	0.003,
@@ -226,7 +262,7 @@ struct ch3_pool ca[6] =
 
 	//m compartment volume as calculated by the model container
 
-	1.085733504e-08,
+	1.0053088e-10,
 
 	//m to be removed, should be transparent: units
 
@@ -300,6 +336,14 @@ struct ch3_pool ca[6] =
 
 	piBufPoolsFlagsSoma,
 
+	//m indexes of attached diffusion elements
+
+	0,
+
+	NULL,
+
+	NULL,
+
 	//m initial concentration
 
 	0.0,
@@ -310,7 +354,7 @@ struct ch3_pool ca[6] =
 
 	//m compartment volume as calculated by the model container
 
-	1.085733504e-08,
+	1.0053088e-10,
 
 	//m to be removed, should be transparent: units
 
@@ -387,6 +431,14 @@ struct ch3_pool ca[6] =
 
 	NULL,
 
+	//m indexes of attached diffusion elements
+
+	1,
+
+	piDiffusionsDendrite,
+
+	piDiffusionsDendriteFlags,
+
 	//m initial concentration
 
 	0.0001, // 0.001, // 0.1e-3,
@@ -397,7 +449,7 @@ struct ch3_pool ca[6] =
 
 	//m compartment volume as calculated by the model container
 
-	1.085733504e-08,
+	2.5132720000000001e-11,
 
 	//m to be removed, should be transparent: units
 
@@ -471,6 +523,14 @@ struct ch3_pool ca[6] =
 
 	NULL,
 
+	//m indexes of attached diffusion elements
+
+	0,
+
+	NULL,
+
+	NULL,
+
 	//m initial concentration
 
 	0.003,
@@ -481,7 +541,7 @@ struct ch3_pool ca[6] =
 
 	//m compartment volume as calculated by the model container
 
-	1.085733504e-08,
+	2.5132720000000001e-11,
 
 	//m to be removed, should be transparent: units
 
@@ -555,6 +615,14 @@ struct ch3_pool ca[6] =
 
 	piBufPoolsFlagsDendrite,
 
+	//m indexes of attached diffusion elements
+
+	0,
+
+	NULL,
+
+	NULL,
+
 	//m initial concentration
 
 	0.0,
@@ -565,7 +633,7 @@ struct ch3_pool ca[6] =
 
 	//m compartment volume as calculated by the model container
 
-	1.085733504e-08,
+	2.5132720000000001e-11,
 
 	//m to be removed, should be transparent: units
 

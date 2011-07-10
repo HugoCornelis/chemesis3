@@ -99,6 +99,14 @@ struct ch3_pool somaCa[3] =
 
 	NULL,
 
+	//m indexes of attached diffusion elements
+
+	0,
+
+	NULL,
+
+	NULL,
+
 	//m initial concentration
 
 	0.001, // 0.1e-3,
@@ -176,6 +184,14 @@ struct ch3_pool somaCa[3] =
 	piSomaCabufFlags,
 
 	//m indexes of attached pools
+
+	0,
+
+	NULL,
+
+	NULL,
+
+	//m indexes of attached diffusion elements
 
 	0,
 
@@ -266,6 +282,14 @@ struct ch3_pool somaCa[3] =
 	piSomabufPools,
 
 	piSomabufPoolsFlags,
+
+	//m indexes of attached diffusion elements
+
+	0,
+
+	NULL,
+
+	NULL,
 
 	//m initial concentration
 

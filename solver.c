@@ -546,26 +546,48 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	//- loop over all pools attached to this pool
 
-	int iPool;
+	int iPoolAttached;
 
-	for (iPool = 0 ; iPool < ppool->iPools ; iPool++)
+	for (iPoolAttached = 0 ; iPoolAttached < ppool->iPools ; iPoolAttached++)
 	{
-	    //- retrieve the index of this pool
+	    //- access the attacted pool
 
-	    int iIndex = ppool->piPools[iPool];
-
-	    //- get forward and backward rates of this reaction
+	    int iIndex = ppool->piPools[iPoolAttached];
 
 	    struct ch3_pool *ppoolAttached = &pch3->ppool[iIndex];
 
 	    //- connect the pool equation with the reaction equation
 
-	    if (ppool->piPoolsFlags[iPool] == 0)
+	    if (ppool->piPoolsFlags[iPoolAttached] == 0)
 	    {
 		dConcentrationTotal += ppoolAttached->dConcentration;
 	    }
 	    else
 	    {
+	    }
+	}
+
+	//- loop over all diffusion connections attached to this pool
+
+	int iDiffusionAttached;
+
+	for (iDiffusionAttached = 0 ; iDiffusionAttached < ppool->iDiffusions ; iDiffusionAttached++)
+	{
+	    //- access the attached diffusion connection
+
+	    int iIndex = ppool->piDiffusions[iDiffusionAttached];
+
+	    struct ch3_diffusion *pdiffusionAttached = &pch3->pdiffusions[iIndex];
+
+	    //- contribute the flux from the diffusion
+
+	    if (ppool->piDiffusionsFlags[iDiffusionAttached] == 1)
+	    {
+		dAMoles += pdiffusionAttached->dFlux1;
+	    }
+	    else if (ppool->piDiffusionsFlags[iDiffusionAttached] == -1)
+	    {
+		dAMoles += pdiffusionAttached->dFlux2;
 	    }
 	}
 
