@@ -21,6 +21,20 @@ my $test
 				comment => 'based on the G-2 cal1.g script',
 				description => "the cal1 model",
 			       },
+			       {
+				arguments => [
+					     ],
+				command => 'tests/code/cal2',
+				command_tests => [
+						  {
+						   description => "Do we find the expected output (cal2) ?",
+						   read => (join '', `cat $::config->{core_directory}/tests/specifications/strings/cal2.txt`),
+						   wait => 1,
+						  },
+						 ],
+				comment => 'based on the G-2 cal2.g script',
+				description => "the cal2 model",
+			       },
 			      ],
        description => "simple chemesis3 models",
        name => 'simple.t',
