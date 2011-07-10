@@ -16,6 +16,10 @@ Makefile\.in$
 ^config.sub$
 ^configure$
 ^depcomp$
+^docs/man$
+^glue/swig/perl/SwiggableChemesis3.pm$
+^glue/swig/perl/swiggable_chemesis3_wrap.c$
+^html$
 ^installed
 ^installer-.*.tar.gz$
 ^missing$
@@ -23,5 +27,6 @@ Makefile\.in$
 ^tests/code/cal1$
 ^tests/code/cal2$
 ^tests/code/version$
+^tests/html$
 ^tmp$
 _BUILD$

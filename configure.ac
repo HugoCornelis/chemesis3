@@ -61,6 +61,7 @@ AC_ARG_WITH(universal,
 )
 AC_SUBST(OSX_UNIVERSAL)
 
+
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_RANLIB
@@ -443,11 +444,11 @@ case "$host_os" in
       # Mando: libtool requires all symbols linked against to be defined at link time otherwise
       # running when it inspects the symbol table at runtime it will fail to load. Have to link against
       # event_algorithms (which is not system installed) in the model container so this looks messy.  
-      SWIGLDLINKSFORPERL='-dynamic -undefined suppress -flat_namespace -L$(top_builddir) -lchemesis3 -L$(top_builddir)/integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -lsymbol_algorithms -L$(top_builddir)/../../../../model-container/source/snapshots/0/algorithms/event -levent_algorithms -lncurses -lreadline $(PERL_LDFLAGS)'
+      SWIGLDLINKSFORPERL='-dynamic -undefined suppress -flat_namespace -L$(top_builddir) -lchemesis3 -L$(top_builddir)/integrators -lncurses -lreadline $(PERL_LDFLAGS)'
 
     else
 
-      SWIGLDLINKSFORPERL='-L../../.. -lchemesis3 -L$(top_builddir)/integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -lsymbol_algorithms -lncurses -lreadline -bundle -undefined suppress -flat_namespace $(PERL_LDFLAGS)'
+      SWIGLDLINKSFORPERL='-L../../.. -lchemesis3 -L$(top_builddir)/integrators -lncurses -lreadline -bundle -undefined suppress -flat_namespace $(PERL_LDFLAGS)'
 
     fi 
 
@@ -490,7 +491,7 @@ case "$host_os" in
     SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_chemesis3_wrap.c'
     AC_SUBST(SWIGCOMPILECOMMAND_PYTHON)
 
-    SWIGLDLINKSFORPYTHON='$(PYTHON_LDFLAGS) -L../../../ -lchemesis3 -L../../../integrators -lhneurospaces  -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/model-container -lsymbol_algorithms -lncurses -lreadline -framework Python -flat_namespace -undefined suppress -bundle 	-bundle_loader $(PYTHON_EXE)'
+    SWIGLDLINKSFORPYTHON='$(PYTHON_LDFLAGS) -L../../../ -lchemesis3 -L../../../integrators -lncurses -lreadline -framework Python -flat_namespace -undefined suppress -bundle 	-bundle_loader $(PYTHON_EXE)'
     AC_SUBST(SWIGLDLINKSFORPYTHON)
 
 
@@ -563,7 +564,7 @@ case "$host_os" in
     AC_SUBST(SWIGCOMPILECOMMAND_PERL)
 
 
-    SWIGLDLINKSFORPERL='-g -shared swiggable_chemesis3_wrap.o -L../../.. -lchemesis3 -L../../../integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/neurospaces/algorithms/symbol -lsymbol_algorithms -lncurses -lreadline -lhistory -fPIC'
+    SWIGLDLINKSFORPERL='-g -shared swiggable_chemesis3_wrap.o -L../../.. -lchemesis3 -L../../../integrators -lncurses -lreadline -lhistory -fPIC'
     AC_SUBST(SWIGLDLINKSFORPERL)
 
     SWIGLINKCOMMAND_PERL='gcc $(SWIGLDLINKSFORPERL) -o SwiggableChemesis3.$(PERLLIB_EXTENSION)'
@@ -579,7 +580,7 @@ case "$host_os" in
    SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_chemesis3_wrap.c'
    AC_SUBST(SWIGCOMPILECOMMAND_PYTHON)
 
-    SWIGLDLINKSFORPYTHON='-L../../.. -lchemesis3 -L../../../integrators -lhneurospaces -L/usr/local/lib/model-container -lneurospacesread -L/usr/local/lib/neurospaces/algorithms/symbol -lsymbol_algorithms -lncurses -lreadline -lhistory -fPIC -Xlinker -export-dynamic $(PYTHON_LDFLAGS)'
+    SWIGLDLINKSFORPYTHON='-L../../.. -lchemesis3 -L../../../integrators -lncurses -lreadline -lhistory -fPIC -Xlinker -export-dynamic $(PYTHON_LDFLAGS)'
     AC_SUBST(SWIGLDLINKSFORPYTHON)
 
     SWIGLINKCOMMAND_PYTHON='gcc -shared swiggable_chemesis3_wrap.o $(SWIGLDLINKSFORPYTHON) -o _SwiggableChemesis3.$(PYTHONLIB_EXTENSION)'
@@ -604,6 +605,7 @@ AC_SUBST(TEST_SPECIFICATION_FILES)
 
 AC_CONFIG_FILES([Makefile
                  glue/Makefile
+		 glue/swig/perl/Makefile
 		 tests/Makefile
 		 tests/code/Makefile])
 
