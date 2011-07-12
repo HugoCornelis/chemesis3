@@ -441,6 +441,48 @@ struct simobj_Chemesis3 ch3 =
 
     0.0,
 
+    /// identification service : translates serials to math components.
+
+    /// \note so to use this feature: define your translation service, and
+    /// \note set it during the construction of your heccer.
+
+    /// \note wouldn't be surprised that I need several layers of services,
+    /// \note will see if that has repercussion at this low level or not.
+    ///
+    /// \note for the moment we have a function layer, which is fixed, and
+    /// \note a data layer, which is opaque.  The function layer defines the
+    /// \note real interface.
+
+    NULL,
+
+    /// event distribution service: given an event, distributes it over the targets
+
+    /// \note so to use this feature: define your event distribution service, and
+    /// \note set it during the construction of your heccer.
+
+    /// \note wouldn't be surprised that I need several layers of services,
+    /// \note will see if that has repercussion at this low level or not.
+    ///
+    /// \note for the moment we have a function layer, which is fixed, and
+    /// \note a data layer, which is opaque.  The function layer defines the
+    /// \note real interface.
+
+    NULL,
+
+    /// event reception service: receive an event, and queue till it fires
+
+    /// \note so to use this feature: define your event reception service, and
+    /// \note set it during the construction of your heccer.
+
+    /// \note wouldn't be surprised that I need several layers of services,
+    /// \note will see if that has repercussion at this low level or not.
+    ///
+    /// \note for the moment we have a function layer, which is fixed, and
+    /// \note a data layer, which is opaque.  The function layer defines the
+    /// \note real interface.
+
+    NULL,
+
     //m minumum concentration level
 
     0.0,
