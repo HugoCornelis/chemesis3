@@ -69,154 +69,154 @@ int Chemesis3Advance(struct simobj_Chemesis3 *pch3, double dTime)
 }
 
 
-/// 
-/// \arg pch3 a chemesis3 solver.
-/// 
-/// \return int
-/// 
-///	Model can be compiled.
-/// 
-/// \brief Can the model be compiled, given the current options ?
-/// 
+/* ///  */
+/* /// \arg pch3 a chemesis3 solver. */
+/* ///  */
+/* /// \return int */
+/* ///  */
+/* ///	Model can be compiled. */
+/* ///  */
+/* /// \brief Can the model be compiled, given the current options ? */
+/* ///  */
 
-int Chemesis3CanCompile(struct simobj_Chemesis3 *pch3)
-{
-    //- check for errors
+/* int Chemesis3CanCompile(struct simobj_Chemesis3 *pch3) */
+/* { */
+/*     //- check for errors */
 
-    if (pch3->iErrorCount)
-    {
-	return(FALSE);
-    }
+/*     if (pch3->iErrorCount) */
+/*     { */
+/* 	return(FALSE); */
+/*     } */
 
-    //- set default result : ok
+/*     //- set default result : ok */
 
-    int iResult = TRUE;
+/*     int iResult = TRUE; */
 
-#define MINIMAL_TIME_STEP 1e-30
+/* #define MINIMAL_TIME_STEP 1e-30 */
 
-    if (pch3->dStep < MINIMAL_TIME_STEP)
-    {
-	Chemesis3Error
-	    (pch3,
-	     NULL,
-	     "illegal time step (smallest is %g), cannot compile\n", MINIMAL_TIME_STEP);
+/*     if (pch3->dStep < MINIMAL_TIME_STEP) */
+/*     { */
+/* 	Chemesis3Error */
+/* 	    (pch3, */
+/* 	     NULL, */
+/* 	     "illegal time step (smallest is %g), cannot compile\n", MINIMAL_TIME_STEP); */
 
-	return(FALSE);
-    }
+/* 	return(FALSE); */
+/*     } */
 
-    // \todo it is maybe better to diagnose this as a warning
+/*     // \todo it is maybe better to diagnose this as a warning */
 
-    if (pch3->iPools == 0
-	|| pch3->iReactions == 0)
-    {
-	Chemesis3Error
-	    (pch3,
-	     NULL,
-	     "no pools or reactions found, cannot compile this model\n");
+/*     if (pch3->iPools == 0 */
+/* 	|| pch3->iReactions == 0) */
+/*     { */
+/* 	Chemesis3Error */
+/* 	    (pch3, */
+/* 	     NULL, */
+/* 	     "no pools or reactions found, cannot compile this model\n"); */
 
-	return(FALSE);
-    }
+/* 	return(FALSE); */
+/*     } */
 
-    //- return result
+/*     //- return result */
 
-    return(iResult);
-}
-
-
-/// 
-/// \arg pch3 a chemesis3 solver.
-/// 
-/// \return int
-/// 
-///	success of operation.
-/// 
-/// \brief Analyze the model, build indices for optimization.
-///
-/// \details
-/// 
-///	Internally, Chemesis3 addresses mechanisms using their
-///	compartment's schedule number.  So the minimum degree
-///	algorithm must run first before the mechanisms can be
-///	compiled.
-/// 
-/// \note 
-/// 
-///	This function can be used for testing internals of a chemesis3
-///	solver, just be sure to provide a consistent intermediary
-///	image.
-/// 
-
-int Chemesis3CompileP2(struct simobj_Chemesis3 *pch3)
-{
-    //- check for errors
-
-    if (pch3->iErrorCount)
-    {
-	return(FALSE);
-    }
-
-    //- set default result : ok
-
-    int iResult = TRUE;
-
-    //- first sanity
-
-    if (!Chemesis3CanCompile(pch3))
-    {
-	iResult = FALSE;
-    }
-
-/*     //- apply options to the model */
-
-/*     iResult = iResult && Chemesis3ApplyOptions(pch3); */
-
-    //- return result
-
-    return(iResult);
-}
+/*     return(iResult); */
+/* } */
 
 
-/// 
-/// \arg pch3 a chemesis3 solver.
-/// 
-/// \return int
-/// 
-///	success of operation.
-/// 
-/// \brief Third phase of compilation.
-///
-/// \note 
-/// 
-///	This function can be used for testing internals of a chemesis3
-///	solver, just be sure to provide a consistent intermediary
-///	image.
-/// 
+/* ///  */
+/* /// \arg pch3 a chemesis3 solver. */
+/* ///  */
+/* /// \return int */
+/* ///  */
+/* ///	success of operation. */
+/* ///  */
+/* /// \brief Analyze the model, build indices for optimization. */
+/* /// */
+/* /// \details */
+/* ///  */
+/* ///	Internally, Chemesis3 addresses mechanisms using their */
+/* ///	compartment's schedule number.  So the minimum degree */
+/* ///	algorithm must run first before the mechanisms can be */
+/* ///	compiled. */
+/* ///  */
+/* /// \note  */
+/* ///  */
+/* ///	This function can be used for testing internals of a chemesis3 */
+/* ///	solver, just be sure to provide a consistent intermediary */
+/* ///	image. */
+/* ///  */
 
-int Chemesis3CompileP3(struct simobj_Chemesis3 *pch3)
-{
-    //- check for errors
+/* int Chemesis3CompileP2(struct simobj_Chemesis3 *pch3) */
+/* { */
+/*     //- check for errors */
 
-    if (pch3->iErrorCount)
-    {
-	return(FALSE);
-    }
+/*     if (pch3->iErrorCount) */
+/*     { */
+/* 	return(FALSE); */
+/*     } */
 
-    //- set default result : ok
+/*     //- set default result : ok */
 
-    int iResult = TRUE;
+/*     int iResult = TRUE; */
 
-/*     //- rearrange table values for cache line loading */
+/*     //- first sanity */
 
-/*     iResult = iResult && Chemesis3TablesRearrange(pch3); */
+/*     if (!Chemesis3CanCompile(pch3)) */
+/*     { */
+/* 	iResult = FALSE; */
+/*     } */
 
-/*     //- allocate memory for aggregate results */
+/* /*     //- apply options to the model * */
 
-/*     iResult = iResult && Chemesis3AggregatorsCompile(pch3); */
+/* /*     iResult = iResult && Chemesis3ApplyOptions(pch3); * */
 
-    //- return result
+/*     //- return result */
 
-    return(iResult);
-}
+/*     return(iResult); */
+/* } */
+
+
+/* ///  */
+/* /// \arg pch3 a chemesis3 solver. */
+/* ///  */
+/* /// \return int */
+/* ///  */
+/* ///	success of operation. */
+/* ///  */
+/* /// \brief Third phase of compilation. */
+/* /// */
+/* /// \note  */
+/* ///  */
+/* ///	This function can be used for testing internals of a chemesis3 */
+/* ///	solver, just be sure to provide a consistent intermediary */
+/* ///	image. */
+/* ///  */
+
+/* int Chemesis3CompileP3(struct simobj_Chemesis3 *pch3) */
+/* { */
+/*     //- check for errors */
+
+/*     if (pch3->iErrorCount) */
+/*     { */
+/* 	return(FALSE); */
+/*     } */
+
+/*     //- set default result : ok */
+
+/*     int iResult = TRUE; */
+
+/* /*     //- rearrange table values for cache line loading * */
+
+/* /*     iResult = iResult && Chemesis3TablesRearrange(pch3); * */
+
+/* /*     //- allocate memory for aggregate results * */
+
+/* /*     iResult = iResult && Chemesis3AggregatorsCompile(pch3); * */
+
+/*     //- return result */
+
+/*     return(iResult); */
+/* } */
 
 
 /// 

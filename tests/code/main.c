@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
 
 /*     pch3->ho.dIntervalEnd = CHEMESIS3_TEST_INTERVAL_DEFAULT_END; */
 
-    //t should set test defaults for basal activator tables.
+/*     //t should set test defaults for basal activator tables. */
 
 /*     pch3->ho.dBasalActivatorStart = CHEMESIS3_TEST_INTERVAL_DEFAULT_START; */
 
@@ -193,13 +193,13 @@ int main(int argc, char *argv[])
 
 /*     pch3->ho.iOptions = CHEMESIS3_TEST_OPTIONS; */
 
-    //- build indices for optimization
+/*     //- build indices for optimization */
 
-    Chemesis3CompileP2(pch3);
+/*     Chemesis3CompileP2(pch3); */
 
-    //- compile to byte code
+/*     //- compile to byte code */
 
-    Chemesis3CompileP3(pch3);
+/*     Chemesis3CompileP3(pch3); */
 
     //- initiate values
 
