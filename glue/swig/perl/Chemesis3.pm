@@ -68,42 +68,42 @@ sub compile
 
     my $options = shift;
 
-    # if a channel current or conductance must be calculated
+#     # if a channel current or conductance must be calculated
 
-    my $has_current_output;
+#     my $has_current_output;
 
-    if ($scheduler)
-    {
-	my $outputs = $scheduler->get_engine_outputs($self);
+#     if ($scheduler)
+#     {
+# 	my $outputs = $scheduler->get_engine_outputs($self);
 
-	$has_current_output
-	    = scalar
-		grep
-		{
-		    (
-		     $_->{field} eq 'I'
-		     or $_->{field} eq 'G'
-		     or $_->{field} eq 'current'
-		     or $_->{field} eq 'conductance'
-		    )
-		}
-		    @$outputs;
-    }
+# 	$has_current_output
+# 	    = scalar
+# 		grep
+# 		{
+# 		    (
+# 		     $_->{field} eq 'I'
+# 		     or $_->{field} eq 'G'
+# 		     or $_->{field} eq 'current'
+# 		     or $_->{field} eq 'conductance'
+# 		    )
+# 		}
+# 		    @$outputs;
+#     }
 
-    if ($has_current_output)
-    {
-	# set option that enables these calculations
+#     if ($has_current_output)
+#     {
+# 	# set option that enables these calculations
 
-	my $chemesis3_options = $self->{chemesis3}->swig_ho_get();
+# 	my $chemesis3_options = $self->{chemesis3}->swig_ho_get();
 
-	my $options = $chemesis3_options->swig_iOptions_get();
+# 	my $options = $chemesis3_options->swig_iOptions_get();
 
-	$options |= $SwiggableChemesis3::CHEMESIS3_OPTION_ENABLE_INDIVIDUAL_CURRENTS;
+# 	$options |= $SwiggableChemesis3::CHEMESIS3_OPTION_ENABLE_INDIVIDUAL_CURRENTS;
 
-	$chemesis3_options->swig_iOptions_set($options);
+# 	$chemesis3_options->swig_iOptions_set($options);
 
-	#! swig works by reference, so setting in ho also sets in chemesis3
-    }
+# 	#! swig works by reference, so setting in ho also sets in chemesis3
+#     }
 
     # get status
 
@@ -131,11 +131,11 @@ sub compile1
 {
     my $self = shift;
 
-    if ($self->{chemesis3}->Chemesis3CompileP1())
+#     if ($self->{chemesis3}->Chemesis3CompileP1())
     {
 	return '';
     }
-    else
+#     else
     {
 	return "Chemesis3CompileP1() failed";
     }
@@ -146,11 +146,11 @@ sub compile2
 {
     my $self = shift;
 
-    if ($self->{chemesis3}->Chemesis3CompileP2())
+#     if ($self->{chemesis3}->Chemesis3CompileP2())
     {
 	return $self->compile3();
     }
-    else
+#     else
     {
 	return "Chemesis3CompileP2() failed";
     }
@@ -161,11 +161,11 @@ sub compile3
 {
     my $self = shift;
 
-    if ($self->{chemesis3}->Chemesis3CompileP3())
+#     if ($self->{chemesis3}->Chemesis3CompileP3())
     {
 	return '';
     }
-    else
+#     else
     {
 	return "Chemesis3CompileP3() failed";
     }
@@ -180,9 +180,9 @@ sub connect
 
     my $result = 1;
 
-    # find the event distributor and queuer
+#     # find the event distributor and queuer
 
-    my $des = $scheduler->{schedule}->[0];
+#     my $des = $scheduler->{schedule}->[0];
 
     return '';
 }
@@ -220,9 +220,7 @@ sub deserialize_state
 
     my $file = SwiggableChemesis3::Chemesis3SerializationOpenRead($filename);
 
-    $result = $result && $backend->Chemesis3DeserializeCompartmentState($file);
-
-    $result = $result && $backend->Chemesis3DeserializeMechanismState($file);
+    $result = $result && $backend->Chemesis3DeserializeState($file);
 
     if (SwiggableChemesis3::Chemesis3SerializationClose($file) != 0)
     {
@@ -252,22 +250,6 @@ sub dump
     {
 	$self->{chemesis3}->Chemesis3Dump($file, $selection);
     }
-}
-
-
-sub hecc
-{
-    my $self = shift;
-
-    my $current_time = $self->{chemesis3}->swig_dTime_get();
-
-    my $current_step = $self->{chemesis3}->swig_dStep_get();
-
-    my $small_thing = $current_step / 2;
-
-    my $target_time = $current_time + $current_step - $small_thing;
-
-    $self->{chemesis3}->Chemesis3Heccs($target_time);
 }
 
 
@@ -576,7 +558,17 @@ sub serialize_state
 
 sub step
 {
-    return hecc(@_);
+    my $self = shift;
+
+    my $current_time = $self->{chemesis3}->swig_dTime_get();
+
+    my $current_step = $self->{chemesis3}->swig_dStep_get();
+
+    my $small_thing = $current_step / 2;
+
+    my $target_time = $current_time + $current_step - $small_thing;
+
+    $self->{chemesis3}->Chemesis3Advance($target_time);
 }
 
 
