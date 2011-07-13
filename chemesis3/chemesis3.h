@@ -262,7 +262,7 @@ struct simobj_Chemesis3
 
     struct EventQueuer *peq;
 
-    //m minumum concentration level
+    //m minimum concentration level
 
     double dConcentrationMinimum;
 

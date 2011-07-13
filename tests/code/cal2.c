@@ -978,7 +978,7 @@ struct simobj_Chemesis3 ch3 =
 
     NULL,
 
-    //m minumum concentration level
+    //m minimum concentration level
 
     0.0,
 
