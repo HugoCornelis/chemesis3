@@ -41,4 +41,4 @@ _BUILD$
 ^glue/swig/python/chemesis3/_chemesis3_base.so$
 ^glue/swig/python_old/SwiggableChemesis3.py$
 ^glue/swig/python_old/swiggable_chemesis3_wrap.c$
-^*.pyc
+.pyc
