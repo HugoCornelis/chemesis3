@@ -50,6 +50,13 @@
 #include "chemesis3/addressing.h"
 #include "chemesis3/chemesis3.h"
 
+//t so this should depend on the configuration
+//t perhaps this can be done using regular #ifdef statements, not sure
+
+#include "integrators/chemesis3/neurospaces/chemesis3.h"
+
+/* #include "/usr/local/include/neurospaces/neurospaces.h" */
+
 %}
 
 %inline %{
@@ -118,5 +125,12 @@ void * chemesis3_get_driver_method(struct simobj_Chemesis3 *pch3)
 %include "chemesis3/config.h"
 %include "chemesis3/addressing.h"
 %include "chemesis3/chemesis3.h"
+
+//t so this should depend on the configuration
+//t perhaps this can be done using regular #ifdef statements, not sure
+
+%include "integrators/chemesis3/neurospaces/chemesis3.h"
+
+/* %include "/usr/local/include/neurospaces/neurospaces.h" */
 
 
