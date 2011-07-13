@@ -10,9 +10,9 @@ AM_CFLAGS=-g3 -fPIC -Wmissing-prototypes -Wmissing-declarations -ffloat-store -I
 
 #CFLAGS = -O0
 
-pkglib_LIBRARIES = libhneurospaces.a
+pkglib_LIBRARIES = libcneurospaces.a
 
-libhneurospaces_a_SOURCES = \
+libcneurospaces_a_SOURCES = \
 	chemesis3/neurospaces/chemesis3.c
 
 nobase_include_HEADERS = \
