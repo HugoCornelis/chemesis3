@@ -21,5 +21,10 @@
 %include "chemesis3/chemesis3.h"
 %include "chemesis3/mathcomponent.h"
 
+ // info on the carray library here http://www.swig.org/Doc1.3/Library.html#Library_carrays
+%include "carrays.i"
+%array_functions(double, DoubleArray)
 
+
+%array_functions(int, IntArray)
 

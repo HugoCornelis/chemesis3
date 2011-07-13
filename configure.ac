@@ -485,13 +485,13 @@ case "$host_os" in
     PYTHONLIB_EXTENSION='so'
     AC_SUBST(PYHONLIB_EXTENSION)
 
-    SWIGCOMPILELINKSFORPYTHON='$(PYTHON_INCLUDE) -I/usr/local/neurospaces/instrumentor -I./../../.. 	-I.../../../hierarchy/output/symbols 	-I./../../../hierarchy/output/symbols/'
+    SWIGCOMPILELINKSFORPYTHON='$(PYTHON_INCLUDE) -I./../../..'
     AC_SUBST(SWIGCOMPILELINKSFORPYTHON)
 
-    SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_chemesis3_wrap.c'
+    SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c chemesis3_wrap.c'
     AC_SUBST(SWIGCOMPILECOMMAND_PYTHON)
 
-    SWIGLDLINKSFORPYTHON='$(PYTHON_LDFLAGS) -L../../../ -lchemesis3 -L../../../integrators -lncurses -lreadline -framework Python -flat_namespace -undefined suppress -bundle 	-bundle_loader $(PYTHON_EXE)'
+    SWIGLDLINKSFORPYTHON='$(PYTHON_LDFLAGS) -L../../.. -lchemesis3 -framework Python -flat_namespace -undefined suppress -bundle -bundle_loader $(PYTHON_EXE)'
     AC_SUBST(SWIGLDLINKSFORPYTHON)
 
 
@@ -500,17 +500,12 @@ case "$host_os" in
 
 	    dnl This is snow leopard
 
-            SWIGLINKCOMMAND_PYTHON='ld 	$(SWIGLDLINKSFORPYTHON) -o _SwiggableChemesis3.$(PYTHONLIB_EXTENSION) /usr/lib/bundle1.o swiggable_chemesis3_wrap.o'
-            AC_SUBST(SWIGLINKCOMMAND_PYTHON)
-
 	    CHEMESIS3_SWIGLINKCOMMAND_PYTHON='ld $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/chemesis3/_chemesis3_base.so /usr/lib/bundle1.o chemesis3_wrap.o'
 	    AC_SUBST(CHEMESIS3_SWIGLINKCOMMAND_PYTHON)
 
 	;;
 
 	*)
-            SWIGLINKCOMMAND_PYTHON='ld 	$(SWIGLDLINKSFORPYTHON) -o _SwiggableChemesis3.$(PYTHONLIB_EXTENSION)  swiggable_chemesis3_wrap.o'
-            AC_SUBST(SWIGLINKCOMMAND_PYTHON)	
 
 	    CHEMESIS3_SWIGLINKCOMMAND_PYTHON='ld $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/chemesis3/_chemesis3_base.so chemesis3_wrap.o'
             AC_SUBST(CHEMESIS3_SWIGLINKCOMMAND_PYTHON)
@@ -574,17 +569,15 @@ case "$host_os" in
     PYTHONLIB_EXTENSION='so'
     AC_SUBST(PYTHONLIB_EXTENSION)
 
-    SWIGCOMPILELINKSFORPYTHON='-g -DPRE_PROTO_TRAVERSAL $(PYTHON_INCLUDE) -I/usr/local/neurospaces/instrumentor -I$(builddir)../../.. -I$(srcdir)/../../.. -I$(builddir)../../../hierarchy/output/symbols -I$(srcdir)/../../../hierarchy/output/symbols/ -fPIC -Xlinker -export-dynamic'
+    SWIGCOMPILELINKSFORPYTHON='-g -DPRE_PROTO_TRAVERSAL $(PYTHON_INCLUDE) -I$(builddir)../../.. -I$(srcdir)/../../.. -fPIC -Xlinker -export-dynamic'
     AC_SUBST(SWIGCOMPILELINKSFORPYTHON)
 
-   SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_chemesis3_wrap.c'
+   SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c chemesis3_wrap.c'
    AC_SUBST(SWIGCOMPILECOMMAND_PYTHON)
 
-    SWIGLDLINKSFORPYTHON='-L../../.. -lchemesis3 -L../../../integrators -lncurses -lreadline -lhistory -fPIC -Xlinker -export-dynamic $(PYTHON_LDFLAGS)'
+    SWIGLDLINKSFORPYTHON='-L../../.. -lchemesis3 -fPIC -Xlinker -export-dynamic $(PYTHON_LDFLAGS)'
     AC_SUBST(SWIGLDLINKSFORPYTHON)
 
-    SWIGLINKCOMMAND_PYTHON='gcc -shared swiggable_chemesis3_wrap.o $(SWIGLDLINKSFORPYTHON) -o _SwiggableChemesis3.$(PYTHONLIB_EXTENSION)'
-    AC_SUBST(SWIGLINKCOMMAND_PYTHON)
 
     CHEMESIS3_SWIGLINKCOMMAND_PYTHON='gcc -shared chemesis3_wrap.o $(SWIGLDLINKSFORPYTHON) -o $(srcdir)/neurospaces/chemesis3/_chemesis3_base.so'
     AC_SUBST(CHEMESIS3_SWIGLINKCOMMAND_PYTHON)
@@ -606,6 +599,7 @@ AC_SUBST(TEST_SPECIFICATION_FILES)
 AC_CONFIG_FILES([Makefile
                  glue/Makefile
 		 glue/swig/perl/Makefile
+		 glue/swig/python/Makefile
 		 tests/Makefile
 		 tests/code/Makefile])
 
