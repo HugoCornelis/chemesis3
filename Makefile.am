@@ -94,7 +94,7 @@ dist-hook:
 	rm -rf $(distdir)/docs/rtf
 	cp -pR $(srcdir)/tests/tests_2_html $(distdir)/tests
 	cp -pR $(srcdir)/tests/tests_2_html.ptkdb $(distdir)/tests
-	cp -pR $(srcdir)/tests.config $(distdir)
+#	cp -pR $(srcdir)/tests.config $(distdir)
 	$(srcdir)/install-sh -d $(distdir)/tests
 	$(srcdir)/install-sh -d $(distdir)/tests/html
 	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
