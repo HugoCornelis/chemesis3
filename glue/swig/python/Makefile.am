@@ -22,7 +22,9 @@ pythondir = $(prefix)/glue/swig/python/
 
 nobase_python_HEADERS = \
 	neurospaces/chemesis3/__init__.py \
-	neurospaces/chemesis3/__cbi__.py 
+	neurospaces/chemesis3/__cbi__.py \
+	neurospaces/chemesis3/components.py 
+
 
 nobase_python_DATA = \
 	neurospaces/chemesis3/_chemesis3_base.so \
