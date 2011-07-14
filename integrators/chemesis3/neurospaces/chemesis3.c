@@ -423,22 +423,12 @@ int Chemesis3Construct(struct simobj_Chemesis3 *pch3, void *pvNeurospaces, char 
 	return(FALSE);
     }
 
-    if (!Chemesis3NeurospacesSegments2Compartments(pcts))
+    if (!Chemesis3NeurospacesMechanisms2Chemesis3(pcts))
     {
 	/// \note don't care about memory leak right now, consider this
 	/// \note right now as a fatal crash
 
 	fprintf(stderr, "Chemesis3Construct: compartment initialization failed for %s\n", pcModel);
-
-	return(FALSE);
-    }
-
-    if (!Chemesis3NeurospacesMechanisms2MathComponents(pcts))
-    {
-	/// \note don't care about memory leak right now, consider this
-	/// \note right now as a fatal crash
-
-	fprintf(stderr, "Chemesis3Construct: mechanism initialization failed for %s\n", pcModel);
 
 	return(FALSE);
     }

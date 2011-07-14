@@ -282,7 +282,7 @@ struct simobj_Chemesis3
 
     int iDiffusions;
 
-    struct ch3_diffusion *pdiffusions;
+    struct ch3_diffusion *pdiffusion;
 
     //m all aggregators: derived variables not directly available from a model's viewpoint
 

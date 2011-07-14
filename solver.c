@@ -439,7 +439,7 @@ int Chemesis3SingleStepDiffusions(struct simobj_Chemesis3 *pch3)
 
     for (iDiffusion = 0 ; iDiffusion < pch3->iDiffusions ; iDiffusion++)
     {
-	struct ch3_diffusion *pdiffusion = &pch3->pdiffusions[iDiffusion];
+	struct ch3_diffusion *pdiffusion = &pch3->pdiffusion[iDiffusion];
 
 	//- compute geometrical average of length and area
 
@@ -577,7 +577,7 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	    int iIndex = ppool->piDiffusions[iDiffusionAttached];
 
-	    struct ch3_diffusion *pdiffusionAttached = &pch3->pdiffusions[iIndex];
+	    struct ch3_diffusion *pdiffusionAttached = &pch3->pdiffusion[iIndex];
 
 	    //- contribute the flux from the diffusion
 

@@ -33,6 +33,8 @@ int Chemesis3ConnectQueuer(struct simobj_Chemesis3 *pch3, struct EventQueuer *pe
 
 int Chemesis3Construct(struct simobj_Chemesis3 *pch3, void *pvNeurospaces, char *pcModel, void *pvEventDistributor, void *pvEventQueuer);
 
+int Chemesis3NeurospacesKinetics2Chemesis3(struct Chemesis3TranslationService *pcts);
+
 
 #endif
 

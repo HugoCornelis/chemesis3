@@ -830,7 +830,7 @@ struct ch3_diffusion diff[] =
 	{
 	    //m type of structure
 
-	    MATH_TYPE_Reaction,
+	    MATH_TYPE_Diffusion,
 
 #ifdef CHEMESIS3_SOURCE_NEUROSPACES
 

@@ -53,6 +53,7 @@ struct ch3_MathComponent
 
 #define MATH_TYPE_Pool 1013
 #define MATH_TYPE_Reaction 1014
+#define MATH_TYPE_Diffusion 1015
 
 
 /* struct MathComponentArray */
