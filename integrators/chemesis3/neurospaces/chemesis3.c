@@ -423,7 +423,7 @@ int Chemesis3Construct(struct simobj_Chemesis3 *pch3, void *pvNeurospaces, char 
 	return(FALSE);
     }
 
-    if (!Chemesis3NeurospacesMechanisms2Chemesis3(pcts))
+    if (!Chemesis3NeurospacesKinetics2Chemesis3(pcts))
     {
 	/// \note don't care about memory leak right now, consider this
 	/// \note right now as a fatal crash
