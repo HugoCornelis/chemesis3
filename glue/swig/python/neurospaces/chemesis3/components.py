@@ -157,7 +157,22 @@ class SimObjChemesis3(chemesis3_base.simobj_Chemesis3):
         self.preaction = reaction_data[0]
 
         self.iReactions = reaction_data[1]
-    
+
+#---------------------------------------------------------------------------
+
+    def SetDiffusions(self, diffusions):
+
+        if self.pdiffusions is not None:
+
+            chemesis3_base.delete_Chemesis3DiffusionsArray(self.pdiffusions)
+
+            self.iDiffusions = 0
+            
+        diffusions_data = CreateChemesis3DiffusionsArray(diffusions)
+
+        self.pdiffusions = diffusions_data[0]
+
+        self.iDiffusions = diffusions_data[1]
 
 #************************* End SimObjChemesis3 *****************************
 
@@ -176,10 +191,30 @@ class Pool(chemesis3_base.ch3_pool):
 
         chemesis3_base.ch3_pool.__init__(self)
 
+        self.mc.iType = chemesis3_base.MATH_TYPE_Pool
 
-        
 #---------------------------------------------------------------------------
 
+    def SetSerial(self, serial):
+
+        self.mc.iSerial = chemesis3_base.AddressingNeurospaces2Chemesis(serial)
+
+#---------------------------------------------------------------------------
+
+    def SetReactionFlags(self, reactions):
+        """!
+        @brief Sets a python list into a C array
+        """
+
+        if self.piReactionFlags is not None:
+
+            chemesis3_base.delete_IntArray(self.piReactionFlags)
+            
+        int_array = CreateIntArray(reactions)
+
+        self.piReactionFlags = int_array[0]
+        
+#---------------------------------------------------------------------------
 
     def SetReactions(self, reactions):
         """!
@@ -215,5 +250,213 @@ class Pool(chemesis3_base.ch3_pool):
 
         return self.iReactions
 
+#---------------------------------------------------------------------------
+
+    def SetDiffusionsFlags(self, diffusions):
+        """!
+        @brief Sets a python list into a C array
+        """
+
+        if self.piDiffusionsFlags is not None:
+
+            chemesis3_base.delete_IntArray(self.piDiffusionsFlags)
+            
+        int_array = CreateIntArray(diffusions)
+
+        self.piDiffusionsFlags = int_array[0]
+
+#---------------------------------------------------------------------------
+
+    def SetDiffusions(self, diffusions):
+        """!
+        @brief Sets a python list into a C array
+        """
+
+        if self.piDiffusions is not None:
+
+            chemesis3_base.delete_IntArray(self.piDiffusions)
+            
+        int_array = CreateIntArray(reactions)
+
+        self.piDiffusions = int_array[0]
+
+        self.iDiffusions = int_array[1]
+
+
+#---------------------------------------------------------------------------
+
+    def GetDiffusion(self, index):
+
+        if self.piDiffusion is None:
+
+            raise IndexError("no diffusion at index %d" % index)
+        
+        r = chemesis3_base.IntArray_getitem(self.piDiffusions, index)
+
+        return r
+
+#---------------------------------------------------------------------------
+
+    def NumDiffusions(self):
+
+        return self.iDiffusions
+
+
+#---------------------------------------------------------------------------
+
+    def SetPoolsFlags(self, pools):
+        """!
+        @brief Sets a python list into a C array
+        """
+
+        if self.piPoolsFlags is not None:
+
+            chemesis3_base.delete_IntArray(self.piPoolsFlags)
+            
+        int_array = CreateIntArray(pools)
+
+        self.piPoolsFlags = int_array[0]
+
+#---------------------------------------------------------------------------
+
+    def SetPools(self, pools):
+        """!
+        @brief Sets a python list into a C array
+        """
+
+        if self.piPools is not None:
+
+            chemesis3_base.delete_IntArray(self.piPools)
+            
+        int_array = CreateIntArray(pools)
+
+        self.piPools = int_array[0]
+
+        self.iPools = int_array[1]
+
+
+#---------------------------------------------------------------------------
+
+    def GetPool(self, index):
+
+        if self.piDiffusion is None:
+
+            raise IndexError("no diffusion at index %d" % index)
+        
+        r = chemesis3_base.IntArray_getitem(self.piDiffusions, index)
+
+        return r
+
+#---------------------------------------------------------------------------
+
+    def NumPools(self):
+
+        return self.iPools
+
 
 #************************* Begin Pool **************************
+
+
+
+
+#************************* Begin Reaction **************************
+class Reaction(chemesis3_base.ch3_reaction):
+    """!
+    @brief class for a chemesis 3 reaction 
+
+    """
+
+    def __init__(self):
+
+        chemesis3_base.ch3_reaction.__init__(self)
+
+        self.mc.iType = chemesis3_base.MATH_TYPE_Reaction
+
+#---------------------------------------------------------------------------
+
+    def SetSerial(self, serial):
+
+        self.mc.iSerial = chemesis3_base.AddressingNeurospaces2Chemesis(serial)
+        
+#---------------------------------------------------------------------------
+
+    def SetSubstrates(self, substrates):
+        """!
+        @brief Sets a python list into a C array
+        """
+
+        if self.piSubstrates is not None:
+
+            chemesis3_base.delete_IntArray(self.piSubstrates)
+            
+        int_array = CreateIntArray(substrates)
+
+        self.piSubstrates = int_array[0]
+
+        self.iSubstrates = int_array[1]
+
+#---------------------------------------------------------------------------
+
+    def SetProducts(self, products):
+        """!
+        @brief Sets a python list into a C array
+        """
+
+        if self.piProducts is not None:
+
+            chemesis3_base.delete_IntArray(self.piProducts)
+            
+        int_array = CreateIntArray(products)
+
+        self.piProducts = int_array[0]
+
+        self.iProducts = int_array[1]
+
+
+#************************* Begin Reaction **************************
+
+
+
+
+#************************* Begin Diffusion **************************
+class Diffusion(chemesis3_base.ch3_reaction):
+    """!
+    @brief class for a chemesis 3 reaction 
+
+    """
+
+    def __init__(self):
+
+        chemesis3_base.ch3_reaction.__init__(self)
+
+#---------------------------------------------------------------------------
+
+    def SetPool1(self, pool):
+        """!
+        @brief Sets pool 1
+        """
+
+        if pool is None:
+
+            return False
+
+        chemesis_base.Chemesis3Pointer_assign(self.ppool1, pool)
+
+        return True
+    
+#---------------------------------------------------------------------------
+
+    def SetPool2(self, pool):
+        """!
+        @brief Sets pool 2
+        """
+
+        if pool is None:
+
+            return False
+
+        chemesis_base.Chemesis3Pointer_assign(self.ppool2, pool)
+
+        return True
+
+#************************* Begin Diffusion **************************
