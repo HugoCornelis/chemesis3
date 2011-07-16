@@ -7,6 +7,7 @@
 
 
 #include "chemesis3/chemesis3.h"
+#include "chemesis3/service.h"
 
 #include <math.h>
 #include <stdarg.h>
@@ -121,6 +122,82 @@ int Chemesis3Advance(struct simobj_Chemesis3 *pch3, double dTime)
 
 /*     return(iResult); */
 /* } */
+
+
+/// 
+/// \arg pch3 a chemesis3 solver.
+/// 
+/// \return int
+/// 
+///	success of operation.
+/// 
+/// \brief Analyze the model, build indices for optimization.
+///
+/// \details
+/// 
+///	Internally, Chemesis3 addresses mechanisms using their
+///	compartment's schedule number.  So the minimum degree
+///	algorithm must run first before the mechanisms can be
+///	compiled.
+/// 
+/// \note 
+/// 
+///	This function can be used for testing internals of a chemesis3
+///	solver, just be sure to provide a consistent intermediary
+///	image.
+/// 
+
+int Chemesis3CompileP1(struct simobj_Chemesis3 *pch3)
+{
+    //- check for errors
+
+    if (pch3->iErrorCount)
+    {
+	return(FALSE);
+    }
+
+    //- if the intermediary is already available
+
+    if (pch3->iStatus >= CHEMESIS3_STATUS_PHASE_2)
+    {
+	//- return success
+
+	return(TRUE);
+    }
+
+    //- set default result : ok
+
+    int iResult = TRUE;
+
+    //- get access to the translation service
+
+    struct Chemesis3TranslationService *pcts = pch3->pcts;
+
+/*     struct TranslationServiceData *ptsd = pts->ptsd; */
+
+    //- build up intermediary using the available service
+
+    ComponentInspector ki = pcts->kinetic_inspector;
+
+    iResult = iResult && ki(pch3, pcts);
+
+    //- set new status
+
+    if (iResult)
+    {
+	pch3->iStatus = CHEMESIS3_STATUS_PHASE_2;
+    }
+    else
+    {
+	/// \todo do something sensible here
+
+	/// \todo HeccerError()
+    }
+
+    //- return result
+
+    return(iResult);
+}
 
 
 /* ///  */

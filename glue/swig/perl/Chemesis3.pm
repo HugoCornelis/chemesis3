@@ -131,11 +131,11 @@ sub compile1
 {
     my $self = shift;
 
-#     if ($self->{chemesis3}->Chemesis3CompileP1())
+    if ($self->{chemesis3}->Chemesis3CompileP1())
     {
 	return '';
     }
-#     else
+    else
     {
 	return "Chemesis3CompileP1() failed";
     }

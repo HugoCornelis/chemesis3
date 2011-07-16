@@ -80,7 +80,10 @@ solver_counter(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
     //- count diffusions
 
-    if (instanceof_diffusions(phsle))
+    // \todo this must be done differently, currently assuming there can be not more diffusions than pools.
+
+/*     if (instanceof_diffusion(phsle)) */
+    if (instanceof_pool(phsle))
     {
 	pki->iDiffusions++;
     }
