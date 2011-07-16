@@ -244,11 +244,11 @@ sub dump
 
     if (!defined $selection)
     {
-	$self->{chemesis3}->Chemesis3DumpV();
+# 	$self->{chemesis3}->Chemesis3DumpV();
     }
     else
     {
-	$self->{chemesis3}->Chemesis3Dump($file, $selection);
+# 	$self->{chemesis3}->Chemesis3Dump($file, $selection);
     }
 }
 
