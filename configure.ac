@@ -607,6 +607,7 @@ AC_CONFIG_FILES([Makefile
                  glue/Makefile
 		 glue/swig/perl/Makefile
                  integrators/Makefile
+		 glue/swig/python/Makefile
 		 tests/Makefile
 		 tests/code/Makefile])
 
