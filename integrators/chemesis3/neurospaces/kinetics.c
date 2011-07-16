@@ -36,7 +36,7 @@ static
 int
 solver_counter(struct TreespaceTraversal *ptstr, void *pvUserdata);
 
-static int solver_link(struct simobj_Chemesis3 *pch3);
+static int solver_linker(struct simobj_Chemesis3 *pch3);
 
 static
 int
@@ -94,7 +94,7 @@ solver_counter(struct TreespaceTraversal *ptstr, void *pvUserdata)
 }
 
 
-static int solver_link(struct simobj_Chemesis3 *pch3)
+static int solver_linker(struct simobj_Chemesis3 *pch3)
 {
     //- set default result : ok
 
@@ -218,18 +218,26 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	/// \todo check for error returns, abort traversal if necessary
 
-	double dDia
-	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "DIA");
+/* 	double dDia */
+/* 	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "DIA"); */
 
-	if (dDia == DBL_MAX)
-	{
-	    iResult = TSTR_PROCESSOR_ABORT;
-	}
+/* 	if (dDia == DBL_MAX) */
+/* 	{ */
+/* 	    iResult = TSTR_PROCESSOR_ABORT; */
+/* 	} */
 
-	double dLength
-	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "LENGTH");
+/* 	double dLength */
+/* 	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "LENGTH"); */
 
-	if (dLength == DBL_MAX)
+/* 	if (dLength == DBL_MAX) */
+/* 	{ */
+/* 	    iResult = TSTR_PROCESSOR_ABORT; */
+/* 	} */
+
+	double dVolume
+	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "VOLUME");
+
+	if (dVolume == DBL_MAX)
 	{
 	    iResult = TSTR_PROCESSOR_ABORT;
 	}
@@ -242,33 +250,29 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 	    iResult = TSTR_PROCESSOR_ABORT;
 	}
 
-	#define PI 3.14159
+/* 	#define PI 3.14159 */
 
-	pch3->ppool[iPool].dVolume = PI * dDia * dDia * dLength;
+/* 	pch3->ppool[iPool].dVolume = PI * dDia * dDia * dLength / 4; */
+	pch3->ppool[iPool].dVolume = dVolume;
 	pch3->ppool[iPool].dConcentrationInit = dConcentrationInit;
 
-#ifdef USE_ENABLE_LINEAR_MODE
+/* 	//- does this pool have an attached pool? */
 
-	double dLength
-	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "LENGTH");
+/* 	struct PidinStack *ppistPoolAttached */
+/* 	    = SymbolResolveInput(phsle, ptstr->ppist, "concen", 0); */
 
-	if (dLength == DBL_MAX)
-	{
-	    pch3->ho.iCorrections |= CHEMESIS3_CORRECTION_ENABLE_LINEAR_MODE_DISABLED;
-	}
+/* 	if (ppistPoolAttached) */
+/* 	{ */
+/* 	    int iPoolAttached = PidinStackToSerial(ppistPoolAttached); */
 
-	double dDia
-	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "DIA");
+/* 	    pcac->pac.ca.iActivator = ADDRESSING_NEUROSPACES_2_HECCER(iPool); */
 
-	if (dDia == DBL_MAX)
-	{
-	    pch3->ho.iCorrections |= CHEMESIS3_CORRECTION_ENABLE_LINEAR_MODE_DISABLED;
-	}
-
-	pch3->ppool[iPool].dDia = dDia;
-	pch3->ppool[iPool].dLength = dLength;
-
-#endif
+/* 	    PidinStackFree(ppistPoolAttached); */
+/* 	} */
+/* 	else */
+/* 	{ */
+/* 	    pcac->pac.ca.iActivator = -1; */
+/* 	} */
 
 	//- register serial of parent
 
@@ -418,6 +422,20 @@ static int chemesis3_setup_kinetics(struct simobj_Chemesis3 *pch3, struct Chemes
 		    && pch3->preaction
 		    && pch3->pdiffusion)
 		{
+		    struct TreespaceTraversal *ptstr
+			= TstrNew
+			  (ppistModel,
+			   NULL,
+			   NULL,
+			   solver_processor,
+			   (void *)&ki,
+			   NULL,
+			   NULL);
+
+		    int iSuccess = TstrGo(ptstr, phsleModel);
+
+		    TstrDelete(ptstr);
+
 		}
 		else
 		{
@@ -466,7 +484,7 @@ static int chemesis3_setup_kinetics(struct simobj_Chemesis3 *pch3, struct Chemes
 
 	//- link the segments together using the parent link
 
-	iResult = iResult && solver_link(pch3);
+	iResult = iResult && solver_linker(pch3);
     }
     else
     {
