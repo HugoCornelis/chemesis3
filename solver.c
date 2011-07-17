@@ -413,8 +413,8 @@ int Chemesis3Initiate(struct simobj_Chemesis3 *pch3)
 
 	if (pch3->ppool[i].iConserve)
 	{
-	    pch3->ppool[i].dQTotal
-		= (pch3->ppool[i].dCTotal
+	    pch3->ppool[i].dQuantityTotal
+		= (pch3->ppool[i].dConcentrationTotal
 		   * pch3->ppool[i].dVolume
 		   * AVOGADRO
 		   * pch3->ppool[i].dUnits);
@@ -700,7 +700,7 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 	{
 	    // \todo I don't understand why this is not done via regular integration ...
 
-	    ppool->dConcentration = ppool->dCTotal - dConcentrationTotal;
+	    ppool->dConcentration = ppool->dConcentrationTotal - dConcentrationTotal;
 	}
 
 	//- check for parameterized minimum concentration boundary

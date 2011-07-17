@@ -174,11 +174,13 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
     //- get actual symbol
 
+    int iType = TstrGetActualType(ptstr);
+
     struct symtab_HSolveListElement *phsle = (struct symtab_HSolveListElement *)TstrGetActual(ptstr);
 
     //- if a pool
 
-    if (instanceof_pool(phsle))
+    if (subsetof_pool(iType))
     {
 	//- register current symbol
 
@@ -218,22 +220,6 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	/// \todo check for error returns, abort traversal if necessary
 
-/* 	double dDia */
-/* 	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "DIA"); */
-
-/* 	if (dDia == DBL_MAX) */
-/* 	{ */
-/* 	    iResult = TSTR_PROCESSOR_ABORT; */
-/* 	} */
-
-/* 	double dLength */
-/* 	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "LENGTH"); */
-
-/* 	if (dLength == DBL_MAX) */
-/* 	{ */
-/* 	    iResult = TSTR_PROCESSOR_ABORT; */
-/* 	} */
-
 	double dVolume
 	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "VOLUME");
 
@@ -250,29 +236,73 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 	    iResult = TSTR_PROCESSOR_ABORT;
 	}
 
-/* 	#define PI 3.14159 */
+	double dConcentrationTotal
+	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "concen_total");
 
-/* 	pch3->ppool[iPool].dVolume = PI * dDia * dDia * dLength / 4; */
+/* 	if (dConcentrationTotal == DBL_MAX) */
+/* 	{ */
+/* 	    iResult = TSTR_PROCESSOR_ABORT; */
+/* 	} */
+
 	pch3->ppool[iPool].dVolume = dVolume;
 	pch3->ppool[iPool].dConcentrationInit = dConcentrationInit;
+	pch3->ppool[iPool].dConcentrationTotal = dConcentrationTotal;
 
-/* 	//- does this pool have an attached pool? */
+	//- if this pool have an attached pool
 
-/* 	struct PidinStack *ppistPoolAttached */
-/* 	    = SymbolResolveInput(phsle, ptstr->ppist, "concen", 0); */
+	struct PidinStack *ppistPoolAttached
+	    = SymbolResolveInput(phsle, ptstr->ppist, "concen", 0);
 
-/* 	if (ppistPoolAttached) */
-/* 	{ */
-/* 	    int iPoolAttached = PidinStackToSerial(ppistPoolAttached); */
+	if (ppistPoolAttached)
+	{
+	    //- count attached pools
 
-/* 	    pcac->pac.ca.iActivator = ADDRESSING_NEUROSPACES_2_HECCER(iPool); */
+	    int i;
 
-/* 	    PidinStackFree(ppistPoolAttached); */
-/* 	} */
-/* 	else */
-/* 	{ */
-/* 	    pcac->pac.ca.iActivator = -1; */
-/* 	} */
+	    for (i = 0 ; ppistPoolAttached ; i++)
+	    {
+		PidinStackFree(ppistPoolAttached);
+
+		ppistPoolAttached
+		    = SymbolResolveInput(phsle, ptstr->ppist, "concen", i);
+	    }
+
+	    //- allocate memory for indexing
+
+	    pch3->ppool[iPool].piPools = (int *)calloc(i, sizeof(int));
+
+	    //- loop over all attached pools
+
+	    ppistPoolAttached
+		= SymbolResolveInput(phsle, ptstr->ppist, "concen", 0);
+
+	    for (i = 0 ; ppistPoolAttached ; i++)
+	    {
+		PidinStackFree(ppistPoolAttached);
+
+		//- get context of the attached pool
+
+		ppistPoolAttached
+		    = SymbolResolveInput(phsle, ptstr->ppist, "concen", i);
+
+		if (ppistPoolAttached)
+		{
+		    //- fill in the serial of the attached pool
+
+		    int iPoolAttached = PidinStackToSerial(ppistPoolAttached);
+
+		    pch3->ppool[iPool].piPools[i] = iPoolAttached;
+		}
+	    }
+
+	    //- fill in the number of attached pools
+
+	    pch3->ppool[iPool].iPools = i;
+	}
+	else
+	{
+	    pch3->ppool[iPool].iPools = 0;
+	}
 
 	//- register serial of parent
 
@@ -330,13 +360,209 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 		 NULL,
 		 "pool array translation failed at pool %s (pool %i, serial %i)\n",
 		 pc,
-		 pch3->iPools,
+		 pch3->iPools + 1,
 		 pch3->ppool[iPool].mc.iSerial);
 	}
 
 	//- increment number of solved pools
 
 	pch3->iPools++;
+
+    }
+
+    //- if a reaction
+
+    if (subsetof_reaction(iType))
+    {
+	//- register current symbol
+
+	int iReaction = pch3->iReactions;
+
+	//- register type
+
+	pch3->preaction[iReaction].mc.iType = MATH_TYPE_Reaction;
+
+	//- register identification
+
+	/// \note note: assumes pp define CHEMESIS3_SOURCE_NEUROSPACES
+
+	int iSerial = PidinStackToSerial(ptstr->ppist);
+
+	iSerial = ADDRESSING_NEUROSPACES_2_CHEMESIS3(iSerial);
+
+	pch3->preaction[iReaction].mc.iSerial = iSerial;
+
+#ifdef CHEMESIS3_SOURCE_TYPING
+
+	double dModelSourceType
+	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "MODEL_SOURCE_TYPE");
+
+	if (dModelSourceType != DBL_MAX)
+	{
+	    pch3->preaction[iReaction].mc.iModelSourceType = dModelSourceType;
+	}
+	else
+	{
+	    pch3->preaction[iReaction].mc.iModelSourceType = -1;
+	}
+
+#endif
+
+	//- register parameters
+
+	/// \todo check for error returns, abort traversal if necessary
+
+	double dBackwardRate
+	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "BACKWARD_RATE");
+
+	if (dBackwardRate == DBL_MAX)
+	{
+	    iResult = TSTR_PROCESSOR_ABORT;
+	}
+
+	double dForwardRate
+	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "FORWARD_RATE");
+
+	if (dForwardRate == DBL_MAX)
+	{
+	    iResult = TSTR_PROCESSOR_ABORT;
+	}
+
+	pch3->preaction[iReaction].dBackwardRate = dBackwardRate;
+	pch3->preaction[iReaction].dBackwardSolved = 0;
+	pch3->preaction[iReaction].dForwardRate = dForwardRate;
+	pch3->preaction[iReaction].dForwardSolved = 0;
+
+	//- if this reaction has substrates
+
+	struct PidinStack *ppistSubstrate
+	    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", 0);
+
+	if (ppistSubstrate)
+	{
+	    //- count substrates
+
+	    int i;
+
+	    for (i = 0 ; ppistSubstrate ; i++)
+	    {
+		PidinStackFree(ppistSubstrate);
+
+		ppistSubstrate
+		    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", i);
+	    }
+
+	    //- allocate memory for indexing
+
+	    pch3->preaction[iReaction].piSubstrates = (int *)calloc(i, sizeof(int));
+
+	    //- loop over all substrates
+
+	    ppistSubstrate
+		= SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", 0);
+
+	    for (i = 0 ; ppistSubstrate ; i++)
+	    {
+		PidinStackFree(ppistSubstrate);
+
+		//- get context of the substrate
+
+		ppistSubstrate
+		    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", i);
+
+		if (ppistSubstrate)
+		{
+		    //- fill in the serial of the substrate
+
+		    int iSubstrate = PidinStackToSerial(ppistSubstrate);
+
+		    pch3->preaction[iReaction].piSubstrates[i] = iSubstrate;
+		}
+	    }
+
+	    //- fill in the number of substrates
+
+	    pch3->preaction[iReaction].iSubstrates = i;
+	}
+	else
+	{
+	    pch3->preaction[iReaction].iSubstrates = 0;
+	}
+
+	//- if this reaction has products
+
+	struct PidinStack *ppistProduct
+	    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "product", 0);
+
+	if (ppistProduct)
+	{
+	    //- count products
+
+	    int i;
+
+	    for (i = 0 ; ppistProduct ; i++)
+	    {
+		PidinStackFree(ppistProduct);
+
+		ppistProduct
+		    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "product", i);
+	    }
+
+	    //- allocate memory for indexing
+
+	    pch3->preaction[iReaction].piProducts = (int *)calloc(i, sizeof(int));
+
+	    //- loop over all products
+
+	    ppistProduct
+		= SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "product", 0);
+
+	    for (i = 0 ; ppistProduct ; i++)
+	    {
+		PidinStackFree(ppistProduct);
+
+		//- get context of the product
+
+		ppistProduct
+		    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "product", i);
+
+		if (ppistProduct)
+		{
+		    //- fill in the serial of the product
+
+		    int iProduct = PidinStackToSerial(ppistProduct);
+
+		    pch3->preaction[iReaction].piProducts[i] = iProduct;
+		}
+	    }
+
+	    //- fill in the number of products
+
+	    pch3->preaction[iReaction].iProducts = i;
+	}
+	else
+	{
+	    pch3->preaction[iReaction].iProducts = 0;
+	}
+
+	if (iResult == TSTR_PROCESSOR_ABORT)
+	{
+	    char pc[1000];
+
+	    PidinStackString(ptstr->ppist, pc, sizeof(pc));
+
+	    Chemesis3Error
+		(pch3,
+		 NULL,
+		 "reaction array translation failed at reaction %s (reaction %i, serial %i)\n",
+		 pc,
+		 pch3->iReactions + 1,
+		 pch3->preaction[iReaction].mc.iSerial);
+	}
+
+	//- increment number of solved reactions
+
+	pch3->iReactions++;
 
     }
 

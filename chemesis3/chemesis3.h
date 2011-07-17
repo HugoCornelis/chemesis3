@@ -91,9 +91,9 @@ struct ch3_pool
 
     int iConserve;
 
-    double dQTotal;
+    double dQuantityTotal;
 
-    double dCTotal;
+    double dConcentrationTotal;
 
 };
 
