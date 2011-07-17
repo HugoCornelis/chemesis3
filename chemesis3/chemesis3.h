@@ -104,14 +104,6 @@ struct ch3_reaction
 
     struct ch3_MathComponent mc;
 
-    //m number of end products
-
-    int iProducts;
-
-    //m indexes of end product
-
-    int *piProducts;
-
     //m number of substrates
 
     int iSubstrates;
@@ -119,6 +111,14 @@ struct ch3_reaction
     //m indexes of substrates
 
     int *piSubstrates;
+
+    //m number of end products
+
+    int iProducts;
+
+    //m indexes of end product
+
+    int *piProducts;
 
     //m backward rate
 
