@@ -103,9 +103,11 @@ Chemesis3AddressPoolVariable
 
 	if (pch3->ppool[iPool].mc.iSerial == iSerial)
 	{
-	    //- set reaction to get result from
+	    //- set pool to get result from
 
 	    ppool = &pch3->ppool[iPool];
+
+	    break;
 	}
     }
 

@@ -326,6 +326,19 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 	pch3->ppool[iPool].dConcentrationInit = dConcentrationInit;
 	pch3->ppool[iPool].dConcentrationTotal = dConcentrationTotal;
 
+	if (dConcentrationTotal == DBL_MAX)
+	{
+	    pch3->ppool[iPool].dUnits = 1e-3;
+
+	    pch3->ppool[iPool].iConserve = 0;
+	}
+	else
+	{
+	    pch3->ppool[iPool].dUnits = 0;
+
+	    pch3->ppool[iPool].iConserve = 1;
+	}
+
 	//- if this pool have an attached pool
 
 	struct PidinStack *ppistPoolAttached
