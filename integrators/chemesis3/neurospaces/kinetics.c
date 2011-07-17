@@ -372,7 +372,32 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
     //- if a reaction
 
+    int iIsReaction = 0;
+
     if (subsetof_reaction(iType))
+    {
+	iIsReaction = 1;
+    }
+
+    // \todo implement a proper reaction type in the model-container
+
+    if (!iIsReaction
+	&& subsetof_group(iType))
+    {
+	double dBackwardRate
+	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "BACKWARD_RATE");
+
+	double dForwardRate
+	    = SymbolParameterResolveValue(phsle, ptstr->ppist, "FORWARD_RATE");
+
+	if (dBackwardRate != DBL_MAX
+	    && dForwardRate != DBL_MAX)
+	{
+	    iIsReaction = 1;
+	}
+    }
+
+    if (iIsReaction)
     {
 	//- register current symbol
 
@@ -454,7 +479,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	    //- allocate memory for indexing
 
-	    pch3->preaction[iReaction].piSubstrates = (int *)calloc(i, sizeof(int));
+	    pch3->preaction[iReaction].piSubstrates = (int *)calloc(i - 1, sizeof(int));
 
 	    //- loop over all substrates
 
@@ -482,7 +507,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	    //- fill in the number of substrates
 
-	    pch3->preaction[iReaction].iSubstrates = i;
+	    pch3->preaction[iReaction].iSubstrates = i - 1;
 	}
 	else
 	{
@@ -510,7 +535,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	    //- allocate memory for indexing
 
-	    pch3->preaction[iReaction].piProducts = (int *)calloc(i, sizeof(int));
+	    pch3->preaction[iReaction].piProducts = (int *)calloc(i - 1, sizeof(int));
 
 	    //- loop over all products
 
@@ -538,7 +563,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	    //- fill in the number of products
 
-	    pch3->preaction[iReaction].iProducts = i;
+	    pch3->preaction[iReaction].iProducts = i - 1;
 	}
 	else
 	{
