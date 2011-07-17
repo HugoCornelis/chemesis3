@@ -110,16 +110,17 @@ static int solver_linker(struct simobj_Chemesis3 *pch3)
 
 	//- loop over all reactions attached to this pool
 
-	int iReaction;
+	int iReactionAttached;
 
-	for (iReaction = 0 ; iReaction < ppool->iReactions ; iReaction++)
+	for (iReactionAttached = 0 ; iReactionAttached < ppool->iReactions ; iReactionAttached++)
 	{
-	    //- retrieve the index of this reaction
+	    //- translate the serial to its index
 
-	    int iIndex = ppool->piReactions[iReaction];
+	    int iReactionSerial = ppool->piReactions[iReactionAttached];
 
-	    struct ch3_reaction *preactionAttached = &pch3->preaction[iIndex];
+	    int iReactionIndex = solver_reaction_serial_2_index(iReactionSerial);
 
+	    ppool->piReactions[iReactionAttached] = iReactionIndex;
 	}
 
 	//- loop over all pools attached to this pool
@@ -128,12 +129,13 @@ static int solver_linker(struct simobj_Chemesis3 *pch3)
 
 	for (iPoolAttached = 0 ; iPoolAttached < ppool->iPools ; iPoolAttached++)
 	{
-	    //- access the attacted pool
+	    //- translate the serial to its index
 
-	    int iIndex = ppool->piPools[iPoolAttached];
+	    int iPoolSerial = ppool->piPools[iPoolAttached];
 
-	    struct ch3_pool *ppoolAttached = &pch3->ppool[iIndex];
+	    int iPoolIndex = solver_pool_serial_2_index(iPoolSerial);
 
+	    ppool->piPools[iPoolAttached] = iPoolIndex;
 	}
 
 	//- loop over all diffusion connections attached to this pool
@@ -142,14 +144,51 @@ static int solver_linker(struct simobj_Chemesis3 *pch3)
 
 	for (iDiffusionAttached = 0 ; iDiffusionAttached < ppool->iDiffusions ; iDiffusionAttached++)
 	{
-	    //- access the attached diffusion connection
-
-	    int iIndex = ppool->piDiffusions[iDiffusionAttached];
-
-	    struct ch3_diffusion *pdiffusionAttached = &pch3->pdiffusion[iIndex];
-
 	}
 
+    }
+
+    //- loop over all reactions
+
+    int iReaction;
+
+    for (iReaction = 0 ; iReaction < ppool->iReactions ; iReaction++)
+    {
+	//- retrieve the index of this reaction
+
+	int iIndex = ppool->piReactions[iReaction];
+
+	struct ch3_reaction *preaction = &pch3->preaction[iIndex];
+
+	//- loop over all products
+
+	int iProduct;
+
+	for (iProduct = 0 ; iProduct < preaction->iProducts ; iProduct++)
+	{
+	    //- translate the serial to its index
+
+	    int iPoolSerial = preaction->piProducts[iProduct];
+
+	    int iPoolIndex = solver_pool_serial_2_index(iPoolSerial);
+
+	    preaction->piProducts[iProduct] = iPoolIndex;
+	}
+
+	//- loop over all substrates
+
+	int iSubstrate;
+
+	for (iSubstrate = 0 ; iSubstrate < preaction->iSubstrates ; iSubstrate++)
+	{
+	    //- translate the serial to its index
+
+	    int iPoolSerial = preaction->piSubstrates[iSubstrate];
+
+	    int iPoolIndex = solver_pool_serial_2_index(iPoolSerial);
+
+	    preaction->piSubstrates[iSubstrate] = iPoolIndex;
+	}
     }
 
     //- return result
@@ -458,62 +497,6 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 	pch3->preaction[iReaction].dForwardRate = dForwardRate;
 	pch3->preaction[iReaction].dForwardSolved = 0;
 
-	//- if this reaction has substrates
-
-	struct PidinStack *ppistSubstrate
-	    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", 0);
-
-	if (ppistSubstrate)
-	{
-	    //- count substrates
-
-	    int i;
-
-	    for (i = 0 ; ppistSubstrate ; i++)
-	    {
-		PidinStackFree(ppistSubstrate);
-
-		ppistSubstrate
-		    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", i);
-	    }
-
-	    //- allocate memory for indexing
-
-	    pch3->preaction[iReaction].piSubstrates = (int *)calloc(i - 1, sizeof(int));
-
-	    //- loop over all substrates
-
-	    ppistSubstrate
-		= SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", 0);
-
-	    for (i = 0 ; ppistSubstrate ; i++)
-	    {
-		PidinStackFree(ppistSubstrate);
-
-		//- get context of the substrate
-
-		ppistSubstrate
-		    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", i);
-
-		if (ppistSubstrate)
-		{
-		    //- fill in the serial of the substrate
-
-		    int iSubstrate = PidinStackToSerial(ppistSubstrate);
-
-		    pch3->preaction[iReaction].piSubstrates[i] = iSubstrate;
-		}
-	    }
-
-	    //- fill in the number of substrates
-
-	    pch3->preaction[iReaction].iSubstrates = i - 1;
-	}
-	else
-	{
-	    pch3->preaction[iReaction].iSubstrates = 0;
-	}
-
 	//- if this reaction has products
 
 	struct PidinStack *ppistProduct
@@ -568,6 +551,62 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 	else
 	{
 	    pch3->preaction[iReaction].iProducts = 0;
+	}
+
+	//- if this reaction has substrates
+
+	struct PidinStack *ppistSubstrate
+	    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", 0);
+
+	if (ppistSubstrate)
+	{
+	    //- count substrates
+
+	    int i;
+
+	    for (i = 0 ; ppistSubstrate ; i++)
+	    {
+		PidinStackFree(ppistSubstrate);
+
+		ppistSubstrate
+		    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", i);
+	    }
+
+	    //- allocate memory for indexing
+
+	    pch3->preaction[iReaction].piSubstrates = (int *)calloc(i - 1, sizeof(int));
+
+	    //- loop over all substrates
+
+	    ppistSubstrate
+		= SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", 0);
+
+	    for (i = 0 ; ppistSubstrate ; i++)
+	    {
+		PidinStackFree(ppistSubstrate);
+
+		//- get context of the substrate
+
+		ppistSubstrate
+		    = SymbolResolveTypedInput(phsle, ptstr->ppist, "concen", "substrate", i);
+
+		if (ppistSubstrate)
+		{
+		    //- fill in the serial of the substrate
+
+		    int iSubstrate = PidinStackToSerial(ppistSubstrate);
+
+		    pch3->preaction[iReaction].piSubstrates[i] = iSubstrate;
+		}
+	    }
+
+	    //- fill in the number of substrates
+
+	    pch3->preaction[iReaction].iSubstrates = i - 1;
+	}
+	else
+	{
+	    pch3->preaction[iReaction].iSubstrates = 0;
 	}
 
 	if (iResult == TSTR_PROCESSOR_ABORT)
