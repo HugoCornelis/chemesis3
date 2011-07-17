@@ -111,11 +111,15 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 
 	if (ppool->iReactions)
 	{
-	    ppool->piReactions = (int *)calloc(ppool->iReactions, sizeof(int));
+	    ppool->piReactions = (int *)calloc(ppool->iReactions + 100, sizeof(int));
+
+	    ppool->piReactionFlags = (int *)calloc(ppool->iReactions + 100, sizeof(int));
 	}
 	else
 	{
 	    ppool->piReactions = NULL;
+
+	    ppool->piReactionFlags = NULL;
 	}
 
 	//- and reset the reaction link counter
@@ -144,6 +148,10 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 
 		ppoolAttached->piReactions[ppoolAttached->iReactions] = iReaction;
 
+		//- flag this pool as a product for this reaction
+
+		ppoolAttached->piReactionFlags[ppoolAttached->iReactions] = 1;
+
 		//- and increase counter
 
 		ppoolAttached->iReactions++;
@@ -162,6 +170,10 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
 
 		ppoolAttached->piReactions[ppoolAttached->iReactions] = iReaction;
+
+		//- flag this pool as a product for this reaction
+
+		ppoolAttached->piReactionFlags[ppoolAttached->iReactions] = -1;
 
 		//- and increase counter
 
@@ -335,7 +347,9 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	    //- allocate memory for indexing
 
-	    pch3->ppool[iPool].piPools = (int *)calloc(i - 1, sizeof(int));
+	    pch3->ppool[iPool].piPools = (int *)calloc(i - 1 + 100, sizeof(int));
+
+	    pch3->ppool[iPool].piPoolsFlags = (int *)calloc(i - 1 + 100, sizeof(int));
 
 	    //- loop over all attached pools
 
@@ -358,6 +372,14 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 		    int iPoolAttached = PidinStackToSerial(ppistPoolAttached);
 
 		    pch3->ppool[iPool].piPools[i] = ADDRESSING_NEUROSPACES_2_CHEMESIS3(iPoolAttached);
+
+		    // \todo ask avrama for an example where this
+		    // value is different, currently the '0' encocdes
+		    // a 'CONC' message from a rxnpool to a
+		    // conservepool.
+
+		    pch3->ppool[iPool].piPoolsFlags[i] = 0;
+
 		}
 	    }
 
@@ -545,7 +567,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	    //- allocate memory for indexing
 
-	    pch3->preaction[iReaction].piProducts = (int *)calloc(i - 1, sizeof(int));
+	    pch3->preaction[iReaction].piProducts = (int *)calloc(i - 1 + 100, sizeof(int));
 
 	    //- loop over all products
 
@@ -601,7 +623,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	    //- allocate memory for indexing
 
-	    pch3->preaction[iReaction].piSubstrates = (int *)calloc(i - 1, sizeof(int));
+	    pch3->preaction[iReaction].piSubstrates = (int *)calloc(i - 1 + 100, sizeof(int));
 
 	    //- loop over all substrates
 
@@ -860,11 +882,11 @@ static int chemesis3_setup_kinetics(struct simobj_Chemesis3 *pch3, struct Chemes
 	    {
 		//- allocate data structures
 
-		pch3->ppool = (struct ch3_pool *)calloc(ki.iPools, sizeof(struct ch3_pool));
+		pch3->ppool = (struct ch3_pool *)calloc(ki.iPools + 100, sizeof(struct ch3_pool));
 
-		pch3->preaction = (struct ch3_reaction *)calloc(ki.iReactions, sizeof(struct ch3_reaction));
+		pch3->preaction = (struct ch3_reaction *)calloc(ki.iReactions + 100, sizeof(struct ch3_reaction));
 
-		pch3->pdiffusion = (struct ch3_diffusion *)calloc(ki.iDiffusions, sizeof(struct ch3_diffusion));
+		pch3->pdiffusion = (struct ch3_diffusion *)calloc(ki.iDiffusions + 100, sizeof(struct ch3_diffusion));
 
 		if (pch3->ppool
 		    && pch3->preaction

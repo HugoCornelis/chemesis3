@@ -627,7 +627,7 @@ int Chemesis3SingleStepPools(struct simobj_Chemesis3 *pch3)
 
 	for (iPoolAttached = 0 ; iPoolAttached < ppool->iPools ; iPoolAttached++)
 	{
-	    //- access the attacted pool
+	    //- access the attached pool
 
 	    int iIndex = ppool->piPools[iPoolAttached];
 
