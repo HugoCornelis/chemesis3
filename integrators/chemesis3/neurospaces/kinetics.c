@@ -32,11 +32,15 @@ struct kinetics_info
 };
 
 
+static int solver_complete_indexes(struct simobj_Chemesis3 *pch3);
+
 static
 int
 solver_counter(struct TreespaceTraversal *ptstr, void *pvUserdata);
 
-static int solver_linker(struct simobj_Chemesis3 *pch3);
+static int solver_pool_serial_2_index(struct simobj_Chemesis3 *pch3, int iSerial);
+
+static int solver_serials_2_indexes(struct simobj_Chemesis3 *pch3);
 
 static
 int
@@ -44,6 +48,125 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata);
 
 static int chemesis3_setup_kinetics(struct simobj_Chemesis3 *pch3, struct Chemesis3TranslationService *pts);
 
+
+
+static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
+{
+    //- set default result : ok
+
+    int iResult = TRUE;
+
+    //- loop over all reactions
+
+    int iReaction;
+
+    for (iReaction = 0 ; iReaction < pch3->iReactions ; iReaction++)
+    {
+	struct ch3_reaction *preaction = &pch3->preaction[iReaction];
+
+	//- count all pools of this reaction
+
+	{
+	    //- loop over all products
+
+	    int iProduct;
+
+	    for (iProduct = 0 ; iProduct < preaction->iProducts ; iProduct++)
+	    {
+		//- count this reaction for this pool
+
+		int iPoolIndex = preaction->piProducts[iProduct];
+
+		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
+
+		ppoolAttached->iReactions++;
+	    }
+
+	    //- loop over all substrates
+
+	    int iSubstrate;
+
+	    for (iSubstrate = 0 ; iSubstrate < preaction->iSubstrates ; iSubstrate++)
+	    {
+		//- count this reaction for this pool
+
+		int iPoolIndex = preaction->piProducts[iProduct];
+
+		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
+
+		ppoolAttached->iReactions++;
+	    }
+	}
+    }
+
+    //- loop over all pools
+
+    int iPool;
+
+    for (iPool = 0 ; iPool < pch3->iPools ; iPool++)
+    {
+	//- allocate reaction link memory
+
+	struct ch3_pool *ppool = &pch3->ppool[iPool];
+
+	ppool->piReactions = (int *)calloc(ppool->iReactions, sizeof(int));
+
+	//- and reset the reaction link counter
+
+	ppool->iReactions = 0;
+    }
+
+    //- loop over all reactions
+
+    for (iReaction = 0 ; iReaction < pch3->iReactions ; iReaction++)
+    {
+	struct ch3_reaction *preaction = &pch3->preaction[iReaction];
+
+	{
+	    //- loop over all products
+
+	    int iProduct;
+
+	    for (iProduct = 0 ; iProduct < preaction->iProducts ; iProduct++)
+	    {
+		//- register this reaction for this pool
+
+		int iPoolIndex = preaction->piProducts[iProduct];
+
+		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
+
+		ppoolAttached->piReactions[ppoolAttached->iReactions] = iReaction;
+
+		//- and increase counter
+
+		ppoolAttached->iReactions++;
+	    }
+
+	    //- loop over all substrates
+
+	    int iSubstrate;
+
+	    for (iSubstrate = 0 ; iSubstrate < preaction->iSubstrates ; iSubstrate++)
+	    {
+		//- register this reaction for this pool
+
+		int iPoolIndex = preaction->piProducts[iProduct];
+
+		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
+
+		ppoolAttached->piReactions[ppoolAttached->iReactions] = iReaction;
+
+		//- and increase counter
+
+		ppoolAttached->iReactions++;
+	    }
+	}
+    }
+
+    //- return result
+
+    return(iResult);
+}
 
 
 static
@@ -86,107 +209,6 @@ solver_counter(struct TreespaceTraversal *ptstr, void *pvUserdata)
     if (instanceof_pool(phsle))
     {
 	pki->iDiffusions++;
-    }
-
-    //- return result
-
-    return(iResult);
-}
-
-
-static int solver_linker(struct simobj_Chemesis3 *pch3)
-{
-    //- set default result : ok
-
-    int iResult = TRUE;
-
-    //- loop over all pools
-
-    int iPool;
-
-    for (iPool = 0 ; iPool < pch3->iPools ; iPool++)
-    {
-	struct ch3_pool *ppool = &pch3->ppool[iPool];
-
-	//- loop over all reactions attached to this pool
-
-	int iReactionAttached;
-
-	for (iReactionAttached = 0 ; iReactionAttached < ppool->iReactions ; iReactionAttached++)
-	{
-	    //- translate the serial to its index
-
-	    int iReactionSerial = ppool->piReactions[iReactionAttached];
-
-	    int iReactionIndex = solver_reaction_serial_2_index(iReactionSerial);
-
-	    ppool->piReactions[iReactionAttached] = iReactionIndex;
-	}
-
-	//- loop over all pools attached to this pool
-
-	int iPoolAttached;
-
-	for (iPoolAttached = 0 ; iPoolAttached < ppool->iPools ; iPoolAttached++)
-	{
-	    //- translate the serial to its index
-
-	    int iPoolSerial = ppool->piPools[iPoolAttached];
-
-	    int iPoolIndex = solver_pool_serial_2_index(iPoolSerial);
-
-	    ppool->piPools[iPoolAttached] = iPoolIndex;
-	}
-
-	//- loop over all diffusion connections attached to this pool
-
-	int iDiffusionAttached;
-
-	for (iDiffusionAttached = 0 ; iDiffusionAttached < ppool->iDiffusions ; iDiffusionAttached++)
-	{
-	}
-
-    }
-
-    //- loop over all reactions
-
-    int iReaction;
-
-    for (iReaction = 0 ; iReaction < pch3->iReactions ; iReaction++)
-    {
-	//- retrieve the index of this reaction
-
-	struct ch3_reaction *preaction = &pch3->preaction[iReaction];
-
-	//- loop over all products
-
-	int iProduct;
-
-	for (iProduct = 0 ; iProduct < preaction->iProducts ; iProduct++)
-	{
-	    //- translate the serial to its index
-
-	    int iPoolSerial = preaction->piProducts[iProduct];
-
-	    int iPoolIndex = solver_pool_serial_2_index(iPoolSerial);
-
-	    preaction->piProducts[iProduct] = iPoolIndex;
-	}
-
-	//- loop over all substrates
-
-	int iSubstrate;
-
-	for (iSubstrate = 0 ; iSubstrate < preaction->iSubstrates ; iSubstrate++)
-	{
-	    //- translate the serial to its index
-
-	    int iPoolSerial = preaction->piSubstrates[iSubstrate];
-
-	    int iPoolIndex = solver_pool_serial_2_index(iPoolSerial);
-
-	    preaction->piSubstrates[iSubstrate] = iPoolIndex;
-	}
     }
 
     //- return result
@@ -634,6 +656,137 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 }
 
 
+static int solver_pool_serial_2_index(struct simobj_Chemesis3 *pch3, int iSerial)
+{
+    //- set default result: failure
+
+    int iResult = -1;
+
+    //- loop over all pools
+
+    int iPool;
+
+    for (iPool = 0 ; iPool < pch3->iPools ; iPool++)
+    {
+	//- if serials match
+
+	struct ch3_pool *ppool = &pch3->ppool[iPool];
+
+	if (ppool->mc.iSerial == iSerial)
+	{
+	    //- set result: current index
+
+	    iResult = iPool;
+
+	    break;
+	}
+    }
+
+    //- return result
+
+    return(iResult);
+}
+
+
+static int solver_serials_2_indexes(struct simobj_Chemesis3 *pch3)
+{
+    //- set default result : ok
+
+    int iResult = TRUE;
+
+    //- loop over all pools
+
+    int iPool;
+
+    for (iPool = 0 ; iPool < pch3->iPools ; iPool++)
+    {
+	struct ch3_pool *ppool = &pch3->ppool[iPool];
+
+	//- loop over all reactions attached to this pool
+
+	int iReactionAttached;
+
+	for (iReactionAttached = 0 ; iReactionAttached < ppool->iReactions ; iReactionAttached++)
+	{
+	    //- translate the serial to its index
+
+	    int iReactionSerial = ppool->piReactions[iReactionAttached];
+
+	    int iReactionIndex = solver_reaction_serial_2_index(iReactionSerial);
+
+	    ppool->piReactions[iReactionAttached] = iReactionIndex;
+	}
+
+	//- loop over all pools attached to this pool
+
+	int iPoolAttached;
+
+	for (iPoolAttached = 0 ; iPoolAttached < ppool->iPools ; iPoolAttached++)
+	{
+	    //- translate the serial to its index
+
+	    int iPoolSerial = ppool->piPools[iPoolAttached];
+
+	    int iPoolIndex = solver_pool_serial_2_index(pch3, iPoolSerial);
+
+	    ppool->piPools[iPoolAttached] = iPoolIndex;
+	}
+
+	//- loop over all diffusion connections attached to this pool
+
+	int iDiffusionAttached;
+
+	for (iDiffusionAttached = 0 ; iDiffusionAttached < ppool->iDiffusions ; iDiffusionAttached++)
+	{
+	}
+
+    }
+
+    //- loop over all reactions
+
+    int iReaction;
+
+    for (iReaction = 0 ; iReaction < pch3->iReactions ; iReaction++)
+    {
+	struct ch3_reaction *preaction = &pch3->preaction[iReaction];
+
+	//- loop over all products
+
+	int iProduct;
+
+	for (iProduct = 0 ; iProduct < preaction->iProducts ; iProduct++)
+	{
+	    //- translate the serial to its index
+
+	    int iPoolSerial = preaction->piProducts[iProduct];
+
+	    int iPoolIndex = solver_pool_serial_2_index(pch3, iPoolSerial);
+
+	    preaction->piProducts[iProduct] = iPoolIndex;
+	}
+
+	//- loop over all substrates
+
+	int iSubstrate;
+
+	for (iSubstrate = 0 ; iSubstrate < preaction->iSubstrates ; iSubstrate++)
+	{
+	    //- translate the serial to its index
+
+	    int iPoolSerial = preaction->piSubstrates[iSubstrate];
+
+	    int iPoolIndex = solver_pool_serial_2_index(pch3, iPoolSerial);
+
+	    preaction->piSubstrates[iSubstrate] = iPoolIndex;
+	}
+    }
+
+    //- return result
+
+    return(iResult);
+}
+
+
 static int chemesis3_setup_kinetics(struct simobj_Chemesis3 *pch3, struct Chemesis3TranslationService *pcts)
 {
     //- set default result : ok
@@ -770,9 +923,13 @@ static int chemesis3_setup_kinetics(struct simobj_Chemesis3 *pch3, struct Chemes
 	    return(FALSE);
 	}
 
-	//- link the segments together using the parent link
+	//- correct the serial to indexes
 
-	iResult = iResult && solver_linker(pch3);
+	iResult = iResult && solver_serials_2_indexes(pch3);
+
+	//- complete the links
+
+	iResult = iResult && solver_indexes_complete(pch3);
     }
     else
     {
