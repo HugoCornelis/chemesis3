@@ -152,13 +152,11 @@ static int solver_linker(struct simobj_Chemesis3 *pch3)
 
     int iReaction;
 
-    for (iReaction = 0 ; iReaction < ppool->iReactions ; iReaction++)
+    for (iReaction = 0 ; iReaction < pch3->iReactions ; iReaction++)
     {
 	//- retrieve the index of this reaction
 
-	int iIndex = ppool->piReactions[iReaction];
-
-	struct ch3_reaction *preaction = &pch3->preaction[iIndex];
+	struct ch3_reaction *preaction = &pch3->preaction[iReaction];
 
 	//- loop over all products
 
