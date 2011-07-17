@@ -79,7 +79,13 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 
 		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
 
-		ppoolAttached->iReactions++;
+		if (ppoolAttached->iConserve)
+		{
+		}
+		else
+		{
+		    ppoolAttached->iReactions++;
+		}
 	    }
 
 	    //- loop over all substrates
@@ -94,7 +100,13 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 
 		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
 
-		ppoolAttached->iReactions++;
+		if (ppoolAttached->iConserve)
+		{
+		}
+		else
+		{
+		    ppoolAttached->iReactions++;
+		}
 	    }
 	}
     }
@@ -146,15 +158,21 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 
 		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
 
-		ppoolAttached->piReactions[ppoolAttached->iReactions] = iReaction;
+		if (ppoolAttached->iConserve)
+		{
+		}
+		else
+		{
+		    ppoolAttached->piReactions[ppoolAttached->iReactions] = iReaction;
 
-		//- flag this pool as a product for this reaction
+		    //- flag this pool as a product for this reaction
 
-		ppoolAttached->piReactionFlags[ppoolAttached->iReactions] = 1;
+		    ppoolAttached->piReactionFlags[ppoolAttached->iReactions] = 1;
 
-		//- and increase counter
+		    //- and increase counter
 
-		ppoolAttached->iReactions++;
+		    ppoolAttached->iReactions++;
+		}
 	    }
 
 	    //- loop over all substrates
@@ -169,15 +187,21 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 
 		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
 
-		ppoolAttached->piReactions[ppoolAttached->iReactions] = iReaction;
+		if (ppoolAttached->iConserve)
+		{
+		}
+		else
+		{
+		    ppoolAttached->piReactions[ppoolAttached->iReactions] = iReaction;
 
-		//- flag this pool as a product for this reaction
+		    //- flag this pool as a product for this reaction
 
-		ppoolAttached->piReactionFlags[ppoolAttached->iReactions] = -1;
+		    ppoolAttached->piReactionFlags[ppoolAttached->iReactions] = -1;
 
-		//- and increase counter
+		    //- and increase counter
 
-		ppoolAttached->iReactions++;
+		    ppoolAttached->iReactions++;
+		}
 	    }
 	}
     }
