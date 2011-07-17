@@ -90,7 +90,7 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 	    {
 		//- count this reaction for this pool
 
-		int iPoolIndex = preaction->piProducts[iProduct];
+		int iPoolIndex = preaction->piSubstrates[iSubstrate];
 
 		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
 
@@ -109,7 +109,14 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 
 	struct ch3_pool *ppool = &pch3->ppool[iPool];
 
-	ppool->piReactions = (int *)calloc(ppool->iReactions, sizeof(int));
+	if (ppool->iReactions)
+	{
+	    ppool->piReactions = (int *)calloc(ppool->iReactions, sizeof(int));
+	}
+	else
+	{
+	    ppool->piReactions = NULL;
+	}
 
 	//- and reset the reaction link counter
 
@@ -150,7 +157,7 @@ static int solver_complete_indexes(struct simobj_Chemesis3 *pch3)
 	    {
 		//- register this reaction for this pool
 
-		int iPoolIndex = preaction->piProducts[iProduct];
+		int iPoolIndex = preaction->piSubstrates[iSubstrate];
 
 		struct ch3_pool *ppoolAttached = &pch3->ppool[iPoolIndex];
 
@@ -328,7 +335,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 	    //- allocate memory for indexing
 
-	    pch3->ppool[iPool].piPools = (int *)calloc(i, sizeof(int));
+	    pch3->ppool[iPool].piPools = (int *)calloc(i - 1, sizeof(int));
 
 	    //- loop over all attached pools
 
@@ -350,13 +357,13 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 		    int iPoolAttached = PidinStackToSerial(ppistPoolAttached);
 
-		    pch3->ppool[iPool].piPools[i] = iPoolAttached;
+		    pch3->ppool[iPool].piPools[i] = ADDRESSING_NEUROSPACES_2_CHEMESIS3(iPoolAttached);
 		}
 	    }
 
 	    //- fill in the number of attached pools
 
-	    pch3->ppool[iPool].iPools = i;
+	    pch3->ppool[iPool].iPools = i - 1;
 	}
 	else
 	{
@@ -560,7 +567,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 		    int iProduct = PidinStackToSerial(ppistProduct);
 
-		    pch3->preaction[iReaction].piProducts[i] = iProduct;
+		    pch3->preaction[iReaction].piProducts[i] = ADDRESSING_NEUROSPACES_2_CHEMESIS3(iProduct);
 		}
 	    }
 
@@ -616,7 +623,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 		    int iSubstrate = PidinStackToSerial(ppistSubstrate);
 
-		    pch3->preaction[iReaction].piSubstrates[i] = iSubstrate;
+		    pch3->preaction[iReaction].piSubstrates[i] = ADDRESSING_NEUROSPACES_2_CHEMESIS3(iSubstrate);
 		}
 	    }
 
@@ -929,7 +936,7 @@ static int chemesis3_setup_kinetics(struct simobj_Chemesis3 *pch3, struct Chemes
 
 	//- complete the links
 
-	iResult = iResult && solver_indexes_complete(pch3);
+	iResult = iResult && solver_complete_indexes(pch3);
     }
     else
     {
