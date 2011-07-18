@@ -1,0 +1,30 @@
+hugo@cornelis-Aspire-7715Z:~/neurospaces_project/chemesis3/source/snapshots/0$ time tests/code/cal2 
+
+real    0m8.335s
+user    0m8.325s
+sys     0m0.000s
+hugo@cornelis-Aspire-7715Z:~/neurospaces_project/chemesis3/source/snapshots/0$ time tests/code/cal2 
+
+real    0m8.799s
+user    0m8.785s
+sys     0m0.000s
+hugo@cornelis-Aspire-7715Z:~/neurospaces_project/chemesis3/source/snapshots/0$ time tests/code/cal2 
+
+real    0m8.359s
+user    0m8.349s
+sys     0m0.000s
+
+
+
+time /home/hugo/genesis/source/updates/genesis-2.2.1-beta-20030328/src/genesis cal2.g
+real    0m24.381s
+                 user   0m17.765s
+                                 sys    0m6.492s
+time /home/hugo/genesis/source/updates/genesis-2.2.1-beta-20030328/src/genesis cal2.g
+real    0m24.354s
+                 user   0m17.917s
+                                 sys    0m6.316s
+time /home/hugo/genesis/source/updates/genesis-2.2.1-beta-20030328/src/genesis cal2.g
+real    0m24.116s
+                 user   0m17.613s
+                                 sys    0m6.380s
