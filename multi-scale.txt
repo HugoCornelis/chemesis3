@@ -1,0 +1,38 @@
+
+Different numerical solution methods are required to solve the
+different types of mathematical equations associated with different
+scales of modeling.  The cable equation and ion currents are
+numerically solved with implicit Crank-Nicolson integration.  In G-3
+this method of solution is implemented in a dedicated compartmental
+solver called Heccer.  In the G-3 shell the user has to create a
+mapping from the name of the neuron model to the solver.  For a single
+neuron model with name "/traub94" the correct syntax is:
+
+genesis > solverset "/traub94 => heccer"
+
+
+Biochemical pathways in neuronal modeling are complex networks of
+interacting ion concentration pools.  The G-3 implementation for
+simulation of biochemical pathways is called Chemesis-3 and has a
+dedicated optimized implementation to represent networks parameterized
+with biochemical pathways.  To simulate a complex network model of
+biochemical pathways, in this example called "/cal1", a user would
+typically type from the G-3 shell:
+
+genesis > solverset "/cal1 => chemesis3"
+
+
+In the case the network of biochemical pathways is defined inside the
+single neuron model, a user would have to type two commands with
+wildcards that associate the correct solver with each component of the
+model, for example:
+
+genesis > solverset "/**/cal1 => chemesis3"
+genesis > solverset "/traub94/**[!cal1] => heccer"
+
+
+In later version of G-3 these rules will be builtin but still allow
+the user to select a different method of solution for different
+components of his model.
+
+

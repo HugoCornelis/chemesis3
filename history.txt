@@ -1,0 +1,28 @@
+
+
+Only limited was available for the implementation of the chemesis-3
+solver.  A time line reconstructed from the email conversations and
+from the version control system:
+
+- exploratory email conversations May 30th and following two weeks.
+
+- initial preparations and start of implementation on June 13th.
+
+- core implementation on Sunday June 26th, including a fully working
+cal1 regression test case.  This was a day of crazy coding as in the
+old days, total of 18 revisions with many enhancements.
+
+- implementation of cal2 test case on June 29th and July 10th.
+
+- initial scripting bindings were added starting at July 10th for perl
+and July 13 for Python.
+
+- first successful integration with the SSP scheduler on July 12th.
+
+- model-container bindings started on July 13 and finished on July
+17th.  Removes model-related functions such as compartment volume
+computation that are already available in the model-container (and now
+shared with other solvers).
+
+- G-shell integration on July 17th and July 18th.
+

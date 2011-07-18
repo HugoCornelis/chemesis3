@@ -1,0 +1,34 @@
+Currently implemented chemesis3 objects:
+
+
+rxnpool: a concentration pool that interacts with reactions and
+diffuses to other pools.
+
+Maps to NDF token POOL
+
+
+conservepool: mass conservation based pool, computes the difference
+between the total of all molecules (a model parameter, rest state),
+and diffused molecules, divided by compartment volume.
+
+Maps to NDF token POOL, with a different parameterization.
+
+
+reaction: standard forward / backward chemical reactions between pools
+of molecules.
+
+Maps to NDF token REACTION
+
+
+diffusion: Computes flux in molecules between two pools
+
+Maps to NDF *segment parameter* diffusion_constant.  The appearance of
+this parameter in an NDF file requires running the model using a
+chemesis-3 solver.
+
+
+The cal1.ndf and cal2.ndf files in the model-container library are
+examples of chemesis-3 NDF files.
+
+This makes 4 out of 12 objects that have been implemented.
+
