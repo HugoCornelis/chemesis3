@@ -45,7 +45,7 @@ nobase_include_HEADERS = \
 CLEANFILES = \
 	$(top_srcdir)/docs/doxygen.tag
 
-@PACKAGE@testdir=$(prefix)/neurospaces/$(PACKAGE)
+@PACKAGE@testdir=$(prefix)/$(PACKAGE)
 nobase_dist_@PACKAGE@test_DATA=@TEST_SPECIFICATION_FILES@
 
 RELEASE_MAJOR=`release-extract --major`
