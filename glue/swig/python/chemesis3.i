@@ -44,6 +44,11 @@ int ReactionSize(void)
 
 int NumItems(int *pi)
 {
+  if(!pi)
+  {
+    return 0;
+  }
+
   return sizeof(pi) / sizeof(int);
 }
 

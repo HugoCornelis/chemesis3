@@ -122,8 +122,12 @@ class SimObjChemesis3(chemesis3_base.simobj_Chemesis3):
 
     def __init__(self, name="Untitled"):
 
-        chemesis3_base.simobj_Chemesis3.__init(self)
+        chemesis3_base.simobj_Chemesis3.__init__(self)
 
+        self.ppool = None
+        self.preaction = None
+        self.pdiffusions = None
+        
         self.pcName = name
 
 #---------------------------------------------------------------------------
@@ -191,7 +195,16 @@ class Pool(chemesis3_base.ch3_pool):
 
         chemesis3_base.ch3_pool.__init__(self)
 
+        self.piReactionFlags = None
+        self.piReactions = None
+        self.piDiffusionsFlags = None
+        self.piDiffusions = None
+        self.piPools = None
+        self.piPoolsFlags = None
+
         self.mc.iType = chemesis3_base.MATH_TYPE_Pool
+
+        self.mc.iSize = chemesis3_base.PoolSize()
 
 #---------------------------------------------------------------------------
 
@@ -370,7 +383,13 @@ class Reaction(chemesis3_base.ch3_reaction):
 
         chemesis3_base.ch3_reaction.__init__(self)
 
+        self.piSubstrates = None
+        self.piProducts = None
+
         self.mc.iType = chemesis3_base.MATH_TYPE_Reaction
+
+        self.mc.iSize = chemesis3_base.ReactionSize()
+
 
 #---------------------------------------------------------------------------
 
