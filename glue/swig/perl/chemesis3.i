@@ -116,7 +116,7 @@ void * chemesis3_get_driver_data(struct simobj_Chemesis3 *pch3)
 
 void * chemesis3_get_driver_method(struct simobj_Chemesis3 *pch3)
 {
-    return((void *)pch3);
+    return((void *)Chemesis3Advance);
 }
 
 

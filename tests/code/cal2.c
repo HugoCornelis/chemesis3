@@ -1000,6 +1000,12 @@ struct simobj_Chemesis3 ch3 =
 
     diff,
 
+    //m all species
+
+    0,
+
+    NULL,
+
     //m all aggregators: derived variables not directly available from a model's viewpoint
 
     0,

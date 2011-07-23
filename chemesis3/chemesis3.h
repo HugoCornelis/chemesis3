@@ -176,6 +176,21 @@ struct ch3_diffusion
 };
 
 
+struct ch3_species
+{
+    //m valency of this species
+
+    double dValency;
+
+    //m all the pools that are associated with this species
+
+    int iPools;
+
+    struct ch3_pool *ppool;
+
+};
+
+
 /// \struct global options
 
 struct Chemesis3Options
@@ -283,6 +298,12 @@ struct simobj_Chemesis3
     int iDiffusions;
 
     struct ch3_diffusion *pdiffusion;
+
+    //m all species
+
+    int iSpecies;
+
+    struct ch3_species *pspecies;
 
     //m all aggregators: derived variables not directly available from a model's viewpoint
 
