@@ -1,0 +1,22 @@
+Source: developer
+Section: Science 
+Priority: optional
+Maintainer: Hugo Cornelis [hugo.cornelis@gmail.com]
+Build-Depends: python2.5(>=2.5),libc6(>=2.3.6),libgcc1 (>=4.1.1)
+Homepage: http://www.neurospaces.org
+
+Package: developer
+Architecture: any
+Depends: python2.5(>=2.5),libc6(>=2.3.6),libgcc1 (>=4.1.1)
+Suggests: gnuplot
+Description: The Neurospaces developer package contains essential tools for Neurospaces development. 
+ The Neurospaces project develops software components of neuronal
+ simulator that integrate in a just-in-time manner for the
+ exploration, simulation and validation of accurate neuronal models.
+ Neurospaces spans the range from single molecules to subcellular
+ networks, over single cells to neuronal networks.  Neurospaces is
+ backwards-compatible with the GENESIS simulator, integrates with
+ Python and Perl, separates models from experimental protocols, and
+ reads model definitions from declarative specifications in a variety
+ of formats.
+ This package contains utilities requires for Neurospaces development.
