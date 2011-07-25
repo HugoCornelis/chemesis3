@@ -27,7 +27,7 @@ int ReactionSize(void);
 int AddressingNeurospaces2Chemesis(int iNeuro)
 {
 
-  return ((iNeuro) << NEUROSPACES_2_CHEMESIS3_MAX_FUNCTIONS);
+  return ADDRESSING_NEUROSPACES_2_CHEMESIS3(iNeuro);
 
 }
 
@@ -35,7 +35,7 @@ int AddressingNeurospaces2Chemesis(int iNeuro)
 int AddressingChemesis2Neurospaces(int iChemesis)
 {
 
-  return ((iChemesis) >> NEUROSPACES_2_CHEMESIS3_MAX_FUNCTIONS);
+  return ADDRESSING_CHEMESIS3_2_NEUROSPACES(iChemesis);
 
 }
 
