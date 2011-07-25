@@ -45,7 +45,7 @@ chemesis3_wrap.o: chemesis3_wrap.c
 	gcc $(SWIGCOMPILELINKSFORPYTHON) -c $(srcdir)/chemesis3_wrap.c
 
 chemesis3_wrap.c ./neurospaces/chemesis3/chemesis3_base.py: 
-	$(SWIG) -I$(builddir)/../../.. -I$(srcdir)/../../.. -I$(top_builddir) -python -outdir $(srcdir)/neurospaces/chemesis3 -o chemesis3_wrap.c $(srcdir)/chemesis3.i
+	$(SWIG) -I$(builddir)/../../.. -I$(top_builddir) -python -outdir $(srcdir)/neurospaces/chemesis3 -o chemesis3_wrap.c $(srcdir)/chemesis3.i
 
 _chemesis3_base.so: chemesis3_wrap.o
 	$(CHEMESIS3_SWIGLINKCOMMAND_PYTHON)

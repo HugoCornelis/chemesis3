@@ -10,7 +10,7 @@
 #include "chemesis3.h"
 
 
-#ifdef CHEMESIS3_SOURCE_NEUROSPACES
+//#ifdef CHEMESIS3_SOURCE_NEUROSPACES
 
 /// \def number of function allowed per symbol as a shift operand
 
@@ -51,7 +51,7 @@ double *
 Chemesis3AddressVariable
 (struct simobj_Chemesis3 *pch3, int iSerial, char *pcType);
 
-#endif
+//#endif
 
 
 #endif

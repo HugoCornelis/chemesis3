@@ -76,6 +76,26 @@ Chemesis3AddressAggregator
 /// \arg iSerial serial of pool.
 /// \arg pcType name of requested variable.
 /// 
+/// \return char *
+/// 
+///	pointer to the requested data, NULL for failure.
+/// 
+/// 
+char *
+Chemesis3AddressableSet
+(struct simobj_Chemesis3 *pch3, int iSerial, char *pcType, double dValue)
+{
+
+  return NULL;
+
+}
+
+
+/// 
+/// \arg pch3 a chemesis3.
+/// \arg iSerial serial of pool.
+/// \arg pcType name of requested variable.
+/// 
 /// \return double *
 /// 
 ///	pointer to the requested field, NULL for failure.

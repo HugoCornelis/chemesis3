@@ -7,9 +7,16 @@
 * Start C code block
 ***************************************************/
 %{
-#include "chemesis3/addressing.h"
+#define CHEMESIS3_SOURCE_NEUROSPACES 1
+
 #include "chemesis3/chemesis3.h"
+#include "chemesis3/addressing.h"
 #include "chemesis3/mathcomponent.h"
+#include "chemesis3/service.h"
+%}
+
+
+%inline %{
 
 int AddressingNeurospaces2Chemesis(int iNeuro);
 int AddressingChemesis2Neurospaces(int iChemesis);
@@ -20,7 +27,7 @@ int ReactionSize(void);
 int AddressingNeurospaces2Chemesis(int iNeuro)
 {
 
-  return ADDRESSING_NEUROSPACES_2_CHEMESIS3(iNeuro);
+  return ((iNeuro) << NEUROSPACES_2_CHEMESIS3_MAX_FUNCTIONS);
 
 }
 
@@ -28,7 +35,7 @@ int AddressingNeurospaces2Chemesis(int iNeuro)
 int AddressingChemesis2Neurospaces(int iChemesis)
 {
 
-  return ADDRESSING_CHEMESIS3_2_NEUROSPACES(iChemesis);
+  return ((iChemesis) >> NEUROSPACES_2_CHEMESIS3_MAX_FUNCTIONS);
 
 }
 
@@ -53,8 +60,7 @@ int NumItems(int *pi)
 }
 
 
-
-%}
+%} // end inline
 
 
 /***************************************************
@@ -63,6 +69,8 @@ int NumItems(int *pi)
 %include "chemesis3/addressing.h"
 %include "chemesis3/chemesis3.h"
 %include "chemesis3/mathcomponent.h"
+%include "chemesis3/service.h"
+
 
 // info on cpointer library here http://www.swig.org/Doc1.3/Library.html#Library_nn4
 %include "cpointer.i"

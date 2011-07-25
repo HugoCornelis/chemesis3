@@ -340,7 +340,7 @@ struct simobj_Chemesis3
 
 int Chemesis3Advance(struct simobj_Chemesis3 *pch3, double dTime);
 
-int Chemesis3CanCompile(struct simobj_Chemesis3 *pch3);
+// int Chemesis3CanCompile(struct simobj_Chemesis3 *pch3);
 
 int Chemesis3CompileP1(struct simobj_Chemesis3 *pch3);
 
