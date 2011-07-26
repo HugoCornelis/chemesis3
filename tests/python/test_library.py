@@ -38,7 +38,7 @@ def fullsplit(path, result=None):
     return fullsplit(head, [tail] + result)
 
 
-def add_package_path(package):
+def add_package_path(package, subdir=''):
     """
     Adds an import path to a python module in a project directory.
     """
@@ -51,7 +51,8 @@ def add_package_path(package):
                         '0',
                         'glue',
                         'swig',
-                        'python')
+                        'python',
+                        subdir)
 
 
     build_dir = os.path.join(path, 'build')

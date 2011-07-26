@@ -120,15 +120,49 @@ def CreateChemesis3ReactionArray(array):
 #************************* Begin SimObjChemesis3 **************************
 class SimObjChemesis3(chemesis3_base.simobj_Chemesis3):
 
-    def __init__(self, name="Untitled"):
+    def __init__(self, name="Untitled", serial_range=1000):
 
         chemesis3_base.simobj_Chemesis3.__init__(self)
 
-        self.ppool = None
-        self.preaction = None
-        self.pdiffusions = None
-        
         self.pcName = name
+
+        self.iStatus = 0
+        self.iErrorCount = 0
+
+        self.iSerialStart = 1
+        self.iSerialEnd = serial_range
+
+        self.c3o.iOptions = 0
+
+        self.dTime = 0.0
+        self.dStep = 0.0
+
+        # translation service
+        self.pcts = None
+
+        # event distributor
+        self.ped = None
+
+        # event queue
+        self.peq = None
+
+        self.dConcentrationMinimum = 0.0
+
+        self.iPools = 0
+        self.ppool = None
+
+        self.iReactions = 0
+        self.preaction = None
+
+        self.iDiffusions = 0
+        self.pdiffusions = None
+
+        self.iSpecies = 0
+        self.pspecies = None
+
+        self.iAggregators = 0
+        self.pdAggregators = None
+        
 
 #---------------------------------------------------------------------------
 
@@ -195,16 +229,23 @@ class Pool(chemesis3_base.ch3_pool):
 
         chemesis3_base.ch3_pool.__init__(self)
 
+        self.iReactions = 0
         self.piReactionFlags = None
         self.piReactions = None
+
+        self.iDiffusions = 0
         self.piDiffusionsFlags = None
         self.piDiffusions = None
+
+        self.iPools = 0
         self.piPools = None
         self.piPoolsFlags = None
 
         self.mc.iType = chemesis3_base.MATH_TYPE_Pool
 
         self.mc.iSize = chemesis3_base.PoolSize()
+
+        self.mc.iModelSourceType = -1
 
 #---------------------------------------------------------------------------
 
@@ -383,10 +424,14 @@ class Reaction(chemesis3_base.ch3_reaction):
 
         chemesis3_base.ch3_reaction.__init__(self)
 
+        self.iSubstrates = 0
         self.piSubstrates = None
+        self.iProducts = 0
         self.piProducts = None
 
         self.mc.iType = chemesis3_base.MATH_TYPE_Reaction
+
+        self.mc.iModelSourceType = -1
 
         self.mc.iSize = chemesis3_base.ReactionSize()
 
