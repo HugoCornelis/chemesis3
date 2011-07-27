@@ -7,7 +7,11 @@
 * Start C code block
 ***************************************************/
 %{
-#define CHEMESIS3_SOURCE_NEUROSPACES 1
+
+#define CHEMESIS3_SOURCE_NEUROSPACES 1 
+/* #define CHEMESIS3_SOURCE_TYPING 1 */
+/* #define CHEMESIS3_SIZED_MATH_STRUCTURES 1 */
+/* #define CHEMESIS3_SOURCE_NEUROSPACES 1 */
 
 #include "chemesis3/chemesis3.h"
 #include "chemesis3/addressing.h"
@@ -15,6 +19,11 @@
 #include "chemesis3/service.h"
 %}
 
+
+#define CHEMESIS3_SOURCE_NEUROSPACES 1 
+/* #define CHEMESIS3_SOURCE_TYPING 1 */
+/* #define CHEMESIS3_SIZED_MATH_STRUCTURES 1 */
+/* #define CHEMESIS3_SOURCE_NEUROSPACES 1 */
 
 %inline %{
 

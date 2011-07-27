@@ -190,7 +190,7 @@ class SimObjChemesis3(chemesis3_base.simobj_Chemesis3):
 
             self.iReactions = 0
             
-        reaction_data = CreateChemesis3ReactionArray(pools)
+        reaction_data = CreateChemesis3ReactionArray(reactions)
 
         self.preaction = reaction_data[0]
 
@@ -243,9 +243,10 @@ class Pool(chemesis3_base.ch3_pool):
 
         self.mc.iType = chemesis3_base.MATH_TYPE_Pool
 
-        self.mc.iSize = chemesis3_base.PoolSize()
+# the size is not used
+#        self.mc.iSize = chemesis3_base.PoolSize()
 
-        self.mc.iModelSourceType = -1
+#        self.mc.iModelSourceType = -1
 
 #---------------------------------------------------------------------------
 
@@ -431,9 +432,10 @@ class Reaction(chemesis3_base.ch3_reaction):
 
         self.mc.iType = chemesis3_base.MATH_TYPE_Reaction
 
-        self.mc.iModelSourceType = -1
+#        self.mc.iModelSourceType = -1
 
-        self.mc.iSize = chemesis3_base.ReactionSize()
+# This causes an error due to the compile defines
+#        self.mc.iSize = chemesis3_base.ReactionSize()
 
 
 #---------------------------------------------------------------------------

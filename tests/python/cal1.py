@@ -87,9 +87,9 @@ from neurospaces.chemesis3.components import Reaction
 
 somacabufrxn = Reaction()
 
-somacabufrxn.SetSubstrates([0, 2])
-
 somacabufrxn.SetProducts([1])
+
+somacabufrxn.SetSubstrates([0, 2])
 
 somacabufrxn.dBackwardRate = 0.5
 somacabufrxn.dBackwardSolved = 0.0
@@ -101,6 +101,12 @@ somacabufrxn.dForwardSolved = 0.0
 from neurospaces.chemesis3.components import SimObjChemesis3
 
 ch3 = SimObjChemesis3('cal1')
+
+ch3.SetPools(soma_ca)
+
+ch3.SetReactions(somacabufrxn)
+
+
 
 # we need an output object so we import from the experiment path
 
@@ -125,6 +131,9 @@ TIME_STEP = 0.002
 TIME_GRANULARITY = 1e-9
 
 simulation_time = 0.0
+
+# set the time step
+ch3.dStep = TIME_STEP
 
 for i in range(0,STEPS):
 
