@@ -27,6 +27,7 @@ Makefile\.in$
 ^pkg$
 ^tests/code/cal1$
 ^tests/code/cal2$
+^tests/code/cal2-timing$
 ^tests/code/version$
 ^tests/html$
 ^tmp$

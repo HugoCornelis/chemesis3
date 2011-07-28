@@ -6,6 +6,12 @@ import os
 import sys
 import pdb
 
+
+STEPS = 1000
+TIME_STEP = 0.002
+TIME_GRANULARITY = 1e-9
+
+
 from test_library import add_package_path
 
 add_package_path("chemesis3")
@@ -40,7 +46,7 @@ soma_ca[0].dConcentrationTotal = 0.0
 
 soma_ca[1].SetSerial(3)
 
-soma_ca[1].SetReactionFlags([0])
+soma_ca[1].SetReactionFlags([1])
 soma_ca[1].SetReactions([0])
 
 soma_ca[1].dConcentrationInit = 0.003
@@ -87,6 +93,8 @@ from neurospaces.chemesis3.components import Reaction
 
 somacabufrxn = Reaction()
 
+somacabufrxn.SetSerial(5)
+
 somacabufrxn.SetProducts([1])
 
 somacabufrxn.SetSubstrates([0, 2])
@@ -106,6 +114,13 @@ ch3.SetPools(soma_ca)
 
 ch3.SetReactions(somacabufrxn)
 
+# set the time step
+ch3.dStep = TIME_STEP
+
+import neurospaces.chemesis3.chemesis3_base as chemesis3_base
+
+chemesis3_base.Chemesis3Initiate(ch3)
+
 
 # we need an output object so we import from the experiment path
 
@@ -115,9 +130,8 @@ from experiment.output import Output
 
 og = Output("/tmp/output_cal1")
 
-og.SetFormat(' %.9f')
+#og.SetFormat(' %.9f')
 
-import neurospaces.chemesis3.chemesis3_base as chemesis3_base
 
 concentration1 = chemesis3_base.Chemesis3AddressVariable(ch3, 2, "concentration")
 concentration2 = chemesis3_base.Chemesis3AddressVariable(ch3, 3, "concentration")
@@ -127,19 +141,12 @@ og.AddOutput("concentration", concentration1)
 og.AddOutput("concentration", concentration2)
 og.AddOutput("concentration", concentration3)
 
-STEPS = 10
-TIME_STEP = 0.002
-TIME_GRANULARITY = 1e-9
-
 simulation_time = 0.0
 
-# set the time step
-ch3.dStep = TIME_STEP
 
 for i in range(0,STEPS):
 
     simulation_time = i * TIME_STEP + TIME_GRANULARITY
-
 
     chemesis3_base.Chemesis3Advance(ch3, simulation_time)
 
