@@ -107,7 +107,6 @@ ch3.SetPools(soma_ca)
 ch3.SetReactions(somacabufrxn)
 
 
-
 # we need an output object so we import from the experiment path
 
 add_package_path("experiment", subdir='neurospaces')
@@ -115,6 +114,8 @@ add_package_path("experiment", subdir='neurospaces')
 from experiment.output import Output
 
 og = Output("/tmp/output_cal1")
+
+og.SetFormat(' %.9f')
 
 import neurospaces.chemesis3.chemesis3_base as chemesis3_base
 
