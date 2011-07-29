@@ -115,6 +115,38 @@ def CreateChemesis3ReactionArray(array):
 
 #---------------------------------------------------------------------------
 
+#---------------------------------------------------------------------------
+
+def CreateChemesis3DiffusionsArray(array):
+
+    if array is None:
+
+        return
+
+    if isinstance(array, list):
+
+        length = len(array)
+            
+        array_pointer = chemesis3_base.new_Chemesis3DiffusionArray(length)
+            
+        for index, i in enumerate(array):
+                
+            chemesis3_base.Chemesis3DiffusionArray_setitem(array_pointer, index, i)
+
+    else:
+            
+        # this is the case when we aren't passed a list and only
+        # have one item
+
+        length = 1
+
+        array_pointer = chemesis3_base.new_Chemesis3DiffusionArray(length)
+
+        chemesis3_base.Chemesis3DiffusionArray_setitem(array_pointer, 0, array)
+
+    return (array_pointer, length)
+
+#---------------------------------------------------------------------------
 
 
 #************************* Begin SimObjChemesis3 **************************
@@ -208,7 +240,7 @@ class SimObjChemesis3(chemesis3_base.simobj_Chemesis3):
             
         diffusions_data = CreateChemesis3DiffusionsArray(diffusions)
 
-        self.pdiffusions = diffusions_data[0]
+        self.pdiffusion = diffusions_data[0]
 
         self.iDiffusions = diffusions_data[1]
 
@@ -331,7 +363,7 @@ class Pool(chemesis3_base.ch3_pool):
 
             chemesis3_base.delete_IntArray(self.piDiffusions)
             
-        int_array = CreateIntArray(reactions)
+        int_array = CreateIntArray(diffusions)
 
         self.piDiffusions = int_array[0]
 
@@ -485,7 +517,7 @@ class Reaction(chemesis3_base.ch3_reaction):
 
 
 #************************* Begin Diffusion **************************
-class Diffusion(chemesis3_base.ch3_reaction):
+class Diffusion(chemesis3_base.ch3_diffusion):
     """!
     @brief class for a chemesis 3 reaction 
 
@@ -493,8 +525,14 @@ class Diffusion(chemesis3_base.ch3_reaction):
 
     def __init__(self):
 
-        chemesis3_base.ch3_reaction.__init__(self)
+        chemesis3_base.ch3_diffusion.__init__(self)
 
+#---------------------------------------------------------------------------
+
+    def SetSerial(self, serial):
+
+        self.mc.iSerial = chemesis3_base.AddressingNeurospaces2Chemesis(serial)
+        
 #---------------------------------------------------------------------------
 
     def SetPool1(self, pool):
@@ -505,9 +543,8 @@ class Diffusion(chemesis3_base.ch3_reaction):
         if pool is None:
 
             return False
-
-        chemesis_base.Chemesis3Pointer_assign(self.ppool1, pool)
-
+        self.ppool1 = pool
+        #chemesis3_base.PoolPointerAssign(self.ppool1, pool)
         return True
     
 #---------------------------------------------------------------------------
@@ -520,8 +557,8 @@ class Diffusion(chemesis3_base.ch3_reaction):
         if pool is None:
 
             return False
-
-        chemesis_base.Chemesis3Pointer_assign(self.ppool2, pool)
+        self.ppool2 = pool
+#        chemesis3_base.PoolPointerAssign(self.ppool2, pool)
 
         return True
 

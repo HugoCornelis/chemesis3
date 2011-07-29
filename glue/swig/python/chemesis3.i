@@ -31,7 +31,23 @@ int AddressingNeurospaces2Chemesis(int iNeuro);
 int AddressingChemesis2Neurospaces(int iChemesis);
 int PoolSize(void);
 int ReactionSize(void);
+int PoolPointerAssign(struct ch3_pool *ppDst, struct ch3_pool *ppSrc);
 
+
+
+int PoolPointerAssign(struct ch3_pool *ppDst, struct ch3_pool *ppSrc)
+{
+
+  if( !ppSrc )
+  {
+    return 0;
+  }
+
+  ppDst = ppSrc;
+  
+  return 1;
+
+}
 
 int AddressingNeurospaces2Chemesis(int iNeuro)
 {
