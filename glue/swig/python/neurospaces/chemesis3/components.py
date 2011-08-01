@@ -462,7 +462,14 @@ class Reaction(chemesis3_base.ch3_reaction):
         self.iProducts = 0
         self.piProducts = None
 
+        self.dBackwardRate = 0.0
+        self.dBackwardSolved = 0.0
+        self.dForwardRate = 0.0
+        self.dForwardSolved = 0.0
+
         self.mc.iType = chemesis3_base.MATH_TYPE_Reaction
+
+        self.mc.iSerial = -1
 
 #        self.mc.iModelSourceType = -1
 

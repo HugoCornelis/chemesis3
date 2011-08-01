@@ -184,7 +184,6 @@ og.AddOutput("concentration", concentration4)
 
 simulation_time = 0.0
 
-
 for i in range(0,STEPS):
 
     simulation_time = i * TIME_STEP + TIME_GRANULARITY
