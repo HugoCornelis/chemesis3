@@ -133,30 +133,30 @@ diff = [Diffusion()]
 
 diff[0].SetSerial(5)
 diff[0].dDiffusionConstant = 6e-7
-diff[0].SetPool1(ca[0])
-diff[0].SetPool2(ca[3])
 diff[0].dLength1 = 0.0002
 diff[0].dArea1 = 5.0265440000000004e-07
 diff[0].dLength2 = 0.0002
 diff[0].dArea2 = 1.2566360000000001e-07
 diff[0].dFlux1 = 0.0
 diff[0].dFlux2 = 0.0
-diff[0].dUnits = 1e3
+diff[0].dUnits = 1e-3
 
 
 from neurospaces.chemesis3.components import SimObjChemesis3
+import neurospaces.chemesis3.chemesis3_base as chemesis3_base
 
 ch3 = SimObjChemesis3('cal2')
 
 ch3.SetPools(ca)
 ch3.SetReactions(rxn)
+
+diff[0].ppool1 = chemesis3_base.Chemesis3PoolArray_getitem(ch3.ppool, 0)
+diff[0].ppool2 = chemesis3_base.Chemesis3PoolArray_getitem(ch3.ppool, 3)
+
 ch3.SetDiffusions(diff)
 
 # set the time step
 ch3.dStep = TIME_STEP
-
-
-import neurospaces.chemesis3.chemesis3_base as chemesis3_base
 
 chemesis3_base.Chemesis3Initiate(ch3)
 
@@ -169,7 +169,7 @@ from experiment.output import Output
 
 og = Output("/tmp/output_cal2")
 
-#og.SetFormat(' %.9f')
+og.SetFormat(' %.9f')
 
 
 concentration1 = chemesis3_base.Chemesis3AddressVariable(ch3, 2, "concentration")

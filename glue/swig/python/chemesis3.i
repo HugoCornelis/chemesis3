@@ -38,12 +38,12 @@ int PoolPointerAssign(struct ch3_pool *ppDst, struct ch3_pool *ppSrc);
 int PoolPointerAssign(struct ch3_pool *ppDst, struct ch3_pool *ppSrc)
 {
 
-  if( !ppSrc )
-  {
-    return 0;
-  }
+/*   if( !ppSrc ) */
+/*   { */
+/*     return 0; */
+/*   } */
 
-  ppDst = ppSrc;
+  ppDst = &ppSrc;
   
   return 1;
 

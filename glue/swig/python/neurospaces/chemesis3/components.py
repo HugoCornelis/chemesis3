@@ -534,6 +534,8 @@ class Diffusion(chemesis3_base.ch3_diffusion):
 
         chemesis3_base.ch3_diffusion.__init__(self)
 
+        self.mc.iType = chemesis3_base.MATH_TYPE_Diffusion
+
 #---------------------------------------------------------------------------
 
     def SetSerial(self, serial):
@@ -550,8 +552,10 @@ class Diffusion(chemesis3_base.ch3_diffusion):
         if pool is None:
 
             return False
-        self.ppool1 = pool
-        #chemesis3_base.PoolPointerAssign(self.ppool1, pool)
+
+#        chemesis3_base.Chemesis3PoolPointer_assign(self.ppool1, int(pool))
+#        self.ppool1 = int(pool)
+        chemesis3_base.PoolPointerAssign(self.ppool1, pool)
         return True
     
 #---------------------------------------------------------------------------
@@ -564,8 +568,10 @@ class Diffusion(chemesis3_base.ch3_diffusion):
         if pool is None:
 
             return False
-        self.ppool2 = pool
-#        chemesis3_base.PoolPointerAssign(self.ppool2, pool)
+
+#        chemesis3_base.Chemesis3PoolPointer_assign(self.ppool2, int(pool))
+#        self.ppool2 = int(pool)
+        chemesis3_base.PoolPointerAssign(self.ppool2, pool)
 
         return True
 
