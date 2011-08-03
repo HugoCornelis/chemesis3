@@ -54,7 +54,6 @@ my $test
 				arguments => [
 					     ],
 				command => 'tests/python/cal2.py',
-				disabled => 'working on this for python',
 
 				command_tests => [
 						  {
@@ -79,7 +78,7 @@ my $test
 						preparer =>
 						sub
 						{
-						    `rm -f /tmp/output_cal1`;
+						    `rm -f /tmp/output_cal2`;
 						},
 					       },
 				reparation => {
@@ -87,7 +86,7 @@ my $test
 					       reparer =>
 					       sub
 					       {
- 						   `rm -f /tmp/output_cal1`;
+ 						   `rm -f /tmp/output_cal2`;
 					       },
 					      },
 			       },
