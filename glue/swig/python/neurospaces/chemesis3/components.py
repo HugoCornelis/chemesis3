@@ -273,6 +273,15 @@ class Pool(chemesis3_base.ch3_pool):
         self.piPools = None
         self.piPoolsFlags = None
 
+        self.dConcentrationInit = 0.0
+        self.dConcentration = 0.0
+        self.dVolume = 0.0
+        self.dUnits = 0.0
+        self.iConserve = 0
+        self.dQuantity = 0.0
+        self.dQuantityTotal = 0.0
+        self.dConcentrationTotal = 0.0
+
         self.mc.iType = chemesis3_base.MATH_TYPE_Pool
 
 # the size is not used

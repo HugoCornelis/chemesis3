@@ -169,7 +169,7 @@ from experiment.output import Output
 
 og = Output("/tmp/output_cal2")
 
-og.SetFormat(' %.9f')
+#og.SetFormat(' %.9f')
 
 
 concentration1 = chemesis3_base.Chemesis3AddressVariable(ch3, 2, "concentration")
