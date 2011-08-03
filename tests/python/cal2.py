@@ -143,17 +143,21 @@ diff[0].dUnits = 1e-3
 
 
 from neurospaces.chemesis3.components import SimObjChemesis3
-import neurospaces.chemesis3.chemesis3_base as chemesis3_base
 
 ch3 = SimObjChemesis3('cal2')
 
 ch3.SetPools(ca)
 ch3.SetReactions(rxn)
-
-diff[0].ppool1 = chemesis3_base.Chemesis3PoolArray_getitem(ch3.ppool, 0)
-diff[0].ppool2 = chemesis3_base.Chemesis3PoolArray_getitem(ch3.ppool, 3)
-
 ch3.SetDiffusions(diff)
+
+import neurospaces.chemesis3.chemesis3_base as chemesis3_base
+
+# Sets ppool[0] to diff[0].pool1 
+chemesis3_base.SetDiffusionPool1(ch3, 0, 0)
+
+# Sets ppool[3] to diff[0].ppool2
+chemesis3_base.SetDiffusionPool2(ch3, 0, 3)
+
 
 # set the time step
 ch3.dStep = TIME_STEP

@@ -31,23 +31,126 @@ int AddressingNeurospaces2Chemesis(int iNeuro);
 int AddressingChemesis2Neurospaces(int iChemesis);
 int PoolSize(void);
 int ReactionSize(void);
-int PoolPointerAssign(struct ch3_pool *ppDst, struct ch3_pool *ppSrc);
+int SetDiffusionPool1(struct simobj_Chemesis3 *pch3, int iDiffusionIndex, int iPoolIndex);
+int SetDiffusionPool2(struct simobj_Chemesis3 *pch3, int iDiffusionIndex, int iPoolIndex);
 
+//--------------------------------------------------------------------------------
 
-
-int PoolPointerAssign(struct ch3_pool *ppDst, struct ch3_pool *ppSrc)
+int SetDiffusionPool1(struct simobj_Chemesis3 *pch3, int iDiffusionIndex, int iPoolIndex)
 {
 
-/*   if( !ppSrc ) */
-/*   { */
-/*     return 0; */
-/*   } */
+  struct ch3_diffusion *pDiffusion = NULL;
+  struct ch3_pool *pPool = NULL;
+  char pcErrorMsg[1024];
 
-  ppDst = &ppSrc;
+  if( !pch3 )
+  {
+
+    PyErr_SetString(PyExc_ReferenceError,"No Chemesis3 Simulation Object has been allocated");
+    return 0;
+
+  }
+
+
+  if( iDiffusionIndex > pch3->iDiffusions )
+  {
+
+    snprintf(&pcErrorMsg, 1024, "No diffusion exists at index '%d'", iDiffusionIndex);
+
+    PyErr_SetString(PyExc_IndexError, pcErrorMsg);
+    return 0;
+    
+  }
+  else
+  {
   
+    pDiffusion = &pch3->pdiffusion[iDiffusionIndex];
+
+  }
+
+
+  if( iPoolIndex > pch3->iPools )
+  {    
+
+    snprintf(&pcErrorMsg, 1024, "No pool exists at index '%d'", iPoolIndex);
+
+    PyErr_SetString(PyExc_IndexError, pcErrorMsg);
+    return 0;
+    
+  }
+  else
+  {
+    
+    pPool = &pch3->ppool[iPoolIndex];
+
+  }
+
+  pDiffusion->ppool1 = pPool;
+
   return 1;
 
 }
+
+
+//--------------------------------------------------------------------------------
+
+
+int SetDiffusionPool2(struct simobj_Chemesis3 *pch3, int iDiffusionIndex, int iPoolIndex)
+{
+
+  struct ch3_diffusion *pDiffusion = NULL;
+  struct ch3_pool *pPool = NULL;
+  char pcErrorMsg[1024];
+
+  if( !pch3 )
+  {
+
+    PyErr_SetString(PyExc_ReferenceError,"No Chemesis3 Simulation Object has been allocated");
+    return 0;
+
+  }
+
+
+  if( iDiffusionIndex > pch3->iDiffusions )
+  {
+
+    snprintf(pcErrorMsg, 1024, "No diffusion exists at index '%d'", iDiffusionIndex);
+
+    PyErr_SetString(PyExc_IndexError, pcErrorMsg);
+    return 0;
+    
+  }
+  else
+  {
+  
+    pDiffusion = &pch3->pdiffusion[iDiffusionIndex];
+
+  }
+
+
+  if( iPoolIndex > pch3->iPools )
+  {    
+
+    snprintf(pcErrorMsg, 1024, "No pool exists at index '%d'", iPoolIndex);
+
+    PyErr_SetString(PyExc_IndexError, pcErrorMsg);
+    return 0;
+    
+  }
+  else
+  {
+    
+    pPool = &pch3->ppool[iPoolIndex];
+
+  }
+
+  pDiffusion->ppool2 = pPool;
+
+  return 1;
+
+}
+
+//--------------------------------------------------------------------------------
 
 int AddressingNeurospaces2Chemesis(int iNeuro)
 {
@@ -56,6 +159,7 @@ int AddressingNeurospaces2Chemesis(int iNeuro)
 
 }
 
+//--------------------------------------------------------------------------------
 
 int AddressingChemesis2Neurospaces(int iChemesis)
 {
@@ -64,15 +168,21 @@ int AddressingChemesis2Neurospaces(int iChemesis)
 
 }
 
+//--------------------------------------------------------------------------------
+
 int PoolSize(void)
 {
   return sizeof(struct ch3_pool);
 }
 
+//--------------------------------------------------------------------------------
+
 int ReactionSize(void)
 {
   return sizeof(struct ch3_reaction);
 }
+
+//--------------------------------------------------------------------------------
 
 int NumItems(int *pi)
 {
@@ -83,6 +193,8 @@ int NumItems(int *pi)
 
   return sizeof(pi) / sizeof(int);
 }
+
+//--------------------------------------------------------------------------------
 
 
 %} // end inline
