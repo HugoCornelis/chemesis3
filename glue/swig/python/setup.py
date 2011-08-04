@@ -366,7 +366,7 @@ _library_paths = [os.path.join(_chemesis3_dir),
                   "../../..",
                   "/usr/local/lib/", ]
 
-_include_files = ["chemesis3/chemesis3.h",]
+_include_files = ["chemesis3/chemesis3.h", "heccer/des.h"]
 _include_paths = ["../../..",
                   "/usr/local/include",
                   ]
