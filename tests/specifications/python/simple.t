@@ -11,7 +11,6 @@ my $test
 				arguments => [
 					     ],
 				command => 'tests/python/cal1.py',
-				disabled => 'Removed this while fixing an exec error',
 				command_tests => [
 						  {
 						   description => "Check for cal1.py script completion",
