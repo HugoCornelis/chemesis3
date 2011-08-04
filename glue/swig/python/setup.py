@@ -127,7 +127,7 @@ class Chemesis3Module(Extension):
     """
     def __init__(self, library_files=None, library_paths=None,
                 include_files=None, include_paths=None,
-                swig_out='..'):
+                 ):
 
 
         if sys.platform == "darwin":
@@ -137,8 +137,6 @@ class Chemesis3Module(Extension):
             if arch == 'i386':
 
                 os.environ['ARCHFLAGS'] = "-arch i386"
-
-        self._swig_out = swig_out
                 
         self._library_files = library_files
         self._library_paths = library_paths
@@ -168,7 +166,23 @@ class Chemesis3Module(Extension):
 
     def get_swig_opts(self):
 
-        return [ '-I%s' % self._swig_out, '-outdir', os.path.join('neurospaces', 'chemesis3')]
+
+        dirs = self.get_include_dirs()
+
+        include_args = []
+        
+        if len(dirs) > 0:
+
+            include_args = [ '-I%s' % dirs[0],]        
+
+        out_args = ['-outdir', os.path.join('neurospaces', 'chemesis3')]
+
+        swig_opts = []
+
+        swig_opts.extend(include_args)
+        swig_opts.extend(out_args)
+
+        return swig_opts
 
     def get_library_dirs(self):
 
@@ -353,14 +367,20 @@ _library_paths = [os.path.join(_chemesis3_dir),
                   "/usr/local/lib/", ]
 
 _include_files = ["chemesis3/chemesis3.h",]
-_include_paths = ["..",
-                  "../chemesis3", ]
+_include_paths = ["../../..",
+                  "/usr/local/include",
+                  ]
 
-chemesis3_module=Chemesis3Module(library_paths=_library_paths,
-                     library_files=_library_files,
-                     include_paths=_include_paths,
-                     include_files=_include_files)
+try:
+    chemesis3_module=Chemesis3Module(library_paths=_library_paths,
+                                     library_files=_library_files,
+                                     include_paths=_include_paths,
+                                     include_files=_include_files)
+except Exception, e:
 
+    print "Error: %s" % e
+    sys.exit(0)
+    
 EXT_MODULES=[
     chemesis3_module,
     ]
