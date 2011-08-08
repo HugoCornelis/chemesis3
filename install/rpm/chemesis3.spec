@@ -4,7 +4,7 @@
 %define _mandir		/usr/local/share/man/man1
 
 # $Format: "%define name	${package}"$
-%define name	developer
+%define name	chemesis3
 
 
 # $Format: "%define release	        ${label}"$
@@ -22,7 +22,7 @@ BuildRoot:		%{buildroot}
 # Since developer is nothing but perl scripts, we use the noarch flag. 
 BuildArch:		noarch
 
-Summary: 		Neurospaces Developer Package
+Summary: 		Chemesis 3
 License: 		GPL
 Name: 			%{name}
 Version: 		%{version}
@@ -38,7 +38,7 @@ Provides:		perl(Neurospaces::Utilities)
 Requires:		perl >= 5.8.8
 
 %description
-The Neurospaces developer package contains essential tools for Neurospaces development. 
+Chemesis 3 is a solver used for calculating chemical reactions. 
  The Neurospaces project develops software components of neuronal
  simulator that integrate in a just-in-time manner for the
  exploration, simulation and validation of accurate neuronal models.

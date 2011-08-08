@@ -23,22 +23,24 @@ packages to run a simulation.
 """
 __download_url__ = "http://repo-genesis3.cbi.utsa.edu"
 
-def GetRevisionInfo():
-# $Format: "    return \"${monotone_id}\""$
-    return "8892d74da4c484c5b8a119d299f42b49d64e4b2a"
+class PackageInfo:
+    
+    def GetRevisionInfo():
+# $Format: "        return \"${monotone_id}\""$
+        return "40ac0a7a884b8f9a4d9a793c25dcf28ea8eb503a"
 
-def GetPackageName():
-# $Format: "    return \"${package}\""$
-    return "chemesis3"
+    def GetName():
+# $Format: "        return \"${package}\""$
+        return "chemesis3"
 
-def GetVersion():
-# $Format: "    return \"${major}.${minor}.${micro}-${label}\""$
-    return "0.0.0-alpha"
+    def GetVersion():
+# $Format: "        return \"${major}.${minor}.${micro}-${label}\""$
+        return "0.0.0-alpha"
 
-def GetDependencies():
-    """!
-    @brief Provides a list of other CBI dependencies needed.
-    """
-    dependencies = []
-
-    return dependencies
+    def GetDependencies():
+        """!
+        @brief Provides a list of other CBI dependencies needed.
+        """
+        dependencies = []
+        
+        return dependencies
