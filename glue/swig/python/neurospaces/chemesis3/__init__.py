@@ -20,6 +20,9 @@ except ImportError, e:
 
 import __cbi__
 
+
+from neurospaces.chemesis3.components import SimObjChemesis3
+
 #************************* Chemesis3 constants **************************
 #
 # Moved these here so that these constants can be accessible from the top level
@@ -50,17 +53,72 @@ CHEMESIS3_STATUS_PHASE_5 = chemesis3_base.CHEMESIS3_STATUS_PHASE_5
 
 
 
+#---------------------------------------------------------------------
+
+class Chemesis3Error(Exception):
+    pass
+
+
+#---------------------------------------------------------------------
+
+
+
 #************************* Begin Chemesis3 **************************
 class Chemesis3:
 
 
 
-    def __init__(self, name="Untitled Chemesis3"):
+    def __init__(self, name="Untitled Chemesis3", model=None, intermediary=None,
+                 event_distributor=None, event_querer=None):
+        """!
 
-        pass
+        """
+        
+        self.name = name
+
+        self._chemesis3_core = SimObjChemesis3(self.name)
+
+        if self._chemesis3_core is None:
+
+            raise Chemesis3Error("Could not create a low level Chemesis 3 object")
 
 
-#---------------------------------------------------------------------------
+        self._model_source = None
+
+        self._is_constructed = False
+
+        self._compiled_p1 = False
+        self._compiled_p2 = False
+        self._compiled_p3 = False
+
+
+        chemesis3_base.Initiate(self._chemesis3_core)
+
+
+        if not model is None:
+
+            self._model_source = model
+            
+            
+#---------------------------------------------------------------------
+
+
+    def GetName(self):
+
+        return self.name 
+
+#---------------------------------------------------------------------
+
+    def GetTimeStep(self):
+
+        return self.time_step
+
+#---------------------------------------------------------------------
+
+    def SetTimeStep(self, time_step):
+
+        self.time_step = time_step
+
 
 
 #**************************** End Chemesis3 **************************
