@@ -98,10 +98,28 @@ class Chemesis3:
         if not model is None:
 
             self._model_source = model
-            
-            
+
 #---------------------------------------------------------------------
 
+    def GetCore(self):
+
+        return self._chemesis3_core
+
+#---------------------------------------------------------------------
+
+    def SetCore(self, chem3):
+
+        self._chemesis3_core = chem3
+
+#---------------------------------------------------------------------
+
+    def Construct(self, model=None):
+
+        if self._chemesis3_core is None:
+
+            raise Chemesis3Error("Can't construct Chemesis3, not object was created.")
+
+#---------------------------------------------------------------------
 
     def GetName(self):
 
