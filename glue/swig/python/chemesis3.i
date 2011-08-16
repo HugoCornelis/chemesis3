@@ -17,6 +17,8 @@
 #include "chemesis3/addressing.h"
 #include "chemesis3/mathcomponent.h"
 #include "chemesis3/service.h"
+
+#include "integrators/chemesis3/neurospaces/chemesis3.h"
 %}
 
 
@@ -207,7 +209,7 @@ int NumItems(int *pi)
 %include "chemesis3/chemesis3.h"
 %include "chemesis3/mathcomponent.h"
 %include "chemesis3/service.h"
-
+%include "integrators/chemesis3/neurospaces/chemesis3.h"
 
 // info on cpointer library here http://www.swig.org/Doc1.3/Library.html#Library_nn4
 %include "cpointer.i"

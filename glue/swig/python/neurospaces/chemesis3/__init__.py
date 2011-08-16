@@ -67,7 +67,6 @@ class Chemesis3Error(Exception):
 class Chemesis3:
 
 
-
     def __init__(self, name="Untitled Chemesis3", model=None, intermediary=None,
                  event_distributor=None, event_querer=None):
         """!
@@ -85,8 +84,8 @@ class Chemesis3:
 
         self._model_source = None
 
+        # Boolean flag variables for status checks
         self._is_constructed = False
-
         self._compiled_p1 = False
         self._compiled_p2 = False
         self._compiled_p3 = False
@@ -102,19 +101,11 @@ class Chemesis3:
 
         if self._chemesis3_core is not None:
 
-            chemesis3_base.Initiate(self._chemesis3_core)
+            chemesis3_base.Chemesis3Initiate(self._chemesis3_core)
 
         else:
 
             raise Chemesis3Error("Can't initiate, no Chemesis3 object allocated")
-
-#---------------------------------------------------------------------
-
-    def Construct(self, model=None):
-
-        if self._chemesis3_core is None:
-
-            raise Chemesis3Error("Can't construct Chemesis3, has not been allocated")
 
 #---------------------------------------------------------------------
 
@@ -152,6 +143,60 @@ class Chemesis3:
                                           None,
                                           None)
 
+        self._is_constructed = True
+
+#---------------------------------------------------------------------
+
+    def Compile(self):
+        """!
+        @brief 
+        """
+        
+        if self._chemesis3_core is None:
+
+            raise Chemesis3Error("Can't compile, no Chemesis3 object has been allocated")
+            
+        if not self._is_constructed:
+
+            self.Construct()
+
+        self.CompileP1()
+        self.CompileP2()
+        self.CompileP3()
+
+#---------------------------------------------------------------------
+
+    def CompileP1(self):
+        """!
+        @brief 
+        """
+        
+        if self._chemesis3_core is None:
+
+            raise Chemesis3Error("Can't compile (P1), no Chemesis3 object has been allocated")
+
+        result = chemesis3_base.Chemesis3CompileP1(self._chemesis3_core)
+
+        if result == 1:
+
+            self._compiled_p1 = True
+
+        else:
+
+            raise Chemesis3Error("There was a problem compiling Chemesis3 (P1).")
+
+#---------------------------------------------------------------------
+    
+    def CompileP2(self):
+
+        self._compiled_p2 = True
+
+#---------------------------------------------------------------------
+
+    def CompileP3(self):
+
+        self._compiled_p3 = True
+
 #---------------------------------------------------------------------
 
     def GetName(self):
@@ -166,9 +211,15 @@ class Chemesis3:
 
 #---------------------------------------------------------------------
 
-    def SetTimeStep(self):
+    def SetTimeStep(self,time_step):
 
-        self.time_step = time_step
+        if self._chemesis3_core is None:
+            
+            self.time_step = time_step
+
+        else:
+
+            self._chemesis3_core.dStep = time_step
 
 #---------------------------------------------------------------------
 
@@ -181,5 +232,33 @@ class Chemesis3:
         else:
 
             raise Chemesis3Error("Can't step, no Chemesis3 object has been allocated")
+
+#---------------------------------------------------------------------
+
+    def GetAddress(self, path, field="concentration"):
+        """!
+
+        """
+        
+        address = None
+
+        if self._chemesis3_core is None:
+
+            raise Chemesis3Error("Can't look up address for %s, %s. No Chemesis3 is allocated" % (path,field))
+
+        elif self._model_source is None:
+
+            raise Chemesis3Error("Can't look up address for %s, %s. No model container present" % (path,field))
+
+        else:
+
+            serial = self._model_source.GetSerial(path)
+
+            address = chemesis3_base.Chemesis3AddressVariable(self._chemesis3_core,
+                                                              serial,
+                                                              field)
+
+        return address
+            
 
 #**************************** End Chemesis3 **************************
