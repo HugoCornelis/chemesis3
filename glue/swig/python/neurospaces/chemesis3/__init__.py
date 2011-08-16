@@ -21,7 +21,7 @@ except ImportError, e:
 import __cbi__
 
 
-from neurospaces.chemesis3.components import SimObjChemesis3
+from components import SimObjChemesis3
 
 #************************* Chemesis3 constants **************************
 #
@@ -92,12 +92,29 @@ class Chemesis3:
         self._compiled_p3 = False
 
 
-        chemesis3_base.Initiate(self._chemesis3_core)
-
-
         if not model is None:
 
             self._model_source = model
+
+#---------------------------------------------------------------------
+
+    def Initiate(self):
+
+        if self._chemesis3_core is not None:
+
+            chemesis3_base.Initiate(self._chemesis3_core)
+
+        else:
+
+            raise Chemesis3Error("Can't initiate, no Chemesis3 object allocated")
+
+#---------------------------------------------------------------------
+
+    def Construct(self, model=None):
+
+        if self._chemesis3_core is None:
+
+            raise Chemesis3Error("Can't construct Chemesis3, has not been allocated")
 
 #---------------------------------------------------------------------
 
@@ -117,7 +134,23 @@ class Chemesis3:
 
         if self._chemesis3_core is None:
 
-            raise Chemesis3Error("Can't construct Chemesis3, not object was created.")
+            raise Chemesis3Error("Can't construct Chemesis3, no object was created.")
+
+        elif self._model_source is None:
+
+            if model is None: 
+
+                raise Chemesis3Error("Can't construct Chemesis3, no model container present")
+
+            else:
+
+                self._model_source = model
+
+        chemesis3_base.Chemesis3Construct(self._chemesis3_core,
+                                          self._model_source,
+                                          self._chemesis3_core.pcName,
+                                          None,
+                                          None)
 
 #---------------------------------------------------------------------
 
@@ -133,10 +166,20 @@ class Chemesis3:
 
 #---------------------------------------------------------------------
 
-    def SetTimeStep(self, time_step):
+    def SetTimeStep(self):
 
         self.time_step = time_step
 
+#---------------------------------------------------------------------
 
+    def Step(self, time):
+
+        if not self._chemesis3_core is None:
+
+            return chemesis3_base.Chemesis3SingleStep(self._chemesis3_core)
+
+        else:
+
+            raise Chemesis3Error("Can't step, no Chemesis3 object has been allocated")
 
 #**************************** End Chemesis3 **************************
