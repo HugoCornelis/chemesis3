@@ -35,8 +35,15 @@ int PoolSize(void);
 int ReactionSize(void);
 int SetDiffusionPool1(struct simobj_Chemesis3 *pch3, int iDiffusionIndex, int iPoolIndex);
 int SetDiffusionPool2(struct simobj_Chemesis3 *pch3, int iDiffusionIndex, int iPoolIndex);
+int solver_reaction_serial_2_index(int iReactionSerial);
 
 //--------------------------------------------------------------------------------
+
+
+int solver_reaction_serial_2_index(int iReactionSerial)
+{
+  return 1;
+}
 
 int SetDiffusionPool1(struct simobj_Chemesis3 *pch3, int iDiffusionIndex, int iPoolIndex)
 {

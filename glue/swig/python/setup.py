@@ -360,9 +360,18 @@ _model_container_chemesis3_dir = os.path.join(home_dir,
                                               'snapshots',
                                               '0'
                                               )
+_heccer_dir = os.path.join(home_dir,
+                           'neurospaces_project',
+                           'heccer',
+                           'source',
+                           'snapshots',
+                           '0'
+                           )
 
-_library_files = ["libchemesis3.a",]
+
+_library_files = ["libchemesis3.a", "libheccer.a"]
 _library_paths = [os.path.join(_chemesis3_dir),
+                  _heccer_dir,
                   "../../..",
                   "/usr/local/lib/", ]
 
