@@ -138,7 +138,7 @@ class Chemesis3:
                 self._model_source = model
 
         chemesis3_base.Chemesis3Construct(self._chemesis3_core,
-                                          self._model_source,
+                                          self._model_source.GetCore(),
                                           self._chemesis3_core.pcName,
                                           None,
                                           None)
@@ -223,7 +223,7 @@ class Chemesis3:
 
 #---------------------------------------------------------------------
 
-    def Step(self, time):
+    def Step(self, time=0.0):
 
         if not self._chemesis3_core is None:
 
@@ -259,6 +259,11 @@ class Chemesis3:
                                                               field)
 
         return address
-            
+
+#---------------------------------------------------------------------
+
+    def Finish(self):
+
+        pass
 
 #**************************** End Chemesis3 **************************
