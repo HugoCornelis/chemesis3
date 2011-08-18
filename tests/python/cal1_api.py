@@ -32,7 +32,7 @@ my_model.Read("chemesis/cal1.ndf")
 
 from chemesis3 import Chemesis3
 
-chem3 = Chemesis3(name="cal1", model=my_model)
+chem3 = Chemesis3(name="/cal1", model=my_model)
 
 chem3.Initiate()
 
@@ -60,7 +60,7 @@ simulation_time = 0.0
 for i in range(0,STEPS):
 
     simulation_time = i * TIME_STEP 
-    pdb.set_trace()
+
     chem3.Step(simulation_time)
     
     og.Step(simulation_time)
