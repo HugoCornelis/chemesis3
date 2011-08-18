@@ -137,11 +137,15 @@ class Chemesis3:
 
                 self._model_source = model
 
-        chemesis3_base.Chemesis3Construct(self._chemesis3_core,
-                                          self._model_source.GetCore(),
-                                          self._chemesis3_core.pcName,
-                                          None,
-                                          None)
+        result = chemesis3_base.Chemesis3Construct(self._chemesis3_core,
+                                                   self._model_source.GetCore(),
+                                                   self._chemesis3_core.pcName,
+                                                   None,
+                                                   None)
+
+        if result == 0:
+
+            raise Chemesis3Error("Can't compile chemesis3 '%s'" % self._chemesis3_core.pcName)
 
         self._is_constructed = True
 
@@ -227,7 +231,7 @@ class Chemesis3:
 
         if not self._chemesis3_core is None:
 
-            return chemesis3_base.Chemesis3SingleStep(self._chemesis3_core)
+            return chemesis3_base.Chemesis3Advance(self._chemesis3_core, time)
 
         else:
 

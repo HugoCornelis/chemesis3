@@ -15,6 +15,11 @@ add_package_path("model-container", subdir="neurospaces")
 add_package_path("chemesis3", subdir="neurospaces")
 add_package_path("experiment", subdir="neurospaces")
 
+
+STEPS = 1000
+TIME_STEP = 0.002
+TIME_GRANULARITY = 1e-9
+
 #---------------------------------------------------------------------------
 
 from model_container import ModelContainer
@@ -31,7 +36,7 @@ chem3 = Chemesis3(name="cal1", model=my_model)
 
 chem3.Initiate()
 
-chem3.SetTimeStep(0.0002)
+chem3.SetTimeStep(TIME_STEP)
 
 chem3.Compile()
 
@@ -50,16 +55,13 @@ og.AddOutput("concentration", concentration2)
 concentration3 = chem3.GetAddress("/cal1/somabuf", "concentration")
 og.AddOutput("concentration", concentration3)
 
-
 simulation_time = 0.0
 
-time_step = 0.0002
+for i in range(0,STEPS):
 
-for i in range(0,1000):
-
-    simulation_time = i * time_step
-    
-    chem3.Step()
+    simulation_time = i * TIME_STEP 
+    pdb.set_trace()
+    chem3.Step(simulation_time)
     
     og.Step(simulation_time)
 

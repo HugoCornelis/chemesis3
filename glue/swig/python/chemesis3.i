@@ -42,7 +42,10 @@ int solver_reaction_serial_2_index(int iReactionSerial);
 
 int solver_reaction_serial_2_index(int iReactionSerial)
 {
+
+  PyErr_SetString(PyExc_NotImplementedError,"Function solver_reaction_serial_2_index is not defined or linked");
   return 1;
+
 }
 
 int SetDiffusionPool1(struct simobj_Chemesis3 *pch3, int iDiffusionIndex, int iPoolIndex)
