@@ -580,7 +580,7 @@ case "$host_os" in
    SWIGCOMPILECOMMAND_PYTHON='gcc $(SWIGCOMPILELINKSFORPYTHON) -c swiggable_chemesis3_wrap.c'
    AC_SUBST(SWIGCOMPILECOMMAND_PYTHON)
 
-    SWIGLDLINKSFORPYTHON='-L../../.. -lchemesis3 -L../../../integrators -lcneurospaces -L/usr/local/lib/model-container -lneurospacesread -lsymbol_algorithms -L$(top_builddir)/../../../../model-container/source/snapshots/0/algorithms/event -levent_algorithms -lncurses -lreadline -lhistory -fPIC -Xlinker -export-dynamic $(PYTHON_LDFLAGS)'
+    SWIGLDLINKSFORPYTHON='-L../../.. -lchemesis3 -L../../../integrators -lcneurospaces -L/usr/local/lib/model-container -lneurospacesread -lsymbol_algorithms -L$(top_builddir)/../../../../model-container/source/snapshots/0/algorithms/event -levent_algorithms -L$(top_builddir)/../../../../heccer/source/snapshots/0/ -lheccer -lncurses -lreadline -lhistory -fPIC -Xlinker -export-dynamic $(PYTHON_LDFLAGS)'
     AC_SUBST(SWIGLDLINKSFORPYTHON)
 
     SWIGLINKCOMMAND_PYTHON='gcc -shared swiggable_chemesis3_wrap.o $(SWIGLDLINKSFORPYTHON) -o _SwiggableChemesis3.$(PYTHONLIB_EXTENSION)'
