@@ -168,6 +168,10 @@ class Chemesis3:
         self.CompileP2()
         self.CompileP3()
 
+        # We must initiate AFTER a compile or the concentration won't be set right
+        self.Initiate()
+        
+
 #---------------------------------------------------------------------
 
     def CompileP1(self):
@@ -179,15 +183,21 @@ class Chemesis3:
 
             raise Chemesis3Error("Can't compile (P1), no Chemesis3 object has been allocated")
 
-        result = chemesis3_base.Chemesis3CompileP1(self._chemesis3_core)
+        if self._chemesis3_core.iStatus < CHEMESIS3_STATUS_PHASE_1:
+            
+            result = chemesis3_base.Chemesis3CompileP1(self._chemesis3_core)
 
-        if result == 1:
+            if result == 1:
 
-            self._compiled_p1 = True
+                self._compiled_p1 = True
+
+            else:
+
+                raise Chemesis3Error("There was a problem compiling Chemesis3 (P1).")
 
         else:
 
-            raise Chemesis3Error("There was a problem compiling Chemesis3 (P1).")
+            self._compiled_p1 = False
 
 #---------------------------------------------------------------------
     

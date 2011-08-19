@@ -9,7 +9,7 @@ import sys
 
 from test_library import add_package_path
 
-# have to go a level deeper since muliple imports would
+# have to go a level deeper since multiple imports would
 # register the neurospaces module.
 add_package_path("model-container", subdir="neurospaces")
 add_package_path("chemesis3", subdir="neurospaces")
@@ -59,7 +59,7 @@ simulation_time = 0.0
 
 for i in range(0,STEPS):
 
-    simulation_time = i * TIME_STEP 
+    simulation_time = i * TIME_STEP + TIME_GRANULARITY 
 
     chem3.Step(simulation_time)
     
