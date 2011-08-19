@@ -75,6 +75,8 @@ class Chemesis3:
         
         self.name = name
 
+        self.time_step = None
+        
         self._chemesis3_core = SimObjChemesis3(self.name)
 
         if self._chemesis3_core is None:
@@ -170,7 +172,10 @@ class Chemesis3:
 
         # We must initiate AFTER a compile or the concentration won't be set right
         self.Initiate()
-        
+
+        if self.time_step is None:
+
+            self.time_step = self._chemesis3_core.dStep
 
 #---------------------------------------------------------------------
 
@@ -221,7 +226,13 @@ class Chemesis3:
 
     def GetTimeStep(self):
 
-        return self.time_step
+        if self._chemesis3_core is None:
+            
+            return self.time_step
+
+        else:
+
+            return self._chemesis3_core.dStep
 
 #---------------------------------------------------------------------
 
