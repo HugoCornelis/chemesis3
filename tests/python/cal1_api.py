@@ -9,6 +9,8 @@ import sys
 
 from test_library import add_package_path
 
+os.environ['NEUROSPACES_NMC_MODELS']= os.path.join('/', 'usr', 'local', 'neurospaces', 'models', 'library')
+
 # have to go a level deeper since multiple imports would
 # register the neurospaces module.
 add_package_path("model-container", subdir="neurospaces")

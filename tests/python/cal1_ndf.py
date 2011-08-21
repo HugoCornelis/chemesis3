@@ -11,6 +11,7 @@ STEPS = 1000
 TIME_STEP = 0.002
 TIME_GRANULARITY = 1e-9
 
+os.environ['NEUROSPACES_NMC_MODELS']= os.path.join('/', 'usr', 'local', 'neurospaces', 'models', 'library')
 
 from test_library import add_package_path
 
