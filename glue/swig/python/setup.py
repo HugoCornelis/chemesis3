@@ -260,7 +260,8 @@ class Chemesis3Module(Extension):
 
     def get_libraries(self):
 
-        return ["chemesis3"]
+        return ["chemesis3", "event_algorithms", "symbol_algorithms",
+                "cneurospaces", "ncurses", "readline", "heccer", "neurospacesread"]
 
     def get_mac_architectures(self, file):
         """
@@ -370,10 +371,14 @@ _heccer_dir = os.path.join(home_dir,
                            )
 
 
-_library_files = ["libchemesis3.a", "libheccer.a", "libneurospacesread.a"]
-_library_paths = [os.path.join(_chemesis3_dir),
+_library_files = ["libchemesis3.a", "libheccer.a", "libneurospacesread.a", "libcneurospaces.a",
+                  "libsymbol_algorithms.a" , "libevent_algorithms.a"]
+_library_paths = [_chemesis3_dir,
+                  os.path.join(_chemesis3_dir, "integrators"),
                   _heccer_dir,
                   _model_container_dir,
+                  os.path.join(_model_container_dir, 'algorithms', 'symbol'),
+                  os.path.join(_model_container_dir, 'algorithms', 'event'),
                   "../../..",
                   "/usr/local/lib/", ]
 
@@ -381,6 +386,7 @@ _include_files = ["chemesis3/chemesis3.h", "heccer/des.h", "hierarchy/output/sym
 _include_paths = ["../../..",
                   "/usr/local/include",
                   _model_container_dir,
+                  _heccer_dir,
                   ]
 
 try:
