@@ -16,6 +16,7 @@ from distutils.command.install_data import install_data
 # if we import from nmc.__cbi__
 cbi = imp.load_source('__cbi__', os.path.join('neurospaces', 'chemesis3', '__cbi__.py'))
 
+_package_info = cbi.PackageInfo()
 
 #-------------------------------------------------------------------------------
 
@@ -281,8 +282,8 @@ class Chemesis3Module(Extension):
 
 
 #-------------------------------------------------------------------------------
-NAME = cbi.GetPackageName()
-VERSION = cbi.GetVersion()
+NAME = _package_info.GetName()
+VERSION = _package_info.GetVersion()
 AUTHOR = cbi.__author__
 AUTHOR_EMAIL = cbi.__email__
 LICENSE = cbi.__license__
@@ -353,13 +354,13 @@ _chemesis3_dir = os.path.join(home_dir,
                              '0'
                              )
 
-_model_container_chemesis3_dir = os.path.join(home_dir,
-                                              'neurospaces_project',
-                                              'model-container',
-                                              'source',
-                                              'snapshots',
-                                              '0'
-                                              )
+_model_container_dir = os.path.join(home_dir,
+                                    'neurospaces_project',
+                                    'model-container',
+                                    'source',
+                                    'snapshots',
+                                    '0'
+                                    )
 _heccer_dir = os.path.join(home_dir,
                            'neurospaces_project',
                            'heccer',
@@ -369,15 +370,17 @@ _heccer_dir = os.path.join(home_dir,
                            )
 
 
-_library_files = ["libchemesis3.a", "libheccer.a"]
+_library_files = ["libchemesis3.a", "libheccer.a", "libneurospacesread.a"]
 _library_paths = [os.path.join(_chemesis3_dir),
                   _heccer_dir,
+                  _model_container_dir,
                   "../../..",
                   "/usr/local/lib/", ]
 
-_include_files = ["chemesis3/chemesis3.h", "heccer/des.h"]
+_include_files = ["chemesis3/chemesis3.h", "heccer/des.h", "hierarchy/output/symbols/type_defines.h"]
 _include_paths = ["../../..",
                   "/usr/local/include",
+                  _model_container_dir,
                   ]
 
 try:
