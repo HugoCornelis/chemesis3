@@ -43,6 +43,7 @@ except ImportError:
 
     print "Neurospaces packages not installed."
 
+    sys.exit(0)
     
 package_manager = PackageManager(verbose=False)
 
