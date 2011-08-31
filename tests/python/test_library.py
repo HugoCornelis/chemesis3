@@ -51,9 +51,7 @@ def add_package_path(package, subdir=''):
                         '0',
                         'glue',
                         'swig',
-                        'python',
-                        subdir)
-
+                        'python')
 
     build_dir = os.path.join(path, 'build')
 
@@ -72,10 +70,14 @@ def add_package_path(package, subdir=''):
                 parts.pop() # remove the neurospaces path
 
                 python_build = os.path.join(os.sep, os.path.join(*parts))
-                sys.path.append(python_build)
+                #sys.path.append(os.path.join(python_build, subdir))
+                sys.path.insert(0, os.path.join(python_build, subdir))
 
-    # Add paths
-    sys.path.append(path)
+                return
+
+    # Add this path if we didn't find one previously
+    sys.path.insert(0, os.path.join(path, subdir))
+#    sys.path.append(os.path.join(path, subdir))
 
 
 
