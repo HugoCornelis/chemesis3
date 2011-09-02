@@ -167,23 +167,27 @@ class Chemesis3Module(Extension):
 
     def get_swig_opts(self):
 
+        include_dirs = self.get_include_dirs()
 
-        dirs = self.get_include_dirs()
+        opts = []
 
-        include_args = []
+        opts.extend(["-I%s" % d for d in include_dirs])
+
+        opts.append("-I%s" % os.path.join(home_dir,
+                                          'neurospaces_project',
+                                          'experiment',
+                                          'source',
+                                          'snapshots',
+                                          '0',
+                                          'glue',
+                                          'swig',
+                                          'python'
+                                          ))
         
-        if len(dirs) > 0:
+        opts.extend(["-outdir", os.path.join('neurospaces', 'chemesis3')])
 
-            include_args = [ '-I%s' % dirs[0],]        
-
-        out_args = ['-outdir', os.path.join('neurospaces', 'chemesis3')]
-
-        swig_opts = []
-
-        swig_opts.extend(include_args)
-        swig_opts.extend(out_args)
-
-        return swig_opts
+        return opts
+    
 
     def get_library_dirs(self):
 
@@ -383,10 +387,11 @@ _library_paths = [_chemesis3_dir,
                   "/usr/local/lib/", ]
 
 _include_files = ["chemesis3/chemesis3.h", "heccer/des.h", "hierarchy/output/symbols/type_defines.h"]
-_include_paths = ["../../..",
-                  "/usr/local/include",
-                  _model_container_dir,
+_include_paths = [_model_container_dir,
                   _heccer_dir,
+                  _chemesis3_dir,
+                  "../../..",
+                  "/usr/local/include",
                   ]
 
 try:
