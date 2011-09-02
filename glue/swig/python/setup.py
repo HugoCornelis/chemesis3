@@ -260,8 +260,8 @@ class Chemesis3Module(Extension):
 
     def get_libraries(self):
 
-        return ["chemesis3", "event_algorithms", "symbol_algorithms",
-                "cneurospaces", "ncurses", "readline", "heccer", "neurospacesread"]
+        return ["chemesis3", "cneurospaces", "ncurses", "readline", "heccer",
+                "neurospacesread", "event_algorithms", "symbol_algorithms",]
 
     def get_mac_architectures(self, file):
         """
