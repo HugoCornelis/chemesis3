@@ -301,18 +301,17 @@ KEYWORDS="neuroscience neurosimulator simulator modeling GENESIS"
 
 # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
 CLASSIFIERS = [
-    'Development Status :: 0 - Alpha',
+    'Development Status :: 3 - Alpha',
     'Environment :: Console',
-    'Environment :: Desktop Application',
     'Intended Audience :: End Users/Desktop',
     'Intended Audience :: Developers',
-    'Intended Audience :: Research',
-    'Intended Audience :: Science',        
-    'License :: OSI Approved :: GPL License',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: GNU General Public License (GPL)',
     'Operating System :: MacOS :: MacOS X',
-    'Operating System :: POSIX',
-    'Programming Language :: Python',
-    'Topic :: Research :: Neuroscience',
+    'Operating System :: POSIX :: Linux',
+    'Programming Language :: Python :: 2.5',
+    'Programming Language :: Python :: 2.6',
+    'Topic :: Software Development :: Libraries :: Python Modules',
 ]
 
 PACKAGE_FILES=find_files(os.path.join('neurospaces', 'chemesis3'))
