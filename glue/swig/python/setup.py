@@ -294,7 +294,7 @@ AUTHOR_EMAIL = cbi.__email__
 LICENSE = cbi.__license__
 URL = cbi.__url__
 DOWNLOAD_URL = cbi.__download_url__
-DESCRIPTION="Chemesis3 is a fast compartmental solver, that is based on hsolve of the GENESIS simulator."
+DESCRIPTION="Kinetic reaction and biochemical reaction pathways for G-3."
 LONG_DESCRIPTION=cbi.__description__
 
 KEYWORDS="neuroscience neurosimulator simulator modeling GENESIS"

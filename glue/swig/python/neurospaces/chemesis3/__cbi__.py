@@ -15,11 +15,8 @@ __email__ = "rodrigueza14@uthscsa.edu"
 __status__ = "Development"
 __url__ = "http://genesis-sim.org"
 __description__ = """
-This is the root management module for GENESIS. GENESIS is composed of several
-sub packages for reading and storing models, solvers, experimental protocols,
-and GUI interfaces. The root 'g3' package helps to determine which versions of
-packages are installed and performs updates, removal, and installation of needed
-packages to run a simulation. 
+Chemesis3 is a GENESIS3 reimplementation of chemesis from GENESIS. Chemesis3 is a solver
+used to model kinetic and biochemical reaction pathways for GENESIS3.
 """
 __download_url__ = "http://repo-genesis3.cbi.utsa.edu"
 
