@@ -5,11 +5,24 @@ import sys
 from commands import getoutput
 
 from distutils import log
-from distutils.core import setup, Extension
 from distutils.command.bdist_rpm import bdist_rpm
 from distutils.command.install_data import install_data
 
-#from setuptools import setup, find_packages
+# This will work for both setuptools and distutils
+# main difference is that if distutils is imported then
+# the bdist_egg option is not available.
+try:
+    
+    from setuptools import setup, find_packages, Extension
+
+except ImportError:
+
+    from distutils.core import setup
+    from distutils.core import Extension
+    
+    def find_packages():
+
+        return ['neurospaces', 'neurospaces.chemesis3']
 
 # import the cbi module. We use this since the check
 # for the compiled swig nmc_base gives an error
@@ -422,10 +435,9 @@ setup(
     license=LICENSE,
     keywords=KEYWORDS,
     url=URL,
-    packages=['neurospaces', 'neurospaces.chemesis3'],
+    packages=find_packages(),
     package_data={'neurospaces' : [os.path.join('neurospaces','__init__.py')],
                   'neurospaces.chemesis3' : PACKAGE_FILES},
-#     package_dir={'' : ''},
     classifiers=CLASSIFIERS,
     options=OPTIONS,
     platforms=PLATFORMS,

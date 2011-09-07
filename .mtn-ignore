@@ -19,6 +19,7 @@ build$
 ^depcomp$
 dist$
 ^docs/man$
+egg-info$
 ^glue/swig/perl/SwiggableChemesis3.pm$
 ^glue/swig/perl/swiggable_chemesis3_wrap.c$
 ^glue/swig/perl/SwiggableChemesis3.dylib$
