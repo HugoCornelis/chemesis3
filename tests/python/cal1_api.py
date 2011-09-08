@@ -13,9 +13,9 @@ os.environ['NEUROSPACES_NMC_MODELS']= os.path.join('/', 'usr', 'local', 'neurosp
 
 # have to go a level deeper since multiple imports would
 # register the neurospaces module.
-add_package_path("model-container", subdir="neurospaces")
-add_package_path("chemesis3", subdir="neurospaces")
-add_package_path("experiment", subdir="neurospaces")
+add_package_path("model-container")
+add_package_path("chemesis3")
+add_package_path("experiment")
 
 
 STEPS = 1000

@@ -38,10 +38,10 @@ CLEANFILES = \
 	$(srcdir)/chemesis3_wrap.o \
 	$(srcdir)/_chemesis3_base.so \
 	$(srcdir)/chemesis3_base.py \
-	$(srcdir)/neurospaces/chemesis3_wrap.c \
-	$(srcdir)/neurospaces/chemesis3_wrap.o \
-	$(srcdir)/neurospaces/chemesis3/_chemesis3_base.so \
-	$(srcdir)/neurospaces/chemesis3/chemesis3_base.py 
+	$(srcdir)/chemesis/chemesis3_wrap.c \
+	$(srcdir)/chemesis3_wrap.o \
+	$(srcdir)/chemesis3/_chemesis3_base.so \
+	$(srcdir)/chemesis3/chemesis3_base.py 
 
 # SUBDIRS = 
 

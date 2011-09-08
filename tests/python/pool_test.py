@@ -12,7 +12,7 @@ from test_library import add_package_path
 add_package_path("chemesis3")
 
 
-from neurospaces.chemesis3.components import Pool
+from chemesis3.components import Pool
 
 my_pool = Pool()
 

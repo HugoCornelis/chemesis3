@@ -16,7 +16,7 @@ os.environ['NEUROSPACES_NMC_MODELS']= os.path.join('/', 'usr', 'local', 'neurosp
 from test_library import add_package_path
 
 add_package_path("chemesis3")
-add_package_path("model-container", subdir="neurospaces")
+add_package_path("model-container")
 
 
 #---------------------------------------------------------------------------
@@ -29,15 +29,15 @@ my_model.Read("chemesis/cal1.ndf")
 
 #---------------------------------------------------------------------------
 
-from neurospaces.chemesis3.components import SimObjChemesis3
-from neurospaces.chemesis3 import CHEMESIS3_STATUS_PHASE_2
+from chemesis3.components import SimObjChemesis3
+from chemesis3 import CHEMESIS3_STATUS_PHASE_2
 
 ch3 = SimObjChemesis3('cal1')
 
 # set the time step
 ch3.dStep = TIME_STEP
 
-import neurospaces.chemesis3.chemesis3_base as chemesis3_base
+import chemesis3.chemesis3_base as chemesis3_base
 
 
 chemesis3_base.Chemesis3Construct(ch3,
@@ -52,7 +52,7 @@ chemesis3_base.Chemesis3Initiate(ch3)
 
 # we need an output object so we import from the experiment path
 
-add_package_path("experiment", subdir='neurospaces')
+add_package_path("experiment")
 
 from experiment.output import Output
 

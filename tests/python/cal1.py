@@ -16,7 +16,7 @@ from test_library import add_package_path
 
 add_package_path("chemesis3")
 
-from neurospaces.chemesis3.components import Pool
+from chemesis3.components import Pool
 
 soma_ca = [Pool(),
            Pool(),
@@ -89,7 +89,7 @@ soma_ca[2].dQuantityTotal = 0.0
 soma_ca[2].dConcentrationTotal = 0.153
 
 
-from neurospaces.chemesis3.components import Reaction
+from chemesis3.components import Reaction
 
 somacabufrxn = Reaction()
 
@@ -106,7 +106,7 @@ somacabufrxn.dForwardRate = 1e2
 somacabufrxn.dForwardSolved = 0.0
 
 
-from neurospaces.chemesis3.components import SimObjChemesis3
+from chemesis3.components import SimObjChemesis3
 
 ch3 = SimObjChemesis3('cal1')
 
@@ -117,14 +117,14 @@ ch3.SetReactions(somacabufrxn)
 # set the time step
 ch3.dStep = TIME_STEP
 
-import neurospaces.chemesis3.chemesis3_base as chemesis3_base
+import chemesis3.chemesis3_base as chemesis3_base
 
 chemesis3_base.Chemesis3Initiate(ch3)
 
 
 # we need an output object so we import from the experiment path
 
-add_package_path("experiment", subdir='neurospaces')
+add_package_path("experiment")
 
 from experiment.output import Output
 

@@ -22,12 +22,12 @@ except ImportError:
     
     def find_packages():
 
-        return ['neurospaces', 'neurospaces.chemesis3']
+        return ['chemesis3']
 
 # import the cbi module. We use this since the check
 # for the compiled swig nmc_base gives an error
 # if we import from nmc.__cbi__
-cbi = imp.load_source('__cbi__', os.path.join('neurospaces', 'chemesis3', '__cbi__.py'))
+cbi = imp.load_source('__cbi__', os.path.join('chemesis3', '__cbi__.py'))
 
 _package_info = cbi.PackageInfo()
 
@@ -158,7 +158,7 @@ class Chemesis3Module(Extension):
         self._include_files = include_files
         self._include_paths = include_paths
 
-        self.name = "neurospaces.chemesis3._chemesis3_base"
+        self.name = "chemesis3._chemesis3_base"
         self.sources = ["chemesis3.i"]
         self.swig_opts = self.get_swig_opts()
         self.extra_compile_args = self.get_extra_compile_args()
@@ -197,7 +197,7 @@ class Chemesis3Module(Extension):
                                           'python'
                                           ))
         
-        opts.extend(["-outdir", os.path.join('neurospaces', 'chemesis3')])
+        opts.extend(["-outdir", os.path.join('chemesis3')])
 
         return opts
     
@@ -327,7 +327,7 @@ CLASSIFIERS = [
     'Topic :: Software Development :: Libraries :: Python Modules',
 ]
 
-PACKAGE_FILES=find_files(os.path.join('neurospaces', 'chemesis3'))
+PACKAGE_FILES=find_files(os.path.join('chemesis3'))
 
 OPTIONS={
     'sdist': {
@@ -435,9 +435,8 @@ setup(
     license=LICENSE,
     keywords=KEYWORDS,
     url=URL,
-    packages=find_packages(),
-    package_data={'neurospaces' : [os.path.join('neurospaces','__init__.py')],
-                  'neurospaces.chemesis3' : PACKAGE_FILES},
+    packages=['chemesis3'],
+    package_data={'chemesis3' : PACKAGE_FILES},
     classifiers=CLASSIFIERS,
     options=OPTIONS,
     platforms=PLATFORMS,

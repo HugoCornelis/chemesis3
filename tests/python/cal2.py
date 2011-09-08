@@ -16,7 +16,7 @@ from test_library import add_package_path
 
 add_package_path("chemesis3")
 
-from neurospaces.chemesis3.components import Pool
+from chemesis3.components import Pool
 
 ca = [Pool(),
       Pool(),
@@ -105,7 +105,7 @@ ca[5].dQuantityTotal = 0.0
 ca[5].dConcentrationTotal = 0.153
 
 
-from neurospaces.chemesis3.components import Reaction
+from chemesis3.components import Reaction
 
 rxn = [Reaction(),
        Reaction(),]
@@ -127,7 +127,7 @@ rxn[1].dForwardRate = 1e2
 rxn[1].dForwardSolved = 0.0
 
 
-from neurospaces.chemesis3.components import Diffusion
+from chemesis3.components import Diffusion
 
 diff = [Diffusion()]
 
@@ -142,7 +142,7 @@ diff[0].dFlux2 = 0.0
 diff[0].dUnits = 1e-3
 
 
-from neurospaces.chemesis3.components import SimObjChemesis3
+from chemesis3.components import SimObjChemesis3
 
 ch3 = SimObjChemesis3('cal2')
 
@@ -150,7 +150,7 @@ ch3.SetPools(ca)
 ch3.SetReactions(rxn)
 ch3.SetDiffusions(diff)
 
-import neurospaces.chemesis3.chemesis3_base as chemesis3_base
+import chemesis3.chemesis3_base as chemesis3_base
 
 # Sets ppool[0] to diff[0].pool1 
 chemesis3_base.SetDiffusionPool1(ch3, 0, 0)
@@ -167,7 +167,7 @@ chemesis3_base.Chemesis3Initiate(ch3)
 
 # we need an output object so we import from the experiment path
 
-add_package_path("experiment", subdir='neurospaces')
+add_package_path("experiment")
 
 from experiment.output import Output
 

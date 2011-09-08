@@ -67,7 +67,6 @@ def add_package_path(package, subdir=''):
                 parts = list(fullsplit(curr_dir))
 
                 parts.pop() # remove the chemesis3 path
-                parts.pop() # remove the neurospaces path
 
                 python_build = os.path.join(os.sep, os.path.join(*parts))
                 #sys.path.append(os.path.join(python_build, subdir))
