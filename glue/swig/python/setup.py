@@ -1,6 +1,7 @@
 import imp
 import os
 import pdb
+import re
 import sys
 from commands import getoutput
 
@@ -277,6 +278,15 @@ class Chemesis3Module(Extension):
 
     def get_mac_arch_flags(self):
 
+        def convert_intel(cpu_type):
+
+            intel_archs = ['i386', 'i486', 'i586', 'i686']
+
+            if cpu_type in intel_archs:
+
+                return 'i386'
+
+
         lib_dirs = self.get_library_dirs()
         
         libraries = self.get_libraries()
@@ -327,8 +337,6 @@ class Chemesis3Module(Extension):
                 if len(arch) < len(least_archs):
 
                     least_archs = arch
-
-        intel_archs = ['i486', 'i586', 'i686']
 
         common_archs = []
 
