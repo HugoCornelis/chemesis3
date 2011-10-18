@@ -15,6 +15,12 @@
 ##'
 ##############################################################################
 
+
+EXTRA_DIST = \
+	clean.py \
+	setup.py \
+	uninstall.py 
+
 setup: setup.py
 	$(PYTHON) setup.py build
 	$(PYTHON) setup.py build_py
