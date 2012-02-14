@@ -84,6 +84,7 @@ clean-local:
 	$(RM) $(top_srcdir)/$(PACKAGE)-*.tar.gz
 
 dist-hook: 
+	echo "hello there!"
 	if test -n "$$NEUROSPACES_RELEASE" ; then cd $(srcdir) && if test -n "`mtn ls changed `" ; then false ; else true ; fi ; else true ; fi
 	cp $(srcdir)/license.txt $(distdir)
 	cp -R $(srcdir)/docs $(distdir)
@@ -97,9 +98,13 @@ dist-hook:
 #	cp -pR $(srcdir)/tests.config $(distdir)
 	$(srcdir)/install-sh -d $(distdir)/tests
 	$(srcdir)/install-sh -d $(distdir)/tests/html
-	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
+#	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
+
+test: check
+
 
 html-upload-prepare:
+	echo "html upload prepare"
 	rm -fr html/htdocs/neurospaces_project/$(PACKAGE)
 	mkdir -p html/htdocs/neurospaces_project/$(PACKAGE)
 # $Format: "	( cd tests && ./tests_2_html --header '<img src=\"ns-main-logo-dark2-notext-32x32.jpg\" alt=\"Main Neurospaces logo\"> ${package}, ${label}, ${email} <hr>' --introduction introduction.html )" $
@@ -107,12 +112,11 @@ html-upload-prepare:
 
 #t perhaps also add a target to check the syntax of all the html ?
 
-html-upload: html-upload-prepare
-	scp -pr html/htdocs/* hcornelis,neurospaces@web.sourceforge.net:/home/groups/n/ne/neurospaces/htdocs/
-
-test: check
-
 #TESTS = /usr/local/bin/neurospaces_harness
+
+html-upload: html-upload-prepare
+	echo "html upload stinks"
+	scp -pr html/htdocs/* hcornelis,neurospaces@web.sourceforge.net:/home/groups/n/ne/neurospaces/htdocs/
 
 doxygen: doxygen.cfg
 	$(DOXYGEN) doxygen.cfg
@@ -133,7 +137,7 @@ docs-level6: doxygen
 
 docs-level7:
 
-docs: docs-level1 docs-level2 docs-level3 docs-level4 docs-level5 docs-level6 docs-level7
+#docs: docs-level1 docs-level2 docs-level3 docs-level4 docs-level5 docs-level6 docs-level7
 
 APP_NAME=neurospaces$(PACKAGE)
 
@@ -152,3 +156,4 @@ pkg-rpm: dist
 
 pkg-osx: 
 	nspkg-osx 
+
