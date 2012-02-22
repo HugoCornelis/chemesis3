@@ -15,11 +15,11 @@
 ##'
 ##############################################################################
 
-nobase_dist_python_DATA = \
-	chemesis3/__cbi__.py \
-	chemesis3/__init__.py 
 
 EXTRA_DIST = \
+	chemesis3.i \
+	chemesis3/__cbi__.py \
+	chemesis3/__init__.py \
 	clean.py \
 	setup.py \
 	uninstall.py 

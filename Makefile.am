@@ -40,7 +40,10 @@ libchemesis3_a_SOURCES = \
 
 nobase_include_HEADERS = \
 	chemesis3/addressing.h \
-	chemesis3/chemesis3.h
+	chemesis3/chemesis3.h \
+	chemesis3/mathcomponent.h \
+	chemesis3/service.h
+
 
 CLEANFILES = \
 	$(top_srcdir)/docs/doxygen.tag
@@ -82,6 +85,7 @@ clean-local:
 	$(RM) -f $(top_srcdir)/build_*.log
 	$(RM) -rf $(top_srcdir)/*_BUILD/
 	$(RM) $(top_srcdir)/$(PACKAGE)-*.tar.gz
+	$(RM) -rf $(top_srcdir)/$(PACKAGE)-*
 
 dist-hook: 
 	if test -n "$$NEUROSPACES_RELEASE" ; then cd $(srcdir) && if test -n "`mtn ls changed `" ; then false ; else true ; fi ; else true ; fi
