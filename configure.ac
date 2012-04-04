@@ -388,6 +388,28 @@ case "$host_os" in
         ;;
     esac
 
+
+    #-- Here we determine the install path for perl modules --
+    AC_MSG_CHECKING([Checking the perl module installation path])	
+    pmdir_relative_path=`\
+      $PERL -MConfig \
+        -wle '($_ = $Config{installsitelib})
+              =~ s!^\Q$Config{siteprefix}/!!; \
+              print'`
+ 
+    AC_ARG_WITH(
+      [pmdir],
+    AS_HELP_STRING(
+      [--with-pmdir=DIR],
+      [Install Perl modules in DIR]),
+      [PMDIR=${withval}],
+      [PMDIR="$pmdir_relative_path"])
+
+    AC_SUBST([PMDIR])
+    AC_MSG_RESULT([ $PMDIR ])
+    # --- End perl module directory selection --------------
+
+
     # determine linker flags for perl embedding
     if test "$OSX_UNIVERSAL" == "yes"; then
 
@@ -518,7 +540,7 @@ case "$host_os" in
     esac 
 
 
-    AC_MSG_RESULT([done.])
+    AC_MSG_RESULT([done setting Mac OSX settings.])
     dnl }}} end MAC OS X settings
     ;;
 
@@ -539,9 +561,28 @@ case "$host_os" in
     AC_CHECK_PROGS(PERL, perl5 perl)
     AC_SUBST(PERL)
 
+    #-- Here we determine the install path for perl modules --
+    AC_MSG_CHECKING([Checking the perl module installation path])	
+    pmdir_relative_path=`\
+      $PERL -MConfig \
+        -wle '($_ = $Config{installsitelib})
+              =~ s!^\Q$Config{siteprefix}/!!; \
+              print'`
+ 
+    AC_ARG_WITH(
+      [pmdir],
+    AS_HELP_STRING(
+      [--with-pmdir=DIR],
+      [Install Perl modules in DIR]),
+      [PMDIR=${withval}],
+      [PMDIR='${prefix}'/"$pmdir_relative_path"])
+
+    AC_SUBST([PMDIR])
+    AC_MSG_RESULT([ $PMDIR ])
+    # --- End perl module directory selection --------------
+
     AC_CHECK_PROGS(SWIG, swig)
     AC_SUBST(SWIG)
-
 
     PERL_CCOPTS=`$PERL -MExtUtils::Embed -e ccopts`
     AC_SUBST(PERL_CCOPTS)
