@@ -40,7 +40,10 @@ libchemesis3_a_SOURCES = \
 
 nobase_include_HEADERS = \
 	chemesis3/addressing.h \
-	chemesis3/chemesis3.h
+	chemesis3/chemesis3.h \
+	chemesis3/mathcomponent.h \
+	chemesis3/service.h
+
 
 CLEANFILES = \
 	$(top_srcdir)/docs/doxygen.tag
@@ -82,6 +85,7 @@ clean-local:
 	$(RM) -f $(top_srcdir)/build_*.log
 	$(RM) -rf $(top_srcdir)/*_BUILD/
 	$(RM) $(top_srcdir)/$(PACKAGE)-*.tar.gz
+	$(RM) -rf $(top_srcdir)/$(PACKAGE)-*
 
 dist-hook: 
 	if test -n "$$NEUROSPACES_RELEASE" ; then cd $(srcdir) && if test -n "`mtn ls changed `" ; then false ; else true ; fi ; else true ; fi
@@ -97,7 +101,10 @@ dist-hook:
 #	cp -pR $(srcdir)/tests.config $(distdir)
 	$(srcdir)/install-sh -d $(distdir)/tests
 	$(srcdir)/install-sh -d $(distdir)/tests/html
-	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
+#	( cd $(distdir)/tests && chmod -R u+w . && ./tests_2_html --introduction introduction.html )
+
+test: check
+
 
 html-upload-prepare:
 	rm -fr html/htdocs/neurospaces_project/$(PACKAGE)
@@ -107,12 +114,10 @@ html-upload-prepare:
 
 #t perhaps also add a target to check the syntax of all the html ?
 
+#TESTS = /usr/local/bin/neurospaces_harness
+
 html-upload: html-upload-prepare
 	scp -pr html/htdocs/* hcornelis,neurospaces@web.sourceforge.net:/home/groups/n/ne/neurospaces/htdocs/
-
-test: check
-
-#TESTS = /usr/local/bin/neurospaces_harness
 
 doxygen: doxygen.cfg
 	$(DOXYGEN) doxygen.cfg
@@ -152,3 +157,4 @@ pkg-rpm: dist
 
 pkg-osx: 
 	nspkg-osx 
+
