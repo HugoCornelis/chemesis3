@@ -28,6 +28,7 @@ setup: setup.py
 	$(PYTHON) setup.py build
 	$(PYTHON) setup.py build_py
 	$(PYTHON) setup.py build_ext
+	$(PYTHON) setup.py bdist
 
 install-exec-hook:
 	$(PYTHON) setup.py install
