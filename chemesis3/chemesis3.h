@@ -7,9 +7,6 @@
 #define CHEMESIS3_CHEMESIS3_H
 
 
-#include <heccer/des.h>
-
-
 #ifndef AVOGADRO
 #define AVOGADRO 6.023e23         /* units are molecules per mole */
 #endif
