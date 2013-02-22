@@ -27,6 +27,9 @@ EXTRA_DIST = \
 setup: setup.py
 	$(PYTHON) setup.py build
 	$(PYTHON) setup.py build_py
+	$(PYTHON) setup.py build_ext
+	$(PYTHON) setup.py bdist
+	$(PYTHON) egg_build.py
 
 install-exec-hook:
 	$(PYTHON) setup.py install
