@@ -895,7 +895,8 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 		PidinStackPushString(ppistChild, "Ca");
 
-		PidinStackLookupTopSymbol(ppistChild);
+		struct symtab_HSolveListElement *phsleChild
+		    = PidinStackLookupTopSymbol(ppistChild);
 
 		int iSerialPool1 = PidinStackToSerial(ppistChild);
 
@@ -911,6 +912,26 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 		if (ppool1)
 		{
 		    pch3->pdiffusion[iDiffusion].ppool1 = ppool1;
+
+		    double dLength1
+			= SymbolParameterResolveValue(phsleChild, ppistChild, "LENGTH");
+
+		    if (dLength1 == DBL_MAX)
+		    {
+			iResult = TSTR_PROCESSOR_ABORT;
+		    }
+
+		    double dArea1
+			= SymbolParameterResolveValue(phsleChild, ppistChild, "FLUX_CROSS_SECTION_AREA");
+
+		    if (dArea1 == DBL_MAX)
+		    {
+			iResult = TSTR_PROCESSOR_ABORT;
+		    }
+
+		    pch3->pdiffusion[iDiffusion].dLength1 = dLength1;
+		    pch3->pdiffusion[iDiffusion].dArea1 = dArea1;
+
 		}
 		else
 		{
@@ -941,7 +962,7 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 
 			PidinStackPushString(ppistParent, "Ca");
 
-			struct symtab_HSolveListElement *phslePool2
+			struct symtab_HSolveListElement *phsleParent
 			    = PidinStackLookupTopSymbol(ppistParent);
 
 			int iSerialPool2 = PidinStackToSerial(ppistParent);
@@ -958,6 +979,26 @@ solver_processor(struct TreespaceTraversal *ptstr, void *pvUserdata)
 			if (ppool2)
 			{
 			    pch3->pdiffusion[iDiffusion].ppool2 = ppool2;
+
+			    double dLength2
+				= SymbolParameterResolveValue(phsleParent, ppistParent, "LENGTH");
+
+			    if (dLength2 == DBL_MAX)
+			    {
+				iResult = TSTR_PROCESSOR_ABORT;
+			    }
+
+			    double dArea2
+				= SymbolParameterResolveValue(phsleParent, ppistParent, "FLUX_CROSS_SECTION_AREA");
+
+			    if (dArea2 == DBL_MAX)
+			    {
+				iResult = TSTR_PROCESSOR_ABORT;
+			    }
+
+			    pch3->pdiffusion[iDiffusion].dLength2 = dLength2;
+			    pch3->pdiffusion[iDiffusion].dArea2 = dArea2;
+
 			}
 			else
 			{
