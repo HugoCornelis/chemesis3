@@ -274,8 +274,8 @@ class Chemesis3Module(Extension):
 
     def get_libraries(self):
 
-        return ["chemesis3", "cneurospaces", "ncurses", "readline", "heccer",
-                "neurospacesread", "event_algorithms", "symbol_algorithms",]
+        return ["chemesis3", "cneurospaces", "ncurses", "heccer",
+                "neurospacesread", "symbol_algorithms",]
 
     def get_mac_arch_flags(self):
 
@@ -481,7 +481,7 @@ _heccer_dir = os.path.join(home_dir,
 
 
 _library_files = ["libchemesis3.a", "libheccer.a", "libneurospacesread.a", "libcneurospaces.a",
-                  "libsymbol_algorithms.a" , "libevent_algorithms.a"]
+                  "libsymbol_algorithms.a"]
 _library_paths = [_chemesis3_dir,
                   os.path.join(_chemesis3_dir, "integrators"),
                   _heccer_dir,
