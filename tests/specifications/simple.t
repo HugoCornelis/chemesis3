@@ -14,7 +14,7 @@ my $test
 				command_tests => [
 						  {
 						   description => "Do we find the expected output (cal1) ?",
-						   read => (join '', `cat $::config->{core_directory}/tests/specifications/strings/cal1.txt`),
+						   read => (join '', `cat $::global_config->{core_directory}/tests/specifications/strings/cal1.txt`),
 						   wait => 1,
 						  },
 						 ],
@@ -28,7 +28,7 @@ my $test
 				command_tests => [
 						  {
 						   description => "Do we find the expected output (cal2) ?",
-						   read => (join '', `cat $::config->{core_directory}/tests/specifications/strings/cal2.txt`),
+						   read => (join '', `cat $::global_config->{core_directory}/tests/specifications/strings/cal2.txt`),
 						   wait => 1,
 						  },
 						 ],

@@ -21,7 +21,7 @@ my $test
 						   description => "Do we find the expected output (cal1) in python ?",
 						   read => {
 
-							    expected_output_file => "$::config->{core_directory}/tests/specifications/strings/cal1.txt",
+							    expected_output_file => "$::global_config->{core_directory}/tests/specifications/strings/cal1.txt",
 							    application_output_file => "/tmp/output_cal1",
 
 							   }
@@ -62,7 +62,7 @@ my $test
 						   description => "Do we find the expected output (cal1 api) in python ?",
 						   read => {
 
-							    expected_output_file => "$::config->{core_directory}/tests/specifications/strings/cal1.txt",
+							    expected_output_file => "$::global_config->{core_directory}/tests/specifications/strings/cal1.txt",
 							    application_output_file => "/tmp/output_cal1",
 
 							   }
@@ -103,7 +103,7 @@ my $test
 						   description => "Do we find the expected output (cal1 ndf) in python ?",
 						   read => {
 
-							    expected_output_file => "$::config->{core_directory}/tests/specifications/strings/cal1.txt",
+							    expected_output_file => "$::global_config->{core_directory}/tests/specifications/strings/cal1.txt",
 							    application_output_file => "/tmp/output_cal1",
 
 							   }
@@ -145,7 +145,7 @@ my $test
 						   description =>  "Do we find the expected output in python (cal2) ?",
 						   read => {
 
-							    expected_output_file => "$::config->{core_directory}/tests/specifications/strings/cal2.txt",
+							    expected_output_file => "$::global_config->{core_directory}/tests/specifications/strings/cal2.txt",
 							    application_output_file => "/tmp/output_cal2",
 
 							   }
@@ -174,7 +174,8 @@ my $test
 
 			      ],
        description => "simple chemesis3 models",
-       name => 'simple.t',
+       disabled => "the python modules have been disabled",
+       name => 'python/simple.t',
       };
 
 

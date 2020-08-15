@@ -26,6 +26,7 @@ Done!
 
 			      ],
        description => "Simple python functionality tests",
+       disabled => "the python modules have been disabled",
        name => 'python/import.t',
       };
 
