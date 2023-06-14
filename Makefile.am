@@ -16,10 +16,10 @@
 # note: order makes sure that the library is build before the tests are.
 
 SUBDIRS = \
-	. \
 	@CHEMESIS3_INTEGRATORS@ \
 	glue \
 	tests
+	.
 
 # fill in the scripts that should go with the distribution:
 
@@ -103,16 +103,13 @@ dist-hook:
 
 test: check
 
+TESTS = run_harness.sh
 
 html-upload-prepare:
 	rm -fr html/htdocs/neurospaces_project/$(PACKAGE)
 	mkdir -p html/htdocs/neurospaces_project/$(PACKAGE)
 # $Format: "	( cd tests && neurospaces_harness_2_html --header '<img src=\"ns-main-logo-dark2-notext-32x32.jpg\" alt=\"Main Neurospaces logo\"> ${package}, ${label}, ${email} <hr>' --introduction introduction.html )" $
 	( cd tests && neurospaces_harness_2_html --header '<img src="ns-main-logo-dark2-notext-32x32.jpg" alt="Main Neurospaces logo"> neurospaces 0.1675 Thu, 27 Dec 2007 15:58:18 -0600 hugo<hr>' --introduction introduction.html )
-
-#t perhaps also add a target to check the syntax of all the html ?
-
-#TESTS = /usr/local/bin/neurospaces_harness
 
 html-upload: html-upload-prepare
 	scp -pr html/htdocs/* hcornelis,neurospaces@web.sourceforge.net:/home/groups/n/ne/neurospaces/htdocs/
